@@ -45,7 +45,7 @@ var rootCmd = &cobra.Command{
     lineBreaks.LineBreaks()
 
     // shellCall
-    err, out, errout := shellCall.ShellCall("/Users/drivas/Factorem/Lou/src/dupClean/dupClean.sh")
+    err, out, errout := shellCall.ShellCall("/Users/drivas/Factorem/Lou/src/dupClean/shell/dupClean.sh")
     if err != nil {
       log.Printf("error: %v\n", err)
     }
