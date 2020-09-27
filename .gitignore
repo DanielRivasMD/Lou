@@ -1,5 +1,5 @@
 # deprecated scripts
-src/deprecated/
+deprecated/
 
-# Go Executables
+# Go executables
 excalibur/
