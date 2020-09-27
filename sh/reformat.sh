@@ -6,7 +6,7 @@ function form() {
 
   # declare variables
   cd /Users/drivas/Downloads/
-  shellDirectory="/Users/drivas/Factorem/Lou/src/papel/shell/"
+  shDirectory="/Users/drivas/Factorem/Lou/sh/"
   typeArr=(pdf ris)
   folderArr=(PDFs Refs)
 
@@ -15,7 +15,7 @@ function form() {
 
     # collect files
     fs2move=$( find -E . -type f -regex "./[A-Z][a-z-]+[0-9]{4}[A-Za-z-]+.${typeArr[ix]}" | \
-    awk -f ${shellDirectory}article_formatter.awk -v suffix=${typeArr[ix]} 2>&1 )
+    awk -f ${shDirectory}article_formatter.awk -v suffix=${typeArr[ix]} 2>&1 )
 
     if [[ -z ${fs2move} ]]
     then
