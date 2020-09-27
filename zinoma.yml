@@ -1,0 +1,20 @@
+targets:
+
+################################################################################
+
+  install:
+    build: |
+      # Lou
+      cd $HOME/.go/src/github.com/DanielRivasMD/Lou
+      go install
+      cd $HOME/.go/bin
+      mv Lou $HOME/bin/goTools/
+
+################################################################################
+
+  link:
+    build: |
+      rm $HOME/.go/src/github.com/DanielRivasMD/Lou
+      ln -sv $HOME/Factorem/Lou $HOME/.go/src/github.com/DanielRivasMD
+
+################################################################################
