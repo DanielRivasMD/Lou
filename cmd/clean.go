@@ -19,9 +19,7 @@ package cmd
 import (
 	"log"
 
-	"github.com/DanielRivasMD/Lou/lineBreaks"
-	"github.com/DanielRivasMD/Lou/shellCall"
-
+	"github.com/DanielRivasMD/Lou/aux"
 	"github.com/labstack/gommon/color"
 
 	"github.com/spf13/cobra"
@@ -30,17 +28,17 @@ import (
 // cleanCmd represents the clean command
 var cleanCmd = &cobra.Command{
 	Use:   "clean",
-	Short: "Clean purges downloaded duplicates",
+	Short: "Clean duplicates",
 	Long:  `Clean purges downloaded duplicates`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
 		// lineBreaks
-		lineBreaks.LineBreaks()
+		aux.LineBreaks()
 
 		// shellCall
-		err, out, errout := shellCall.ShellCall("/Users/drivas/Factorem/Lou/sh/dupClean.sh")
+		err, out, errout := aux.ShellCall("/Users/drivas/Factorem/Lou/sh/dupClean.sh")
 		if err != nil {
 			log.Printf("error: %v\n", err)
 		}
@@ -54,7 +52,7 @@ var cleanCmd = &cobra.Command{
 		}
 
 		// lineBreaks
-		lineBreaks.LineBreaks()
+		aux.LineBreaks()
 
 	},
 

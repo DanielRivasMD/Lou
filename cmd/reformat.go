@@ -19,9 +19,7 @@ package cmd
 import (
 	"log"
 
-	"github.com/DanielRivasMD/Lou/lineBreaks"
-	"github.com/DanielRivasMD/Lou/shellCall"
-
+	"github.com/DanielRivasMD/Lou/aux"
 	"github.com/labstack/gommon/color"
 
 	"github.com/spf13/cobra"
@@ -38,10 +36,10 @@ var reformatCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// lineBreaks
-		lineBreaks.LineBreaks()
+		aux.LineBreaks()
 
 		// shellCall
-		err, out, errout := shellCall.ShellCall("/Users/drivas/Factorem/Lou/sh/reformat.sh")
+		err, out, errout := aux.ShellCall("/Users/drivas/Factorem/Lou/sh/reformat.sh")
 		if err != nil {
 			log.Printf("error: %v\n", err)
 		}
@@ -55,7 +53,7 @@ var reformatCmd = &cobra.Command{
 		}
 
 		// lineBreaks
-		lineBreaks.LineBreaks()
+		aux.LineBreaks()
 
 	},
 

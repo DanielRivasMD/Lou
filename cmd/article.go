@@ -23,8 +23,8 @@ import (
 // articleCmd represents the article command
 var articleCmd = &cobra.Command{
 	Use:   "article",
-	Short: "Lou handles all articles operations",
-	Long: `Lou handles all articles operations`,
+	Short: "Lou handles all article operations",
+	Long:  `Lou handles all article operations`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
