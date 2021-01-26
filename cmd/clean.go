@@ -34,6 +34,8 @@ var cleanCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
+		location, _ := cmd.Flags().GetString("location")
+
 		// lineBreaks
 		aux.LineBreaks()
 
@@ -63,13 +65,11 @@ var cleanCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(cleanCmd)
 
-	// Here you will define your flags and configuration settings.
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// cleanCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// Flags
+	cleanCmd.Flags().StringP("location", "l", "/Users/drivas/Downloads/", "Location to clean")
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// cleanCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
