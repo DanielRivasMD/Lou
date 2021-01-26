@@ -17,10 +17,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"bytes"
+	"fmt"
 	"log"
+	"os"
+	"os/exec"
 
 	"github.com/DanielRivasMD/Lou/aux"
 	"github.com/labstack/gommon/color"
+	"github.com/mitchellh/go-homedir"
 
 	"github.com/spf13/cobra"
 )
@@ -28,29 +33,48 @@ import (
 // cleanCmd represents the clean command
 var cleanCmd = &cobra.Command{
 	Use:   "clean",
-	Short: "Clean duplicates",
-	Long:  `Clean purges downloaded duplicates`,
+	Short: "Lou cleans duplicates",
+	Long:  `Lou cleans duplicates at a target location`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
+
+		// Find home directory.
+		home, errHomedir := homedir.Dir()
+		if errHomedir != nil {
+			fmt.Println(errHomedir)
+			os.Exit(1)
+		}
+
 		location, _ := cmd.Flags().GetString("location")
 
 		// lineBreaks
 		aux.LineBreaks()
 
+		// buffers
+		var stdout bytes.Buffer
+		var stderr bytes.Buffer
+
 		// shellCall
-		err, out, errout := aux.ShellCall("/Users/drivas/Factorem/Lou/sh/dupClean.sh")
+		commd := home + "/Factorem/Lou/sh/dupClean.sh"
+		shCmd := exec.Command(commd, location)
+
+		// run
+		shCmd.Stdout = &stdout
+		shCmd.Stderr = &stderr
+		err := shCmd.Run()
+
 		if err != nil {
 			log.Printf("error: %v\n", err)
 		}
 
 		// stdout
-		color.Println(color.Cyan(out, color.B))
+		color.Println(color.Cyan(stdout.String(), color.B))
 
 		// stderr
-		if errout != "" {
-			color.Println(color.Red(errout, color.B))
+		if stderr.String() != "" {
+			color.Println(color.Red(stderr.String(), color.B))
 		}
 
 		// lineBreaks
