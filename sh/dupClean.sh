@@ -2,9 +2,14 @@
 
 ################################################################################
 
+location=$1
+
+################################################################################
+
+# function declaration
 function cleaning() {
-  # duplicates to clean at ~/Downloads/
-  dups_to_clean=$( ls ~/Downloads/*\(*\)* 2>&1 )
+  # duplicates to clean
+  dups_to_clean=$( ls ${location}/*\(*\)* 2>&1 )
 
   expectedError="No such file or directory"
   if [[ ${dups_to_clean} =~ ${expectedError} ]]
@@ -21,12 +26,13 @@ ${dups_to_clean}
 TESTA`
 
     echo -e "${removingFiles}"
-    rm /Users/drivas/Downloads/*\(*\)*
+    rm ${location}/*\(*\)*
   fi
 }
 
 ################################################################################
 
+# function call
 cleaning
 
 ################################################################################
