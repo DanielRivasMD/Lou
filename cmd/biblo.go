@@ -17,33 +17,93 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"bytes"
+	"fmt"
+	"log"
+	"os"
+	"os/exec"
+
+	"github.com/DanielRivasMD/Lou/aux"
+	"github.com/labstack/gommon/color"
+	"github.com/mitchellh/go-homedir"
+
 	"github.com/spf13/cobra"
 )
 
-// articleCmd represents the article command
-var articleCmd = &cobra.Command{
-	Use:   "article",
-	Short: "Lou handles all article operations",
-	Long:  `Lou handles all article operations`,
+var reformat bool
+
+// bibloCmd represents the article command
+var bibloCmd = &cobra.Command{
+	Use:   "biblo",
+	Short: "Lou handles all biblography operations",
+	Long: `Lou handles all biblography operations.
+
+For example:
+	- Reformat artciles and their references downloaded by Kopernico.
+	- Relocate articles manually renamed.
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+
+		// TODO: trigger help if no flags are passed
+
+		// Find home directory.
+		home, errHomedir := homedir.Dir()
+		if errHomedir != nil {
+			fmt.Println(errHomedir)
+			os.Exit(1)
+		}
+
+		if reformat {
+
+			// lineBreaks
+			aux.LineBreaks()
+
+			// buffers
+			var stdout bytes.Buffer
+			var stderr bytes.Buffer
+
+			// shellCall
+			commd := home + "/Factorem/Lou/sh/reformat.sh"
+			shCmd := exec.Command(commd)
+
+			// run
+			shCmd.Stdout = &stdout
+			shCmd.Stderr = &stderr
+			err := shCmd.Run()
+
+			if err != nil {
+				log.Printf("error: %v\n", err)
+			}
+
+			// stdout
+			color.Println(color.Cyan(stdout.String(), color.B))
+
+			// stderr
+			if stderr.String() != "" {
+				color.Println(color.Red(stderr.String(), color.B))
+			}
+
+			// lineBreaks
+			aux.LineBreaks()
+		}
+
+	},
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
 
 func init() {
-	rootCmd.AddCommand(articleCmd)
+	rootCmd.AddCommand(bibloCmd)
 
-	// Here you will define your flags and configuration settings.
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// articleCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// Flags
+	bibloCmd.Flags().BoolVarP(&reformat, "reformat", "r", false, "Reformat articles")
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// articleCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
