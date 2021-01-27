@@ -20,27 +20,29 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
-
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
 
 var cfgFile string
 
-// rootCmd represents the base command when called without any subcommands
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 var rootCmd = &cobra.Command{
 	Use:   "Lou",
 	Short: "Lou, personal assitant at your service",
-	Long: `Lou, personal assitant at your service`,
+	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+
+Lou, personal assitant at your service`,
 	Version: "v0.1",
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Example: `
+Lou clean
+Lou biblo -r`,
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -48,22 +50,25 @@ func Execute() {
 	}
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.Lou.yaml)")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "Config file")
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
 
-// initConfig reads in config file and ENV variables if set.
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 func initConfig() {
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
@@ -75,9 +80,9 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".Lou" (without extension).
+		// Search config in home directory with name ".lou" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".Lou")
+		viper.SetConfigName(".lou")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
@@ -86,4 +91,7 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
