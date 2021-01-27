@@ -34,14 +34,19 @@ var reformat bool
 
 // bibloCmd represents the article command
 var bibloCmd = &cobra.Command{
-	Use:   "biblo",
-	Short: "Lou handles all biblography operations",
-	Long: `Lou handles all biblography operations.
+	Use:     "biblo",
+	Aliases: []string{"b"},
+	Short:   "Lou handles all biblography operations",
+	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+
+Lou handles all biblography operations.
 
 For example:
 	- Reformat artciles and their references downloaded by Kopernico.
 	- Relocate articles manually renamed.
 `,
+	Example: `
+Lou biblo -r	# reformat articles at ~/Downloads/`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
