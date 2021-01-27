@@ -32,9 +32,15 @@ import (
 
 // cleanCmd represents the clean command
 var cleanCmd = &cobra.Command{
-	Use:   "clean",
-	Short: "Lou cleans duplicates",
-	Long:  `Lou cleans duplicates at a target location`,
+	Use:     "clean",
+	Aliases: []string{"c"},
+	Short:   "Lou cleans duplicates",
+	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+
+Lou cleans duplicates at a target location`,
+	Example: `
+Lou clean						# clean default directory
+Lou clean -l $(pwd)	# clean current directory`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
