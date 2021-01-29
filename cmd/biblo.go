@@ -46,13 +46,14 @@ For example:
 	- Relocate articles manually renamed.
 `,
 	Example: `
-Lou biblo -r	# reformat articles at ~/Downloads/`,
+Lou biblo reformat`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	ValidArgs:             []string{"reformat",},
+	Args:                  cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// TODO: trigger help if no flags are passed
 
 		// Find home directory.
 		home, errHomedir := homedir.Dir()
@@ -61,7 +62,8 @@ Lou biblo -r	# reformat articles at ~/Downloads/`,
 			os.Exit(1)
 		}
 
-		if reformat {
+		switch args[0] {
+		case "reformat":
 
 			// lineBreaks
 			aux.LineBreaks()
@@ -93,8 +95,8 @@ Lou biblo -r	# reformat articles at ~/Downloads/`,
 
 			// lineBreaks
 			aux.LineBreaks()
-		}
 
+		}
 	},
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +109,6 @@ func init() {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Flags
-	bibloCmd.Flags().BoolVarP(&reformat, "reformat", "r", false, "Reformat articles")
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
