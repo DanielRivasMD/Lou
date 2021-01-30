@@ -24,8 +24,8 @@ import (
 	"os/exec"
 
 	"github.com/DanielRivasMD/Lou/aux"
-	"github.com/labstack/gommon/color"
 	"github.com/mitchellh/go-homedir"
+	"github.com/ttacon/chalk"
 
 	"github.com/spf13/cobra"
 )
@@ -81,15 +81,15 @@ Lou biblo reformat`,
 			err := shCmd.Run()
 
 			if err != nil {
-				log.Printf("error: %v\n", err)
+				log.Printf(chalk.Red.Color("error: %v\n"), err)
 			}
 
 			// stdout
-			color.Println(color.Cyan(stdout.String(), color.B))
+			fmt.Println(chalk.Cyan.Color(stdout.String()))
 
 			// stderr
 			if stderr.String() != "" {
-				color.Println(color.Red(stderr.String(), color.B))
+				fmt.Println(chalk.Red.Color(stderr.String()))
 			}
 
 			// lineBreaks

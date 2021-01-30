@@ -33,7 +33,7 @@ var rootCmd = &cobra.Command{
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
 Lou, personal assitant at your service`,
-	Version: "v0.1",
+	Version: "v0.2",
 	Example: `
 Lou help`,
 }
