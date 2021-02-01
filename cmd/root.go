@@ -28,7 +28,7 @@ var cfgFile string
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var rootCmd = &cobra.Command{
-	Use:   "Lou",
+	Use:   "lou",
 	Short: "Lou, personal assitant at your service",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 

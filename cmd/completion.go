@@ -31,13 +31,13 @@ var completionCmd = &cobra.Command{
 
 Bash:
 
-$ source <(Lou completion bash)
+$ source <(lou completion bash)
 
 # To load completions for each session, execute once:
 Linux:
-  $ Lou completion bash > /etc/bash_completion.d/Lou
+  $ lou completion bash > /etc/bash_completion.d/lou
 MacOS:
-  $ Lou completion bash > /usr/local/etc/bash_completion.d/Lou
+  $ lou completion bash > /usr/local/etc/bash_completion.d/lou
 
 Zsh:
 
@@ -47,23 +47,23 @@ Zsh:
 $ echo "autoload -U compinit; compinit" >> ~/.zshrc
 
 # To load completions for each session, execute once:
-$ Lou completion zsh > "${fpath[1]}/_Lou"
+$ lou completion zsh > "${fpath[1]}/_lou"
 
 # You will need to start a new shell for this setup to take effect.
 
 Fish:
 
-$ Lou completion fish | source
+$ lou completion fish | source
 
 # To load completions for each session, execute once:
-$ Lou completion fish > ~/.config/fish/completions/Lou.fish
+$ lou completion fish > ~/.config/fish/completions/lou.fish
 
 Powershell:
 
-PS> Lou completion powershell | Out-String | Invoke-Expression
+PS> lou completion powershell | Out-String | Invoke-Expression
 
 # To load completions for every new session, run:
-PS> Lou completion powershell > Lou.ps1
+PS> lou completion powershell > lou.ps1
 # and source this file from your powershell profile.
 `,
 	DisableFlagsInUseLine: true,
