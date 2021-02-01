@@ -50,11 +50,11 @@ Lou biblo reformat`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ValidArgs:             []string{"reformat",},
-	Args:                  cobra.ExactValidArgs(1),
+	ValidArgs: []string{"reformat"},
+	Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// find home directory.
+		// find home directory
 		home, errHomedir := homedir.Dir()
 		if errHomedir != nil {
 			fmt.Println(errHomedir)

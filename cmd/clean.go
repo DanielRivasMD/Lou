@@ -46,7 +46,7 @@ Lou clean -l $(pwd)`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// find home directory.
+		// find home directory
 		home, errHomedir := homedir.Dir()
 		if errHomedir != nil {
 			fmt.Println(errHomedir)
