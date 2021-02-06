@@ -62,7 +62,7 @@ Lou biblo reformat`,
 		}
 
 		switch args[0] {
-		case "reformat":
+		case "format":
 
 			// lineBreaks
 			aux.LineBreaks()
@@ -72,7 +72,7 @@ Lou biblo reformat`,
 			var stderr bytes.Buffer
 
 			// shellCall
-			commd := home + "/Factorem/Lou/sh/reformat.sh"
+			commd := home + "/Factorem/Lou/sh/format.sh"
 			shCmd := exec.Command(commd)
 
 			// run
