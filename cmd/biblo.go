@@ -50,7 +50,7 @@ Lou biblo reformat`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ValidArgs: []string{"reformat"},
+	ValidArgs: []string{"format", "locate"},
 	Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -73,6 +73,39 @@ Lou biblo reformat`,
 
 			// shellCall
 			commd := home + "/Factorem/Lou/sh/format.sh"
+			shCmd := exec.Command(commd)
+
+			// run
+			shCmd.Stdout = &stdout
+			shCmd.Stderr = &stderr
+			err := shCmd.Run()
+
+			if err != nil {
+				log.Printf(chalk.Red.Color("error: %v\n"), err)
+			}
+
+			// stdout
+			fmt.Println(chalk.Cyan.Color(stdout.String()))
+
+			// stderr
+			if stderr.String() != "" {
+				fmt.Println(chalk.Red.Color(stderr.String()))
+			}
+
+			// lineBreaks
+			aux.LineBreaks()
+
+		case "locate":
+
+			// lineBreaks
+			aux.LineBreaks()
+
+			// buffers
+			var stdout bytes.Buffer
+			var stderr bytes.Buffer
+
+			// shellCall
+			commd := home + "/Factorem/Lou/sh/locate.sh"
 			shCmd := exec.Command(commd)
 
 			// run
