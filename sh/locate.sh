@@ -14,7 +14,7 @@ function move() {
   do
 
     # collect files
-    fs2move=$( find -E . -type f -regex "./[A-Z][a-z]+[-]{1}[A-Za-z_-]+.${typeArr[ix]}")
+    fs2move=$( find -E . -type f -regex "./[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.${typeArr[ix]}")
 
     if [[ -z ${fs2move} ]]
     then

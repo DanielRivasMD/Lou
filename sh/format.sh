@@ -16,13 +16,13 @@ function form() {
 
     # TODO: modify regex to cover two letter author last name
     # collect files
-    fs2move=$( find -E . -type f -regex "./[A-Z][a-z-]+[0-9]{4}[A-Za-z-]+.${typeArr[ix]}" | \
+    fs2move=$( find -E . -type f -regex "./[A-Z][a-z-]+[0-9]{4}[A-Za-z_0-9-]+.${typeArr[ix]}" | \
     awk -f ${shDirectory}article_formatter.awk -v suffix=${typeArr[ix]} 2>&1 )
 
     if [[ -z ${fs2move} ]]
     then
       emptyMessage=`cat <<- TESTA
-\No files to reformat:	${folderArr[ix]}`
+\tNo files to reformat:	${folderArr[ix]}`
 
       echo -e "${emptyMessage}"
     else

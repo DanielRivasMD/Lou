@@ -15,7 +15,7 @@ function cleaning() {
   if [[ ${dups_to_clean} =~ ${expectedError} ]]
   then
     emptyMessage=`cat <<- TESTA
-\t\t\tThere were no files to remove
+\tThere were no files to remove
 TESTA`
 
     echo -e "${emptyMessage}"
