@@ -19,7 +19,6 @@ package cmd
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 
@@ -78,11 +77,7 @@ Lou biblo reformat`,
 			// run
 			shCmd.Stdout = &stdout
 			shCmd.Stderr = &stderr
-			err := shCmd.Run()
-
-			if err != nil {
-				log.Printf(chalk.Red.Color("error: %v\n"), err)
-			}
+			_ = shCmd.Run()
 
 			// stdout
 			fmt.Println(chalk.Cyan.Color(stdout.String()))
@@ -111,11 +106,7 @@ Lou biblo reformat`,
 			// run
 			shCmd.Stdout = &stdout
 			shCmd.Stderr = &stderr
-			err := shCmd.Run()
-
-			if err != nil {
-				log.Printf(chalk.Red.Color("error: %v\n"), err)
-			}
+			_ = shCmd.Run()
 
 			// stdout
 			fmt.Println(chalk.Cyan.Color(stdout.String()))
