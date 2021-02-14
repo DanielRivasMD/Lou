@@ -43,13 +43,14 @@ Lou handles all biblography operations.
 For example:
 	- Reformat artciles and their references downloaded by Kopernico.
 	- Relocate articles manually renamed.
+	- Relocate theses to the proper archive.
 `,
 	Example: `
 Lou biblo reformat`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ValidArgs: []string{"format", "locate"},
+	ValidArgs: []string{"format", "locate", "thesis"},
 	Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -101,6 +102,35 @@ Lou biblo reformat`,
 
 			// shellCall
 			commd := home + "/Factorem/Lou/sh/locate.sh"
+			shCmd := exec.Command(commd)
+
+			// run
+			shCmd.Stdout = &stdout
+			shCmd.Stderr = &stderr
+			_ = shCmd.Run()
+
+			// stdout
+			fmt.Println(chalk.Cyan.Color(stdout.String()))
+
+			// stderr
+			if stderr.String() != "" {
+				fmt.Println(chalk.Red.Color(stderr.String()))
+			}
+
+			// lineBreaks
+			aux.LineBreaks()
+
+		case "thesis":
+
+			// lineBreaks
+			aux.LineBreaks()
+
+			// buffers
+			var stdout bytes.Buffer
+			var stderr bytes.Buffer
+
+			// shellCall
+			commd := home + "/Factorem/Lou/sh/thesis.sh"
 			shCmd := exec.Command(commd)
 
 			// run
