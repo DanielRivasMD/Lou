@@ -9,7 +9,7 @@ location=$1
 # function declaration
 function cleaning() {
   # duplicates to clean
-  dups_to_clean=$( ls ${location}/*\(*\)* 2>&1 )
+  dups_to_clean=$( ls ${location}/*\(*\)* 2>&1 ) # catch error to check immediatly after
 
   expectedError="No such file or directory"
   if [[ ${dups_to_clean} =~ ${expectedError} ]]
