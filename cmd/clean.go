@@ -19,11 +19,11 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"os"
-	"os/exec"
+	"regexp"
 
 	"github.com/DanielRivasMD/Lou/aux"
-	"github.com/mitchellh/go-homedir"
 	"github.com/ttacon/chalk"
 
 	"github.com/spf13/cobra"
@@ -45,30 +45,17 @@ Lou clean -l $(pwd)`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// find home directory
-		home, errHomedir := homedir.Dir()
-		if errHomedir != nil {
-			fmt.Println(errHomedir)
-			os.Exit(1)
-		}
-
 		location, _ := cmd.Flags().GetString("location")
 
 		// lineBreaks
 		aux.LineBreaks()
 
+		// function call
+		matchDir(location)
+
 		// buffers
 		var stdout bytes.Buffer
 		var stderr bytes.Buffer
-
-		// shellCall
-		commd := home + "/Factorem/Lou/sh/dupClean.sh"
-		shCmd := exec.Command(commd, location)
-
-		// run
-		shCmd.Stdout = &stdout
-		shCmd.Stderr = &stderr
-		_ = shCmd.Run()
 
 		// stdout
 		fmt.Println(chalk.Cyan.Color(stdout.String()))
@@ -98,3 +85,42 @@ func init() {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func matchDir(location string) {
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	file, err := os.Open(location)
+	if err != nil {
+		log.Fatalf("failed opening directory: %s", err) // TODO: get a better error handler with package error
+	}
+	defer file.Close()
+
+	fileList, _ := file.Readdir(0)
+
+	// declare regex
+	reg := regexp.MustCompile(`\(\d\)\w*`)
+
+	// switch
+	sw := true
+
+	// check each file @ location
+	for _, files := range fileList {
+		m := reg.MatchString(files.Name())
+		if m {
+			sw = false
+			fmt.Println(location + files.Name())
+			os.Remove(location + files.Name())
+		}
+	}
+
+	// trigger if no duplicates are found
+	if sw {
+		fmt.Println(chalk.Cyan.Color("\tNo files to remove"))
+	}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
