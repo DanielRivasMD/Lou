@@ -22,8 +22,8 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/mitchellh/go-homedir"
 	"github.com/DanielRivasMD/Lou/auxiliary"
+	"github.com/atrox/homedir"
 	"github.com/ttacon/chalk"
 
 	"github.com/spf13/cobra"
