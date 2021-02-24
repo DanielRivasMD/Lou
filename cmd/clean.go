@@ -23,7 +23,7 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/DanielRivasMD/Lou/aux"
+	"github.com/DanielRivasMD/Lou/auxiliary"
 	"github.com/ttacon/chalk"
 
 	"github.com/spf13/cobra"
@@ -48,7 +48,7 @@ Lou clean -l $(pwd)`,
 		location, _ := cmd.Flags().GetString("location")
 
 		// lineBreaks
-		aux.LineBreaks()
+		auxiliary.LineBreaks()
 
 		// function call
 		matchDir(location)
@@ -66,7 +66,7 @@ Lou clean -l $(pwd)`,
 		}
 
 		// lineBreaks
-		aux.LineBreaks()
+		auxiliary.LineBreaks()
 
 	},
 

@@ -22,8 +22,8 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/DanielRivasMD/Lou/aux"
 	"github.com/mitchellh/go-homedir"
+	"github.com/DanielRivasMD/Lou/auxiliary"
 	"github.com/ttacon/chalk"
 
 	"github.com/spf13/cobra"
@@ -65,7 +65,7 @@ Lou biblo reformat`,
 		case "format":
 
 			// lineBreaks
-			aux.LineBreaks()
+			auxiliary.LineBreaks()
 
 			// buffers
 			var stdout bytes.Buffer
@@ -89,12 +89,12 @@ Lou biblo reformat`,
 			}
 
 			// lineBreaks
-			aux.LineBreaks()
+			auxiliary.LineBreaks()
 
 		case "locate":
 
 			// lineBreaks
-			aux.LineBreaks()
+			auxiliary.LineBreaks()
 
 			// buffers
 			var stdout bytes.Buffer
@@ -118,12 +118,12 @@ Lou biblo reformat`,
 			}
 
 			// lineBreaks
-			aux.LineBreaks()
+			auxiliary.LineBreaks()
 
 		case "thesis":
 
 			// lineBreaks
-			aux.LineBreaks()
+			auxiliary.LineBreaks()
 
 			// buffers
 			var stdout bytes.Buffer
@@ -147,7 +147,7 @@ Lou biblo reformat`,
 			}
 
 			// lineBreaks
-			aux.LineBreaks()
+			auxiliary.LineBreaks()
 
 		}
 	},
