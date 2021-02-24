@@ -71,7 +71,7 @@ Lou biblo reformat`,
 			var stdout bytes.Buffer
 			var stderr bytes.Buffer
 
-			// shellCall
+			// shell call
 			commd := home + "/Factorem/Lou/sh/format.sh"
 			shCmd := exec.Command(commd)
 
@@ -100,7 +100,7 @@ Lou biblo reformat`,
 			var stdout bytes.Buffer
 			var stderr bytes.Buffer
 
-			// shellCall
+			// shell call
 			commd := home + "/Factorem/Lou/sh/locate.sh"
 			shCmd := exec.Command(commd)
 
@@ -129,7 +129,7 @@ Lou biblo reformat`,
 			var stdout bytes.Buffer
 			var stderr bytes.Buffer
 
-			// shellCall
+			// shell call
 			commd := home + "/Factorem/Lou/sh/thesis.sh"
 			shCmd := exec.Command(commd)
 
