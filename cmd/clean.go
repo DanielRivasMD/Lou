@@ -101,7 +101,8 @@ func matchDir(location string) {
 	fileList, _ := file.Readdir(0)
 
 	// declare regex
-	reg := regexp.MustCompile(`\(\d\)\w*`)
+	const exprToMatch = `\(\d\)\w*`
+	reg := regexp.MustCompile(exprToMatch)
 
 	// switch
 	sw := true
