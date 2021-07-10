@@ -7,7 +7,7 @@ function form() {
 
   # declare variables
   cd /Users/drivas/Downloads/
-  shDirectory="/Users/drivas/Factorem/Lou/sh/"
+  shDirectory="/Users/drivas/Factorem/Lou/sh"
   typeArr=(pdf ris)
   folderArr=(PDFs Refs)
 
@@ -17,7 +17,7 @@ function form() {
     # TODO: modify regex to cover two letter author last name
     # collect files
     fs2move=$( find -E . -type f -regex "./[A-Z][a-z-]+[0-9]{4}[A-Za-z_0-9-]+.${typeArr[ix]}" | \
-    awk -f ${shDirectory}article_formatter.awk -v suffix=${typeArr[ix]} 2>&1 )
+    awk -f ${shDirectory}/article_formatter.awk -v suffix=${typeArr[ix]} 2>&1 )
 
     if [[ -z ${fs2move} ]]
     then
