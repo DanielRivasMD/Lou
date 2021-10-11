@@ -6,17 +6,17 @@
 
 ## Table of contents
 
-- [Overview](#overview)
-- [Installation](#installation)
-  - [Homebrew](#via-homebrew-for-macos)
-  - [APT](#via-apt-for-debian-based-linux-distros)
-  - [GitHub](#from-github-release)
-- [Documentation](#documentation)
-  - [Usage](#usage)
-- [Examples](#examples)
-  - [Config](#example-Lou-config)
-- [Acknowledgements](#acknowledgements)
-- [License](#license)
+  - [Table of contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Installation](#installation)
+    - [Via Homebrew (for macOS)](#via-homebrew-for-macos)
+    - [Via APT (for Debian-based Linux distros)](#via-apt-for-debian-based-linux-distros)
+    - [From Github release](#from-github-release)
+  - [Documentation](#documentation)
+    - [Usage](#usage)
+  - [Examples](#examples)
+  - [Acknowledgements](#acknowledgements)
+  - [License](#license)
 
 
 ## Overview
@@ -49,7 +49,7 @@ brew install danielrivasmd/Lou
 curl -SsL https://fbecart.github.io/ppa/debian/KEY.gpg | sudo apt-key add -
 sudo curl -SsL -o /etc/apt/sources.list.d/fbecart.list https://fbecart.github.io/ppa/debian/fbecart.list
 sudo apt update
-sudo apt install Lou
+sudo apt install lou
 ```
 
 
@@ -68,13 +68,13 @@ sudo apt install Lou
 
 ### Usage
 
-Use `Lou -h` or `Lou --help` to display help on commandline.
+Use `lou -h` or `lou --help` to display help on commandline.
 
 ```
 Lou, personal assitant at your service
 
 Usage:
-  Lou [command]
+  lou [command]
 
 Available Commands:
   help                  Help about any command
@@ -83,17 +83,18 @@ Flags:
   -h, --help            help for Lou
   -o, --outDir string   Output directory. creates if not exitst
 
-Use "Lou [command] --help" for more information about a command.
+Use "lou [command] --help" for more information about a command.
 ```
 
 
 
 ## Examples
 
-Lou help
-Lou clean -l $(pwd)
-Lou biblo reformat
-
+```
+lou help
+lou clean -l $(pwd)
+lou biblo format
+```
 
 
 ## Acknowledgements

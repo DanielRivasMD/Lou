@@ -21,6 +21,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/ttacon/chalk"
 )
 
 var cfgFile string
@@ -28,14 +29,15 @@ var cfgFile string
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var rootCmd = &cobra.Command{
-	Use:   "lou",
-	Short: "Lou, personal assitant at your service",
+	Use:     "lou",
+	Version: "v0.2",
+	Short:   chalk.Green.Color("Lou") + ", personal assitant at your service",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-Lou, personal assitant at your service`,
-	Version: "v0.2",
+` + (chalk.Green.Color("Lou") + chalk.White.Color(", personal assitant at your service")),
+
 	Example: `
-Lou help`,
+` + chalk.Cyan.Color("lou") + ` help`,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

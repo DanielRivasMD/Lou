@@ -35,18 +35,20 @@ var reformat bool
 var bibloCmd = &cobra.Command{
 	Use:     "biblo",
 	Aliases: []string{"b"},
-	Short:   "Lou handles all biblography operations",
+	Short:   "Handles all biblography operations.",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-Lou handles all biblography operations.
+` + chalk.Green.Color("Lou") + ` handles all biblography operations.
 
 For example:
-	- Reformat artciles and their references downloaded by Kopernico.
-	- Relocate articles manually renamed.
-	- Relocate theses to the proper archive.
+- Reformat articles and their references downloaded by Kopernico.
+- Relocate articles manually renamed.
+- Relocate theses to the proper archive.
 `,
+
 	Example: `
-Lou biblo reformat`,
+` + chalk.Cyan.Color("lou") + ` biblo locate
+` + chalk.Cyan.Color("lou") + ` biblo format`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -61,6 +63,8 @@ Lou biblo reformat`,
 			os.Exit(1)
 		}
 
+		// TODO: segregate into functions
+		// TODO: call format before locate
 		switch args[0] {
 		case "format":
 

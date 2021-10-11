@@ -33,13 +33,15 @@ import (
 var cleanCmd = &cobra.Command{
 	Use:     "clean",
 	Aliases: []string{"c"},
-	Short:   "Lou cleans duplicates",
+	Short:   "Cleans duplicates.",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-Lou cleans duplicates at a target location`,
+` + chalk.Green.Color("Lou") + ` cleans duplicates at a target location.
+`,
+
 	Example: `
-Lou clean
-Lou clean -l $(pwd)`,
+` + chalk.Cyan.Color("lou") + ` clean
+` + chalk.Cyan.Color("lou") + ` clean -l $(pwd)`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

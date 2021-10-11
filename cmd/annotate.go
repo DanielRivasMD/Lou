@@ -32,11 +32,14 @@ import (
 // annotateCmd represents the annotate command
 var annotateCmd = &cobra.Command{
 	Use:   "annotate",
-	Short: "Lou relocates files for annoatation",
-	Long: `Lou will relocate pdf file for annotation
+	Short: "Relocates files for annotation",
+	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+
+` + chalk.Green.Color("Lou") + ` will relocate pdf file for annotation
 	while keeping a reference to original location.
 
-	When overwritten, annotated file will remain intact.`,
+	When overwritten, annotated file will remain intact.
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

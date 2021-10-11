@@ -66,6 +66,7 @@ PS> lou completion powershell | Out-String | Invoke-Expression
 PS> lou completion powershell > lou.ps1
 # and source this file from your powershell profile.
 `,
+
 	DisableFlagsInUseLine: true,
 	ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
 	Args:                  cobra.ExactValidArgs(1),
