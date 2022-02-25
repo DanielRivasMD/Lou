@@ -21,10 +21,16 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/ttacon/chalk"
-
 	"github.com/spf13/cobra"
+	"github.com/ttacon/chalk"
 )
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// declarations
+var ()
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // annotateCmd represents the annotate command
 var annotateCmd = &cobra.Command{
@@ -51,16 +57,24 @@ var annotateCmd = &cobra.Command{
 	},
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
+func init() {
+	bibloCmd.AddCommand(annotateCmd)
 
+	// flags
+	annotateCmd.Flags().StringP("target", "t", "", "article to annoate")
+	annotateCmd.MarkFlagRequired("target")
 
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func annotateFile(home, target string) {
 
 	// lineBreaks
 	lineBreaks()
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// buffers
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
@@ -69,27 +83,22 @@ func annotateFile(home, target string) {
 	commd := home + "/Factorem/Lou/sh/note.sh"
 	shCmd := exec.Command(commd, target)
 
-func init() {
-	bibloCmd.AddCommand(annotateCmd)
 	// run
 	shCmd.Stdout = &stdout
 	shCmd.Stderr = &stderr
 	_ = shCmd.Run()
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// stdout
 	fmt.Println(chalk.Cyan.Color(stdout.String()))
 
-	// flags
-	annotateCmd.Flags().StringP("target", "t", "", "article to annoate")
-	annotateCmd.MarkFlagRequired("target")
 	// stderr
 	if stderr.String() != "" {
 		fmt.Println(chalk.Red.Color(stderr.String()))
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// lineBreaks
 	lineBreaks()
 
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
