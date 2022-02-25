@@ -23,7 +23,6 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/DanielRivasMD/Lou/auxiliary"
 	"github.com/ttacon/chalk"
 
 	"github.com/spf13/cobra"
@@ -50,7 +49,7 @@ var cleanCmd = &cobra.Command{
 		location, _ := cmd.Flags().GetString("location")
 
 		// lineBreaks
-		auxiliary.LineBreaks()
+		lineBreaks()
 
 		// function call
 		matchDir(location)
@@ -68,7 +67,7 @@ var cleanCmd = &cobra.Command{
 		}
 
 		// lineBreaks
-		auxiliary.LineBreaks()
+		lineBreaks()
 
 	},
 

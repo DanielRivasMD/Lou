@@ -22,7 +22,6 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/DanielRivasMD/Lou/auxiliary"
 	"github.com/atrox/homedir"
 	"github.com/ttacon/chalk"
 
@@ -56,7 +55,7 @@ var annotateCmd = &cobra.Command{
 		target, _ := cmd.Flags().GetString("target")
 
 		// lineBreaks
-		auxiliary.LineBreaks()
+		lineBreaks()
 
 		// buffers
 		var stdout bytes.Buffer
@@ -80,7 +79,7 @@ var annotateCmd = &cobra.Command{
 		}
 
 		// lineBreaks
-		auxiliary.LineBreaks()
+		lineBreaks()
 
 	},
 

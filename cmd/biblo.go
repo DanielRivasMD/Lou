@@ -22,7 +22,6 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/DanielRivasMD/Lou/auxiliary"
 	"github.com/atrox/homedir"
 	"github.com/ttacon/chalk"
 
@@ -69,7 +68,7 @@ For example:
 		case "format":
 
 			// lineBreaks
-			auxiliary.LineBreaks()
+			lineBreaks()
 
 			// buffers
 			var stdout bytes.Buffer
@@ -93,12 +92,12 @@ For example:
 			}
 
 			// lineBreaks
-			auxiliary.LineBreaks()
+			lineBreaks()
 
 		case "locate":
 
 			// lineBreaks
-			auxiliary.LineBreaks()
+			lineBreaks()
 
 			// buffers
 			var stdout bytes.Buffer
@@ -122,12 +121,12 @@ For example:
 			}
 
 			// lineBreaks
-			auxiliary.LineBreaks()
+			lineBreaks()
 
 		case "thesis":
 
 			// lineBreaks
-			auxiliary.LineBreaks()
+			lineBreaks()
 
 			// buffers
 			var stdout bytes.Buffer
@@ -151,7 +150,7 @@ For example:
 			}
 
 			// lineBreaks
-			auxiliary.LineBreaks()
+			lineBreaks()
 
 		}
 	},
