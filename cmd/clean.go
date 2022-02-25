@@ -46,33 +46,13 @@ var cleanCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
+		// determine location
 		location, _ := cmd.Flags().GetString("location")
 
-		// lineBreaks
-		lineBreaks()
-
-		// function call
-		matchDir(location)
-
-		// buffers
-		var stdout bytes.Buffer
-		var stderr bytes.Buffer
-
-		// stdout
-		fmt.Println(chalk.Cyan.Color(stdout.String()))
-
-		// stderr
-		if stderr.String() != "" {
-			fmt.Println(chalk.Red.Color(stderr.String()))
-		}
-
-		// lineBreaks
-		lineBreaks()
+		// execute logic
+		cleanDir(location)
 
 	},
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
 }
 
 func init() {
@@ -126,3 +106,29 @@ func matchDir(location string) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func cleanDir(location string) {
+
+	// lineBreaks
+	lineBreaks()
+
+	// function call
+	matchDir(location)
+
+	// buffers
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	// stdout
+	fmt.Println(chalk.Cyan.Color(stdout.String()))
+
+	// stderr
+	if stderr.String() != "" {
+		fmt.Println(chalk.Red.Color(stderr.String()))
+	}
+
+	// lineBreaks
+	lineBreaks()
+
+}
+
