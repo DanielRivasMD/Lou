@@ -45,48 +45,51 @@ var annotateCmd = &cobra.Command{
 		//command line flags
 		target, _ := cmd.Flags().GetString("target")
 
-		// lineBreaks
-		lineBreaks()
-
-		// buffers
-		var stdout bytes.Buffer
-		var stderr bytes.Buffer
-
-		// shell call
-		commd := home + "/Factorem/Lou/sh/note.sh"
-		shCmd := exec.Command(commd, target)
-
-		// run
-		shCmd.Stdout = &stdout
-		shCmd.Stderr = &stderr
-		_ = shCmd.Run()
-
-		// stdout
-		fmt.Println(chalk.Cyan.Color(stdout.String()))
-
-		// stderr
-		if stderr.String() != "" {
-			fmt.Println(chalk.Red.Color(stderr.String()))
-		}
-
-		// lineBreaks
-		lineBreaks()
+		// execute logic
+		annotateFile(findHome(), target)
 
 	},
+}
+
+
+
+
+
+func annotateFile(home, target string) {
+
+	// lineBreaks
+	lineBreaks()
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// buffers
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
 
-}
+	// shell call
+	commd := home + "/Factorem/Lou/sh/note.sh"
+	shCmd := exec.Command(commd, target)
 
 func init() {
 	bibloCmd.AddCommand(annotateCmd)
+	// run
+	shCmd.Stdout = &stdout
+	shCmd.Stderr = &stderr
+	_ = shCmd.Run()
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// stdout
+	fmt.Println(chalk.Cyan.Color(stdout.String()))
 
 	// flags
 	annotateCmd.Flags().StringP("target", "t", "", "article to annoate")
 	annotateCmd.MarkFlagRequired("target")
+	// stderr
+	if stderr.String() != "" {
+		fmt.Println(chalk.Red.Color(stderr.String()))
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// lineBreaks
+	lineBreaks()
 
 }
