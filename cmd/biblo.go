@@ -53,111 +53,77 @@ For example:
 	Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
+		// execute logic
+		bibloArgs(findHome(), args)
 
-		// TODO: segregate into functions
-		// TODO: call format before locate
-		switch args[0] {
-		case "format":
+		// clean after relocating
+		// determine location
+		location, _ := cmd.Flags().GetString("location")
 
-			// lineBreaks
-			lineBreaks()
+		// execute logic
+		cleanDir(location)
 
-			// buffers
-			var stdout bytes.Buffer
-			var stderr bytes.Buffer
-
-			// shell call
-			commd := home + "/Factorem/Lou/sh/format.sh"
-			shCmd := exec.Command(commd)
-
-			// run
-			shCmd.Stdout = &stdout
-			shCmd.Stderr = &stderr
-			_ = shCmd.Run()
-
-			// stdout
-			fmt.Println(chalk.Cyan.Color(stdout.String()))
-
-			// stderr
-			if stderr.String() != "" {
-				fmt.Println(chalk.Red.Color(stderr.String()))
-			}
-
-			// lineBreaks
-			lineBreaks()
-
-		case "locate":
-
-			// lineBreaks
-			lineBreaks()
-
-			// buffers
-			var stdout bytes.Buffer
-			var stderr bytes.Buffer
-
-			// shell call
-			commd := home + "/Factorem/Lou/sh/locate.sh"
-			shCmd := exec.Command(commd)
-
-			// run
-			shCmd.Stdout = &stdout
-			shCmd.Stderr = &stderr
-			_ = shCmd.Run()
-
-			// stdout
-			fmt.Println(chalk.Cyan.Color(stdout.String()))
-
-			// stderr
-			if stderr.String() != "" {
-				fmt.Println(chalk.Red.Color(stderr.String()))
-			}
-
-			// lineBreaks
-			lineBreaks()
-
-		case "thesis":
-
-			// lineBreaks
-			lineBreaks()
-
-			// buffers
-			var stdout bytes.Buffer
-			var stderr bytes.Buffer
-
-			// shell call
-			commd := home + "/Factorem/Lou/sh/thesis.sh"
-			shCmd := exec.Command(commd)
-
-			// run
-			shCmd.Stdout = &stdout
-			shCmd.Stderr = &stderr
-			_ = shCmd.Run()
-
-			// stdout
-			fmt.Println(chalk.Cyan.Color(stdout.String()))
-
-			// stderr
-			if stderr.String() != "" {
-				fmt.Println(chalk.Red.Color(stderr.String()))
-			}
-
-			// lineBreaks
-			lineBreaks()
-
-		}
 	},
+}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+func bibloArgs(home string, args []string) {
+
+	// allocate command
+	var commd string
+
+	// shell call
+	switch args[0] {
+
+	case "format":
+		commd = home + "/Factorem/Lou/sh/format.sh"
+		runSh(commd)
+
+	case "locate":
+		commd = home + "/Factorem/Lou/sh/format.sh"
+		runSh(commd)
+
+		commd = home + "/Factorem/Lou/sh/locate.sh"
+		runSh(commd)
+
+	case "thesis":
+		commd = home + "/Factorem/Lou/sh/thesis.sh"
+		runSh(commd)
+
+	}
+
+	// lineBreaks
+	lineBreaks()
 
 }
 
-func init() {
-	rootCmd.AddCommand(bibloCmd)
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+func runSh(commd string) {
 
-	// flags
+	// lineBreaks
+	lineBreaks()
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// buffers
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
 
+	// run command
+	shCmd := exec.Command(commd)
+	shCmd.Stdout = &stdout
+	shCmd.Stderr = &stderr
+	_ = shCmd.Run()
+
+	// stdout
+	fmt.Println(chalk.Cyan.Color(stdout.String()))
+
+	// stderr
+	if stderr.String() != "" {
+		fmt.Println(chalk.Red.Color(stderr.String()))
+	}
 }
+
