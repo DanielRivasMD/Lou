@@ -19,10 +19,8 @@ package cmd
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"os/exec"
 
-	"github.com/atrox/homedir"
 	"github.com/ttacon/chalk"
 
 	"github.com/spf13/cobra"
@@ -55,12 +53,6 @@ For example:
 	Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// find home directory
-		home, errHomedir := homedir.Dir()
-		if errHomedir != nil {
-			fmt.Println(errHomedir)
-			os.Exit(1)
-		}
 
 		// TODO: segregate into functions
 		// TODO: call format before locate

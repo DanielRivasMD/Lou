@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/atrox/homedir"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -70,4 +71,13 @@ func initConfig() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// find home directory
+func findHome() string {
+	home, errHomedir := homedir.Dir()
+	if errHomedir != nil {
+		fmt.Println(errHomedir)
+		os.Exit(1)
+	}
+	return home
 }
+
