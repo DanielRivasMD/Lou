@@ -48,12 +48,12 @@ For example:
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` biblo locate
-` + chalk.Cyan.Color("lou") + ` biblo format`,
+` + chalk.Cyan.Color("lou") + ` biblo format
+` + chalk.Cyan.Color("lou") + ` biblo thesis`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ValidArgs: []string{"format", "locate", "thesis"},
+	ValidArgs: []string{"format", "thesis"},
 	Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -90,10 +90,6 @@ func bibloArgs(home string, args []string) {
 	switch args[0] {
 
 	case "format":
-		commd = home + "/Factorem/Lou/sh/format.sh"
-		runSh(commd)
-
-	case "locate":
 		commd = home + "/Factorem/Lou/sh/format.sh"
 		runSh(commd)
 
