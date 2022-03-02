@@ -59,6 +59,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	// persistent flags
+	rootCmd.PersistentFlags().StringP("location", "l", "/Users/drivas/Downloads/", "Location to clean")
 
 }
 

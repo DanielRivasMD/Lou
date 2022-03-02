@@ -67,7 +67,6 @@ func init() {
 	rootCmd.AddCommand(cleanCmd)
 
 	// flags
-	cleanCmd.Flags().StringP("location", "l", "/Users/drivas/Downloads/", "Location to clean")
 
 }
 
