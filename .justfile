@@ -11,8 +11,21 @@ print:
 
 ################################################################################
 
+# build bender for osx & store `excalibur`
+buildOSX:
+  #!/bin/bash
+  set -euo pipefail
+
+  # declarations
+  source .just.sh
+
+  echo "Building..."
+  go build -v -o ${lou}/excalibur/lou
+
+################################################################################
+
 # build bender for linux & store `excalibur`
-build:
+buildLinux:
   #!/bin/bash
   set -euo pipefail
 
@@ -36,5 +49,11 @@ install:
   # Lou
   go install
   mv -v ${HOME}/.go/bin/Lou ${HOME}/.go/bin/lou
+
+################################################################################
+
+# aliases
+alias b := buildOSX
+alias i := install
 
 ################################################################################
