@@ -48,17 +48,18 @@ For example:
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` biblo format
+` + chalk.Cyan.Color("lou") + ` biblo annotate
+` + chalk.Cyan.Color("lou") + ` biblo gather
 ` + chalk.Cyan.Color("lou") + ` biblo thesis`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ValidArgs: []string{"format", "thesis"},
-	Args:      cobra.ExactValidArgs(1),
+	// ValidArgs: []string{"format", "thesis"},
+	// Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// execute logic
-		bibloArgs(findHome(), args)
+		// // execute logic
+		// bibloArgs(findHome(), args)
 
 		// clean after relocating
 		// determine location
