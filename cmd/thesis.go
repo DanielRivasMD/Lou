@@ -20,22 +20,36 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/ttacon/chalk"
 )
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// declarations
+var ()
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // thesisCmd represents the thesis command
 var thesisCmd = &cobra.Command{
 	Use:   "thesis",
 	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+` + chalk.Green.Color("Lou") + ` will relocate pdf file for annotation
+	while keeping a reference to original location.
+
+	When overwritten, annotated file will remain intact.
+`,
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("thesis called")
 	},
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
 	bibloCmd.AddCommand(thesisCmd)
@@ -50,3 +64,5 @@ func init() {
 	// is called directly, e.g.:
 	// thesisCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////

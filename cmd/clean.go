@@ -76,7 +76,8 @@ func matchDir(location string) {
 
 	file, err := os.Open(location)
 	if err != nil {
-		log.Fatalf("failed opening directory: %s", err) // TODO: get a better error handler with package error
+		// TODO: get a better error handler with package error
+		log.Fatalf("failed opening directory: %s", err)
 	}
 	defer file.Close()
 

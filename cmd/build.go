@@ -20,22 +20,35 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/ttacon/chalk"
 )
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// declarations
+var ()
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // buildCmd represents the build command
 var buildCmd = &cobra.Command{
 	Use:   "build",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "",
+	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+` + chalk.Green.Color("Lou") + ` relocates ` + chalk.Cyan.Color("nbib") + ` files from a target location to a target destination. If target destination does not exist, it will be created.
+
+Next, ` + chalk.Cyan.Color("nbib") + ` files will be compiled into a LaTeX compatible reference library.
+`,
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("build called")
 	},
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
 	bibloCmd.AddCommand(buildCmd)
@@ -50,3 +63,5 @@ func init() {
 	// is called directly, e.g.:
 	// buildCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////

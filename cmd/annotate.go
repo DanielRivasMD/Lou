@@ -39,9 +39,9 @@ var annotateCmd = &cobra.Command{
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
 ` + chalk.Green.Color("Lou") + ` will relocate pdf file for annotation
-	while keeping a reference to original location.
+while keeping a reference to original location.
 
-	When overwritten, annotated file will remain intact.
+When overwritten, annotated file will remain intact.
 `,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,6 +59,7 @@ var annotateCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// TODO: update annotate
 func init() {
 	bibloCmd.AddCommand(annotateCmd)
 
