@@ -59,8 +59,8 @@ For example:
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// ValidArgs: []string{"format", "thesis"},
-	// Args:      cobra.ExactValidArgs(1),
+	ValidArgs: []string{"format", "thesis"},
+	Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// execute logic
@@ -97,15 +97,9 @@ func bibloArgs(home string, args []string) {
 	switch args[0] {
 
 	case "format":
-		// commd = home + "/Factorem/Lou/sh/format.sh"
-		// runSh(commd)
 
-		// commd = home + "/Factorem/Lou/sh/locate.sh"
-		// runSh(commd)
-
-		format(home)
-
-		// locate(home)
+		format(home, "[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+.")
+		format(home, "[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.")
 
 	case "thesis":
 		commd = home + "/Factorem/Lou/sh/thesis.sh"
@@ -143,7 +137,7 @@ func runSh(commd string) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func format(home string) {
+func format(home, regString string) {
 
 	// declare arrays
 	typeArray := [2]string{"pdf", "ris"}
@@ -159,7 +153,7 @@ func format(home string) {
 	for ix := 0; ix < len(typeArray); ix++ {
 
 		// compile regex
-		reg, _ := regexp.Compile("[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+." + typeArray[ix])
+		reg, _ := regexp.Compile(regString + typeArray[ix])
 
 		// count if files are present
 		τ := 0
@@ -205,7 +199,7 @@ func format(home string) {
 				fullOriginal := home + "/Downloads/" + original + "." + typeArray[ix]
 				fullTarget := home + "/Articulos/" + folderArray[ix] + "/" + target + "." + typeArray[ix]
 
-				fmt.Println(original + "." + typeArray[ix] + "\t\t\t" + target + "." + typeArray[ix])
+				fmt.Println(chalk.Green.Color(original+"."+typeArray[ix]) + "\t\t\t" + chalk.Cyan.Color(target+"."+typeArray[ix]))
 
 				// relocate
 				ε := os.Rename(fullOriginal, fullTarget)
