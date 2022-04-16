@@ -19,7 +19,12 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
 	"os/exec"
+	"regexp"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -58,14 +63,15 @@ For example:
 	// Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// // execute logic
-		// bibloArgs(findHome(), args)
+		// execute logic
+		bibloArgs(findHome(), args)
 
-		// clean after relocating
+		fmt.Println()
+
 		// determine location
 		location, _ := cmd.Flags().GetString("location")
 
-		// execute logic
+		// clean after relocating
 		cleanDir(location)
 
 	},
@@ -91,11 +97,15 @@ func bibloArgs(home string, args []string) {
 	switch args[0] {
 
 	case "format":
-		commd = home + "/Factorem/Lou/sh/format.sh"
-		runSh(commd)
+		// commd = home + "/Factorem/Lou/sh/format.sh"
+		// runSh(commd)
 
-		commd = home + "/Factorem/Lou/sh/locate.sh"
-		runSh(commd)
+		// commd = home + "/Factorem/Lou/sh/locate.sh"
+		// runSh(commd)
+
+		format(home)
+
+		// locate(home)
 
 	case "thesis":
 		commd = home + "/Factorem/Lou/sh/thesis.sh"
@@ -128,6 +138,92 @@ func runSh(commd string) {
 	// stderr
 	if stderr.String() != "" {
 		fmt.Println(chalk.Red.Color(stderr.String()))
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func format(home string) {
+
+	// declare arrays
+	typeArray := [2]string{"pdf", "ris"}
+	folderArray := [2]string{"PDFs", "Refs"}
+
+	// read downloads
+	files, ε := ioutil.ReadDir(home + "/Downloads/")
+	if ε != nil {
+		log.Fatal(ε)
+	}
+
+	// loop over types
+	for ix := 0; ix < len(typeArray); ix++ {
+
+		// compile regex
+		reg, _ := regexp.Compile("[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+." + typeArray[ix])
+
+		// count if files are present
+		τ := 0
+
+		// loop over files
+		for _, file := range files {
+
+			// collect files
+			original := reg.FindString(file.Name())
+
+			// check for match
+			if original != "" {
+
+				// increase count
+				τ++
+
+				// trim suffix
+				original = strings.TrimSuffix(original, "."+typeArray[ix])
+
+				// define target
+				target := ""
+				for fx, field := range strings.Split(original, "-") {
+
+					// accept only 7 fields
+					if fx > 7 {
+						break
+					}
+
+					// TODO: modify regex to cover two letter author last name
+					if len(field) > 3 || fx == 0 {
+						switch fx {
+						case 0:
+							target += field
+						case 1:
+							target += "-" + field
+						default:
+							target += "_" + field
+						}
+					}
+				}
+
+				// define full paths
+				fullOriginal := home + "/Downloads/" + original + "." + typeArray[ix]
+				fullTarget := home + "/Articulos/" + folderArray[ix] + "/" + target + "." + typeArray[ix]
+
+				fmt.Println(original + "." + typeArray[ix] + "\t\t\t" + target + "." + typeArray[ix])
+
+				// relocate
+				ε := os.Rename(fullOriginal, fullTarget)
+				if ε != nil {
+					log.Fatal(ε)
+				}
+
+			}
+
+		}
+
+		if τ == 0 {
+			emptyMessage := `
+	No files to reformat:	` + folderArray[ix]
+
+			fmt.Println(emptyMessage)
+		}
+
 	}
 }
 
