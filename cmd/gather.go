@@ -33,7 +33,7 @@ var ()
 // gatherCmd represents the gather command
 var gatherCmd = &cobra.Command{
 	Use:   "gather",
-	Short: "A brief description of your command",
+	Short: "// TODO: gathering",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
 ` + chalk.Green.Color("Lou") + ` will relocate pdf file for annotation

@@ -33,7 +33,7 @@ var ()
 // buildCmd represents the build command
 var buildCmd = &cobra.Command{
 	Use:   "build",
-	Short: "",
+	Short: "// TODO: building",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
 ` + chalk.Green.Color("Lou") + ` relocates ` + chalk.Cyan.Color("nbib") + ` files from a target location to a target destination. If target destination does not exist, it will be created.

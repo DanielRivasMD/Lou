@@ -33,7 +33,7 @@ var ()
 // thesisCmd represents the thesis command
 var thesisCmd = &cobra.Command{
 	Use:   "thesis",
-	Short: "A brief description of your command",
+	Short: "// TODO: thesis",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
 ` + chalk.Green.Color("Lou") + ` will relocate pdf file for annotation
