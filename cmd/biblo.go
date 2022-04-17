@@ -140,6 +140,7 @@ func runSh(commd string) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// TODO: handle two surname authors
 func format(home, regString string) {
 
 	// declare arrays
@@ -188,7 +189,6 @@ func format(home, regString string) {
 						break
 					}
 
-					// TODO: modify regex to cover two letter author last name
 					if len(field) > 3 || ο == 0 {
 						switch ο {
 						case 0:
