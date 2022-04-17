@@ -47,8 +47,9 @@ var rootCmd = &cobra.Command{
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+	ε := rootCmd.Execute()
+	if ε != nil {
+		fmt.Println(ε)
 		os.Exit(1)
 	}
 }
@@ -73,9 +74,9 @@ func initConfig() {
 
 // find home directory
 func findHome() string {
-	home, errHomedir := homedir.Dir()
-	if errHomedir != nil {
-		fmt.Println(errHomedir)
+	home, ε := homedir.Dir()
+	if ε != nil {
+		fmt.Println(ε)
 		os.Exit(1)
 	}
 	return home

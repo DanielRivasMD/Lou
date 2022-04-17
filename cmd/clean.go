@@ -53,7 +53,10 @@ var cleanCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// determine location
-		location, _ := cmd.Flags().GetString("location")
+		location, ε := cmd.Flags().GetString("location")
+		if ε != nil {
+			log.Fatal(ε)
+		}
 
 		// execute logic
 		cleanDir(location)
@@ -74,34 +77,37 @@ func init() {
 
 func matchDir(location string) {
 
-	file, err := os.Open(location)
-	if err != nil {
+	file, ε := os.Open(location)
+	if ε != nil {
 		// TODO: get a better error handler with package error
-		log.Fatalf("failed opening directory: %s", err)
+		log.Fatal(ε)
 	}
 	defer file.Close()
 
-	fileList, _ := file.Readdir(0)
+	fileList, ε := file.Readdir(0)
+	if ε != nil {
+		log.Fatal(ε)
+	}
 
 	// declare regex
 	const exprToMatch = `\(\d\)\w*`
 	reg := regexp.MustCompile(exprToMatch)
 
 	// switch
-	sw := true
+	ζ := true
 
 	// check each file @ location
 	for _, files := range fileList {
 		m := reg.MatchString(files.Name())
 		if m {
-			sw = false
+			ζ = false
 			fmt.Println(location + files.Name())
 			os.Remove(location + files.Name())
 		}
 	}
 
 	// trigger if no duplicates are found
-	if sw {
+	if ζ {
 		fmt.Println(chalk.Cyan.Color("\tNo files to remove"))
 	}
 

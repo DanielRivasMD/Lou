@@ -69,7 +69,10 @@ For example:
 		fmt.Println()
 
 		// determine location
-		location, _ := cmd.Flags().GetString("location")
+		location, ε := cmd.Flags().GetString("location")
+		if ε != nil {
+			log.Fatal(ε)
+		}
 
 		// clean after relocating
 		cleanDir(location)
@@ -150,10 +153,13 @@ func format(home, regString string) {
 	}
 
 	// loop over types
-	for ix := 0; ix < len(typeArray); ix++ {
+	for ι := 0; ι < len(typeArray); ι++ {
 
 		// compile regex
-		reg, _ := regexp.Compile(regString + typeArray[ix])
+		ρ, ε := regexp.Compile(regString + typeArray[ι])
+		if ε != nil {
+			log.Fatal(ε)
+		}
 
 		// count if files are present
 		τ := 0
@@ -162,7 +168,7 @@ func format(home, regString string) {
 		for _, file := range files {
 
 			// collect files
-			original := reg.FindString(file.Name())
+			original := ρ.FindString(file.Name())
 
 			// check for match
 			if original != "" {
@@ -171,20 +177,20 @@ func format(home, regString string) {
 				τ++
 
 				// trim suffix
-				original = strings.TrimSuffix(original, "."+typeArray[ix])
+				original = strings.TrimSuffix(original, "."+typeArray[ι])
 
 				// define target
 				target := ""
-				for fx, field := range strings.Split(original, "-") {
+				for ο, field := range strings.Split(original, "-") {
 
 					// accept only 7 fields
-					if fx > 7 {
+					if ο > 7 {
 						break
 					}
 
 					// TODO: modify regex to cover two letter author last name
-					if len(field) > 3 || fx == 0 {
-						switch fx {
+					if len(field) > 3 || ο == 0 {
+						switch ο {
 						case 0:
 							target += field
 						case 1:
@@ -196,10 +202,10 @@ func format(home, regString string) {
 				}
 
 				// define full paths
-				fullOriginal := home + "/Downloads/" + original + "." + typeArray[ix]
-				fullTarget := home + "/Articulos/" + folderArray[ix] + "/" + target + "." + typeArray[ix]
+				fullOriginal := home + "/Downloads/" + original + "." + typeArray[ι]
+				fullTarget := home + "/Articulos/" + folderArray[ι] + "/" + target + "." + typeArray[ι]
 
-				fmt.Println(chalk.Green.Color(original+"."+typeArray[ix]) + "\t\t\t" + chalk.Cyan.Color(target+"."+typeArray[ix]))
+				fmt.Println(chalk.Green.Color(original+"."+typeArray[ι]) + "\t\t\t" + chalk.Cyan.Color(target+"."+typeArray[ι]))
 
 				// relocate
 				ε := os.Rename(fullOriginal, fullTarget)
@@ -213,7 +219,7 @@ func format(home, regString string) {
 
 		if τ == 0 {
 			emptyMessage := `
-	No files to reformat:	` + folderArray[ix]
+	No files to reformat:	` + folderArray[ι]
 
 			fmt.Println(emptyMessage)
 		}
