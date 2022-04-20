@@ -79,7 +79,6 @@ func matchDir(location string) {
 
 	file, ε := os.Open(location)
 	if ε != nil {
-		// TODO: get a better error handler with package error
 		log.Fatal(ε)
 	}
 	defer file.Close()
@@ -90,16 +89,16 @@ func matchDir(location string) {
 	}
 
 	// declare regex
-	const exprToMatch = `\(\d\)\w*`
-	reg := regexp.MustCompile(exprToMatch)
+	const ρε = `\(\d\)\w*`
+	ρ := regexp.MustCompile(ρε)
 
 	// switch
 	ζ := true
 
 	// check each file @ location
 	for _, files := range fileList {
-		m := reg.MatchString(files.Name())
-		if m {
+		μ := ρ.MatchString(files.Name())
+		if μ {
 			ζ = false
 			fmt.Println(location + files.Name())
 			os.Remove(location + files.Name())
