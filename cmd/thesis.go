@@ -42,7 +42,10 @@ var thesisCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
+
+		// execute logic
 		fmt.Println("thesis called")
+
 	},
 }
 
@@ -51,15 +54,8 @@ var thesisCmd = &cobra.Command{
 func init() {
 	bibloCmd.AddCommand(thesisCmd)
 
-	// Here you will define your flags and configuration settings.
+	// flags
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// thesisCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// thesisCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

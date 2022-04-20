@@ -56,18 +56,6 @@ var annotateCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// TODO: update annotate
-func init() {
-	bibloCmd.AddCommand(annotateCmd)
-
-	// flags
-	annotateCmd.Flags().StringP("target", "t", "", "article to annoate")
-	annotateCmd.MarkFlagRequired("target")
-
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func annotateFile(home, target string) {
 
 	// lineBreaks
@@ -96,6 +84,18 @@ func annotateFile(home, target string) {
 
 	// lineBreaks
 	lineBreaks()
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// TODO: update annotate
+func init() {
+	bibloCmd.AddCommand(annotateCmd)
+
+	// flags
+	annotateCmd.Flags().StringP("target", "t", "", "article to annoate")
+	annotateCmd.MarkFlagRequired("target")
 
 }
 
