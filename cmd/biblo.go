@@ -17,12 +17,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
 	"regexp"
 	"strings"
 
@@ -62,23 +60,23 @@ For example:
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ValidArgs: []string{"format", "thesis"},
-	Args:      cobra.ExactValidArgs(1),
+	// ValidArgs: []string{"format", "thesis"},
+	// Args: cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// execute logic
-		bibloArgs(findHome(), args)
+		// // execute logic
+		// bibloArgs(findHome(), args)
 
-		fmt.Println()
+		// fmt.Println()
 
-		// determine location
-		location, ε := cmd.Flags().GetString("location")
-		if ε != nil {
-			log.Fatal(ε)
-		}
+		// // determine location
+		// location, ε := cmd.Flags().GetString("location")
+		// if ε != nil {
+		// 	log.Fatal(ε)
+		// }
 
-		// clean after relocating
-		cleanDir(location)
+		// // clean after relocating
+		// cleanDir(location)
 
 	},
 }
@@ -94,57 +92,59 @@ func init() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func bibloArgs(home string, args []string) {
+func bibloArgs(home string) {
 
-	// allocate command
-	var commd string
+	// // allocate command
+	// var commd string
 
-	// shell call
-	switch args[0] {
+	// // shell call
+	// switch args[0] {
 
-	case "format":
+	// case "format":
 
-		format(home, "[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+.")
-		format(home, "[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.")
+	// search for downloads from kopernico
+	format(home, "[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+.")
 
-	case "thesis":
-		commd = home + "/Factorem/Lou/sh/thesis.sh"
-		runSh(commd)
+	// search for manual renamed
+	format(home, "[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.")
 
-	}
+	// case "thesis":
+	// 	commd = home + "/Factorem/Lou/sh/thesis.sh"
+	// 	runSh(commd)
+
+	// }
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func runSh(commd string) {
+// func runSh(commd string) {
 
-	// lineBreaks
-	lineBreaks()
+// 	// lineBreaks
+// 	lineBreaks()
 
-	// buffers
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
+// 	// buffers
+// 	var stdout bytes.Buffer
+// 	var stderr bytes.Buffer
 
-	// run command
-	shCmd := exec.Command(commd)
-	shCmd.Stdout = &stdout
-	shCmd.Stderr = &stderr
-	_ = shCmd.Run()
+// 	// run command
+// 	shCmd := exec.Command(commd)
+// 	shCmd.Stdout = &stdout
+// 	shCmd.Stderr = &stderr
+// 	_ = shCmd.Run()
 
-	// stdout
-	fmt.Println(chalk.Cyan.Color(stdout.String()))
+// 	// stdout
+// 	fmt.Println(chalk.Cyan.Color(stdout.String()))
 
-	// stderr
-	if stderr.String() != "" {
-		fmt.Println(chalk.Red.Color(stderr.String()))
-	}
-}
+// 	// stderr
+// 	if stderr.String() != "" {
+// 		fmt.Println(chalk.Red.Color(stderr.String()))
+// 	}
+// }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// TODO: handle two surname authors
-func format(home, regString string) {
+func format(home, ρε string) {
 
 	// declare arrays
 	typeArray := [2]string{"pdf", "ris"}
@@ -160,7 +160,7 @@ func format(home, regString string) {
 	for ι := 0; ι < len(typeArray); ι++ {
 
 		// compile regex
-		ρ, ε := regexp.Compile(regString + typeArray[ι])
+		ρ, ε := regexp.Compile(ρε + typeArray[ι])
 		if ε != nil {
 			log.Fatal(ε)
 		}
