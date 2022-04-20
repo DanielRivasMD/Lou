@@ -33,12 +33,12 @@ var ()
 // buildCmd represents the build command
 var buildCmd = &cobra.Command{
 	Use:   "build",
-	Short: "// TODO: building",
+	Short: "Build bibliography from `nbib` files.",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-` + chalk.Green.Color("Lou") + ` relocates ` + chalk.Cyan.Color("nbib") + ` files from a target location to a target destination. If target destination does not exist, it will be created.
+` + chalk.Green.Color("Lou") + ` will relocate ` + chalk.Cyan.Color("nbib") + ` files from a target location to a target destination. If target destination does not exist, it will be created.
 
-Next, ` + chalk.Cyan.Color("nbib") + ` files will be compiled into a LaTeX compatible reference library.
+Next, ` + chalk.Cyan.Color("nbib") + ` files will be compiled into a ` + chalk.Cyan.Color("LaTeX") + ` compatible reference library.
 `,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////

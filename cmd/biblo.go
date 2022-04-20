@@ -41,19 +41,22 @@ var ()
 var bibloCmd = &cobra.Command{
 	Use:     "biblo",
 	Aliases: []string{"b"},
-	Short:   "Handles all biblography operations.",
+	Short:   "Handle all biblography operations.",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
 ` + chalk.Green.Color("Lou") + ` handles all biblography operations.
 
 For example:
-- Reformat articles and their references downloaded by Kopernico.
+- Annotate articles.
+- Build library from ` + chalk.Cyan.Color("nbib") + `.
+- Reformat articles and their references downloaded by ` + chalk.Yellow.Color("Kopernico") + `.
 - Relocate articles manually renamed.
 - Relocate theses to the proper archive.
 `,
 
 	Example: `
 ` + chalk.Cyan.Color("lou") + ` biblo annotate
+` + chalk.Cyan.Color("lou") + ` biblo build
 ` + chalk.Cyan.Color("lou") + ` biblo gather
 ` + chalk.Cyan.Color("lou") + ` biblo thesis`,
 

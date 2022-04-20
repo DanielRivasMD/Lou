@@ -33,13 +33,10 @@ var ()
 // thesisCmd represents the thesis command
 var thesisCmd = &cobra.Command{
 	Use:   "thesis",
-	Short: "// TODO: thesis",
+	Short: "Collect theses.",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-` + chalk.Green.Color("Lou") + ` will relocate pdf file for annotation
-	while keeping a reference to original location.
-
-	When overwritten, annotated file will remain intact.
+` + chalk.Green.Color("Lou") + ` will relocate theses.
 `,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////

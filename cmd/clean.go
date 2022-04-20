@@ -38,10 +38,10 @@ var ()
 var cleanCmd = &cobra.Command{
 	Use:     "clean",
 	Aliases: []string{"c"},
-	Short:   "Cleans duplicates.",
+	Short:   "Clean duplicates.",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-` + chalk.Green.Color("Lou") + ` cleans duplicates at a target location.
+` + chalk.Green.Color("Lou") + ` will clean duplicates at a target location.
 `,
 
 	Example: `

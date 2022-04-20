@@ -33,13 +33,12 @@ var ()
 // gatherCmd represents the gather command
 var gatherCmd = &cobra.Command{
 	Use:   "gather",
-	Short: "// TODO: gathering",
+	Short: "Collect all articles & references.",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-` + chalk.Green.Color("Lou") + ` will relocate pdf file for annotation
-while keeping a reference to original location.
+` + chalk.Green.Color("Lou") + ` will relocate articles (` + chalk.Cyan.Color("pdf") + `) and their references (` + chalk.Cyan.Color("nbib") + `) downloaded by ` + chalk.Yellow.Color("Kopernico") + `.
 
-When overwritten, annotated file will remain intact.
+Additionally, ` + chalk.Green.Color("Lou") + ` will also relocate manually renamed articles.
 `,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
