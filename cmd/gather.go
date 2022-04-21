@@ -18,7 +18,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -44,7 +43,7 @@ Additionally, ` + chalk.Green.Color("Lou") + ` will also relocate manually renam
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(κ *cobra.Command, args []string) {
 
 		// execute logic
 		bibloArgs(findHome())
@@ -52,10 +51,7 @@ Additionally, ` + chalk.Green.Color("Lou") + ` will also relocate manually renam
 		fmt.Println()
 
 		// determine location
-		location, ε := cmd.Flags().GetString("location")
-		if ε != nil {
-			log.Fatal(ε)
-		}
+		location, _ := κ.Flags().GetString("location")
 
 		// clean after relocating
 		cleanDir(location)

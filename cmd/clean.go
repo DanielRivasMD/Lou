@@ -50,13 +50,10 @@ var cleanCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(κ *cobra.Command, args []string) {
 
 		// determine location
-		location, ε := cmd.Flags().GetString("location")
-		if ε != nil {
-			log.Fatal(ε)
-		}
+		location, _ := κ.Flags().GetString("location")
 
 		// execute logic
 		cleanDir(location)

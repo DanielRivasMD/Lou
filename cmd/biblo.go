@@ -60,26 +60,9 @@ For example:
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// TODO: update thesis subcmd & deprecate
-	// ValidArgs: []string{"format", "thesis"},
-	// Args: cobra.ExactValidArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(κ *cobra.Command, args []string) {
 
 		// TODO: trigger help
-
-		// // execute logic
-		// bibloArgs(findHome(), args)
-
-		// fmt.Println()
-
-		// // determine location
-		// location, ε := cmd.Flags().GetString("location")
-		// if ε != nil {
-		// 	log.Fatal(ε)
-		// }
-
-		// // clean after relocating
-		// cleanDir(location)
 
 	},
 }
@@ -88,53 +71,13 @@ For example:
 
 func bibloArgs(home string) {
 
-	// // allocate command
-	// var commd string
-
-	// // shell call
-	// switch args[0] {
-
-	// case "format":
-
 	// search for downloads from kopernico
 	format(home, "[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+.")
 
 	// search for manual renamed
 	format(home, "[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.")
 
-	// case "thesis":
-	// 	commd = home + "/Factorem/Lou/sh/thesis.sh"
-	// 	runSh(commd)
-
-	// }
-
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// func runSh(commd string) {
-
-// 	// lineBreaks
-// 	lineBreaks()
-
-// 	// buffers
-// 	var stdout bytes.Buffer
-// 	var stderr bytes.Buffer
-
-// 	// run command
-// 	shCmd := exec.Command(commd)
-// 	shCmd.Stdout = &stdout
-// 	shCmd.Stderr = &stderr
-// 	_ = shCmd.Run()
-
-// 	// stdout
-// 	fmt.Println(chalk.Cyan.Color(stdout.String()))
-
-// 	// stderr
-// 	if stderr.String() != "" {
-// 		fmt.Println(chalk.Red.Color(stderr.String()))
-// 	}
-// }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 

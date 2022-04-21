@@ -43,10 +43,10 @@ var annotateCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(κ *cobra.Command, args []string) {
 
 		//command line flags
-		target, _ := cmd.Flags().GetString("target")
+		target, _ := κ.Flags().GetString("target")
 
 		// execute logic
 		annotateFile(findHome(), target)

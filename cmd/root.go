@@ -35,10 +35,10 @@ var ()
 var rootCmd = &cobra.Command{
 	Use:     "lou",
 	Version: "v0.2",
-	Short:   chalk.Green.Color("Lou") + ", personal assitant at your service",
+	Short:   chalk.Green.Color("Lou") + ", personal assitant at your service.",
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
-` + (chalk.Green.Color("Lou") + chalk.White.Color(", personal assitant at your service")),
+` + chalk.Green.Color("Lou") + chalk.White.Color(", personal assitant at your service") + `.`,
 
 	Example: `
 ` + chalk.Cyan.Color("lou") + ` help`,

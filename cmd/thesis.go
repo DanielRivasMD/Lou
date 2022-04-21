@@ -41,7 +41,7 @@ var thesisCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(κ *cobra.Command, args []string) {
 
 		// execute logic
 		fmt.Println("thesis called")

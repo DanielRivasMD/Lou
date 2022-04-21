@@ -43,7 +43,7 @@ Next, ` + chalk.Cyan.Color("nbib") + ` files will be compiled into a ` + chalk.C
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(κ *cobra.Command, args []string) {
 
 		// execute logic
 		fmt.Println("build called")
