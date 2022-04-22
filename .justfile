@@ -18,13 +18,11 @@ edit:
 ####################################################################################################
 
 # aliases
-alias b := buildOSX
-alias i := install
 
 ####################################################################################################
 
 # build bender for osx & store `excalibur`
-buildOSX:
+osx:
   #!/bin/bash
   set -euo pipefail
 
@@ -37,7 +35,7 @@ buildOSX:
 ####################################################################################################
 
 # build bender for linux & store `excalibur`
-buildLinux:
+linux:
   #!/bin/bash
   set -euo pipefail
 
