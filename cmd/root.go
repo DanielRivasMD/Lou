@@ -17,7 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/atrox/homedir"
@@ -49,7 +49,7 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	ε := rootCmd.Execute()
 	if ε != nil {
-		fmt.Println(ε)
+		log.Fatal(ε)
 		os.Exit(1)
 	}
 }
@@ -60,7 +60,7 @@ func Execute() {
 func findHome() string {
 	home, ε := homedir.Dir()
 	if ε != nil {
-		fmt.Println(ε)
+		log.Fatal(ε)
 		os.Exit(1)
 	}
 	return home
