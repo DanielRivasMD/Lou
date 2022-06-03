@@ -98,10 +98,10 @@ func format(home, ρε string) {
 		τ := 0
 
 		// loop over files
-		for _, file := range files {
+		for _, ƒ := range files {
 
 			// collect files
-			original := ρ.FindString(file.Name())
+			original := ρ.FindString(ƒ.Name())
 
 			// check for match
 			if original != "" {

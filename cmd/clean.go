@@ -30,7 +30,11 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // declarations
-var ()
+const ρε = `\(\d\)\w*` // backticks are used here to contain the expression
+
+var (
+	ρ = regexp.MustCompile(ρε) // declare regex
+)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -65,36 +69,32 @@ var cleanCmd = &cobra.Command{
 
 func matchDir(location string) {
 
-	file, ε := os.Open(location)
+	ƒ, ε := os.Open(location)
 	if ε != nil {
 		log.Fatal(ε)
 	}
-	defer file.Close()
+	defer ƒ.Close()
 
-	fileList, ε := file.Readdir(0)
+	fileList, ε := ƒ.Readdir(0)
 	if ε != nil {
 		log.Fatal(ε)
 	}
-
-	// declare regex
-	const ρε = `\(\d\)\w*`
-	ρ := regexp.MustCompile(ρε)
 
 	// switch
-	ζ := true
+	ϟ := true
 
 	// check each file @ location
 	for _, files := range fileList {
 		μ := ρ.MatchString(files.Name())
 		if μ {
-			ζ = false
+			ϟ = false
 			fmt.Println(location + files.Name())
 			os.Remove(location + files.Name())
 		}
 	}
 
 	// trigger if no duplicates are found
-	if ζ {
+	if ϟ {
 		fmt.Println(chalk.Cyan.Color("\tNo files to remove"))
 	}
 
