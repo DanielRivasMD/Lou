@@ -33,7 +33,7 @@ var ()
 var completionCmd = &cobra.Command{
 	Use:    "completion [bash|zsh|fish|powershell]",
 	Hidden: true,
-	Short:  "Generate completion script",
+	Short:  "Generate completion script.",
 	Long: `To load completions:
 
 Bash:

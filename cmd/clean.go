@@ -69,13 +69,13 @@ var cleanCmd = &cobra.Command{
 
 func matchDir(location string) {
 
-	ƒ, ε := os.Open(location)
+	directory, ε := os.Open(location)
 	if ε != nil {
 		log.Fatal(ε)
 	}
-	defer ƒ.Close()
+	defer directory.Close()
 
-	fileList, ε := ƒ.Readdir(0)
+	ł, ε := directory.Readdir(0)
 	if ε != nil {
 		log.Fatal(ε)
 	}
@@ -84,12 +84,11 @@ func matchDir(location string) {
 	ϟ := true
 
 	// check each file @ location
-	for _, files := range fileList {
-		μ := ρ.MatchString(files.Name())
-		if μ {
+	for _, ƒ := range ł {
+		if ρ.MatchString(ƒ.Name()) {
 			ϟ = false
-			fmt.Println(location + files.Name())
-			os.Remove(location + files.Name())
+			fmt.Println(location + ƒ.Name())
+			os.Remove(location + ƒ.Name())
 		}
 	}
 

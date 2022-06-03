@@ -61,26 +61,26 @@ For example:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func bibloArgs(home string) {
+func bibloArgs(Ξ string) {
 
 	// search for downloads from kopernico
-	format(home, "[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+.")
+	format(Ξ, "[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+.")
 
 	// search for manual renamed
-	format(home, "[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.")
+	format(Ξ, "[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.")
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func format(home, ρε string) {
+func format(Ξ, ρε string) {
 
 	// declare arrays
 	typeArray := [2]string{"pdf", "ris"}
 	folderArray := [2]string{"PDFs", "Refs"}
 
 	// read downloads
-	files, ε := ioutil.ReadDir(home + "/Downloads/")
+	ł, ε := ioutil.ReadDir(Ξ + "/Downloads/")
 	if ε != nil {
 		log.Fatal(ε)
 	}
@@ -98,7 +98,7 @@ func format(home, ρε string) {
 		τ := 0
 
 		// loop over files
-		for _, ƒ := range files {
+		for _, ƒ := range ł {
 
 			// collect files
 			original := ρ.FindString(ƒ.Name())
@@ -134,8 +134,8 @@ func format(home, ρε string) {
 				}
 
 				// define full paths
-				fullOriginal := home + "/Downloads/" + original + "." + typeArray[ι]
-				fullTarget := home + "/Articulos/" + folderArray[ι] + "/" + target + "." + typeArray[ι]
+				fullOriginal := Ξ + "/Downloads/" + original + "." + typeArray[ι]
+				fullTarget := Ξ + "/Articulos/" + folderArray[ι] + "/" + target + "." + typeArray[ι]
 
 				fmt.Println(chalk.Green.Color(original+"."+typeArray[ι]) + "\t\t\t" + chalk.Cyan.Color(target+"."+typeArray[ι]))
 
