@@ -33,7 +33,7 @@ var ()
 // buildCmd represents the build command
 var buildCmd = &cobra.Command{
 	Use:   "build",
-	Short: "Build bibliography from `nbib` files.",
+	Short: `Build bibliography from ` + chalk.Cyan.Color("nbib") + ` files.`,
 	Long: `Daniel Rivas <danielrivasmd@gmail.com>
 
 ` + chalk.Green.Color("Lou") + ` will relocate ` + chalk.Cyan.Color("nbib") + ` files from a target location to a target destination. If target destination does not exist, it will be created.

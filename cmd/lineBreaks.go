@@ -17,10 +17,10 @@ func lineBreaks() {
 		color.Print(color.Grey("=", color.B))
 	}
 
-	η := 1
-	for η <= 2 {
+	ç := 1
+	for ç <= 2 {
 		fmt.Println()
-		η++
+		ç++
 	}
 }
 

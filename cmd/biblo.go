@@ -73,7 +73,7 @@ func bibloArgs(Ξ string) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func format(Ξ, ρε string) {
+func format(Ξ, я string) {
 
 	// declare arrays
 	typeArray := [2]string{"pdf", "ris"}
@@ -89,13 +89,13 @@ func format(Ξ, ρε string) {
 	for ι := 0; ι < len(typeArray); ι++ {
 
 		// compile regex
-		ρ, ε := regexp.Compile(ρε + typeArray[ι])
+		ρ, ε := regexp.Compile(я + typeArray[ι])
 		if ε != nil {
 			log.Fatal(ε)
 		}
 
 		// count if files are present
-		τ := 0
+		ç := 0
 
 		// loop over files
 		for _, ƒ := range ł {
@@ -107,7 +107,7 @@ func format(Ξ, ρε string) {
 			if original != "" {
 
 				// increase count
-				τ++
+				ç++
 
 				// trim suffix
 				original = strings.TrimSuffix(original, "."+typeArray[ι])
@@ -149,7 +149,7 @@ func format(Ξ, ρε string) {
 
 		}
 
-		if τ == 0 {
+		if ç == 0 {
 			emptyMessage := `
 	No files to reformat:	` + folderArray[ι]
 
