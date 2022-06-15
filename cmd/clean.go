@@ -32,8 +32,9 @@ import (
 // declarations
 const я = `\(\d\)\w*` // backticks are used here to contain the expression
 
+// declare regex
 var (
-	ρ = regexp.MustCompile(я) // declare regex
+	ρ = regexp.MustCompile(я)
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
