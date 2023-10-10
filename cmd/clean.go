@@ -70,31 +70,31 @@ var cleanCmd = &cobra.Command{
 
 func matchDir(location string) {
 
-	directory, ε := os.Open(location)
-	if ε != nil {
-		log.Fatal(ε)
+	directory, ę := os.Open(location)
+	if ę != nil {
+		log.Fatal(ę)
 	}
 	defer directory.Close()
 
-	ł, ε := directory.Readdir(0)
-	if ε != nil {
-		log.Fatal(ε)
+	ł, ę := directory.Readdir(0)
+	if ę != nil {
+		log.Fatal(ę)
 	}
 
 	// switch
-	ϟ := true
+	ζ := true
 
 	// check each file @ location
 	for _, ƒ := range ł {
 		if ρ.MatchString(ƒ.Name()) {
-			ϟ = false
+			ζ = false
 			fmt.Println(location + ƒ.Name())
 			os.Remove(location + ƒ.Name())
 		}
 	}
 
 	// trigger if no duplicates are found
-	if ϟ {
+	if ζ {
 		fmt.Println(chalk.Cyan.Color("\tNo files to remove"))
 	}
 

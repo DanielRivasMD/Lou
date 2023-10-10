@@ -47,9 +47,9 @@ var rootCmd = &cobra.Command{
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func Execute() {
-	ε := rootCmd.Execute()
-	if ε != nil {
-		log.Fatal(ε)
+	ę := rootCmd.Execute()
+	if ę != nil {
+		log.Fatal(ę)
 		os.Exit(1)
 	}
 }
@@ -58,12 +58,12 @@ func Execute() {
 
 // find home directory
 func findHome() string {
-	Ξ, ε := homedir.Dir()
-	if ε != nil {
-		log.Fatal(ε)
+	ß, ę := homedir.Dir()
+	if ę != nil {
+		log.Fatal(ę)
 		os.Exit(1)
 	}
-	return Ξ
+	return ß
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

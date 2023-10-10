@@ -61,37 +61,37 @@ For example:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func bibloArgs(Ξ string) {
+func bibloArgs(ß string) {
 
 	// search for downloads from kopernico
-	format(Ξ, "[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+.")
+	format(ß, "[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+.")
 
 	// search for manual renamed
-	format(Ξ, "[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.")
+	format(ß, "[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.")
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func format(Ξ, я string) {
+func format(ß, я string) {
 
 	// declare arrays
 	typeArray := [2]string{"pdf", "ris"}
 	folderArray := [2]string{"PDFs", "Refs"}
 
 	// read downloads
-	ł, ε := ioutil.ReadDir(Ξ + "/Downloads/")
-	if ε != nil {
-		log.Fatal(ε)
+	ł, ę := ioutil.ReadDir(ß + "/Downloads/")
+	if ę != nil {
+		log.Fatal(ę)
 	}
 
 	// loop over types
 	for ι := 0; ι < len(typeArray); ι++ {
 
 		// compile regex
-		ρ, ε := regexp.Compile(я + typeArray[ι])
-		if ε != nil {
-			log.Fatal(ε)
+		ρ, ę := regexp.Compile(я + typeArray[ι])
+		if ę != nil {
+			log.Fatal(ę)
 		}
 
 		// count if files are present
@@ -134,15 +134,15 @@ func format(Ξ, я string) {
 				}
 
 				// define full paths
-				fullOriginal := Ξ + "/Downloads/" + original + "." + typeArray[ι]
-				fullTarget := Ξ + "/Articulos/" + folderArray[ι] + "/" + target + "." + typeArray[ι]
+				fullOriginal := ß + "/Downloads/" + original + "." + typeArray[ι]
+				fullTarget := ß + "/Articulos/" + folderArray[ι] + "/" + target + "." + typeArray[ι]
 
 				fmt.Println(chalk.Green.Color(original+"."+typeArray[ι]) + "\t\t\t" + chalk.Cyan.Color(target+"."+typeArray[ι]))
 
 				// relocate
-				ε := os.Rename(fullOriginal, fullTarget)
-				if ε != nil {
-					log.Fatal(ε)
+				ę := os.Rename(fullOriginal, fullTarget)
+				if ę != nil {
+					log.Fatal(ę)
 				}
 
 			}
