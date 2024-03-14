@@ -18,7 +18,6 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"regexp"
@@ -35,12 +34,12 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// bibloCmd represents the article command
+// bibloCmd
 var bibloCmd = &cobra.Command{
 	Use:     "biblo",
 	Aliases: []string{"b"},
 	Short:   "Handle all biblography operations.",
-	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` handles all biblography operations.
 
@@ -57,41 +56,41 @@ For example:
 ` + chalk.Cyan.Color("lou") + ` biblo build
 ` + chalk.Cyan.Color("lou") + ` biblo gather
 ` + chalk.Cyan.Color("lou") + ` biblo thesis`,
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func bibloArgs(ß string) {
-
 	// search for downloads from kopernico
 	format(ß, "[A-Z][a-z-]+-[0-9]{4}[A-Za-z_0-9-]+.")
 
 	// search for manual renamed
 	format(ß, "[A-Z][a-z]+[-]{1}[A-Za-z_0-9-]+.")
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func format(ß, я string) {
-
+func format(ß, Я string) {
 	// declare arrays
 	typeArray := [2]string{"pdf", "ris"}
 	folderArray := [2]string{"PDFs", "Refs"}
 
 	// read downloads
-	ł, ę := ioutil.ReadDir(ß + "/Downloads/")
-	if ę != nil {
-		log.Fatal(ę)
+	ł, ε := os.ReadDir(ß + "/Downloads/")
+	if ε != nil {
+		log.Fatal(ε)
 	}
 
 	// loop over types
 	for ι := 0; ι < len(typeArray); ι++ {
 
 		// compile regex
-		ρ, ę := regexp.Compile(я + typeArray[ι])
-		if ę != nil {
-			log.Fatal(ę)
+		ρ, ε := regexp.Compile(Я + typeArray[ι])
+		if ε != nil {
+			log.Fatal(ε)
 		}
 
 		// count if files are present
@@ -140,13 +139,11 @@ func format(ß, я string) {
 				fmt.Println(chalk.Green.Color(original+"."+typeArray[ι]) + "\t\t\t" + chalk.Cyan.Color(target+"."+typeArray[ι]))
 
 				// relocate
-				ę := os.Rename(fullOriginal, fullTarget)
-				if ę != nil {
-					log.Fatal(ę)
+				ε := os.Rename(fullOriginal, fullTarget)
+				if ε != nil {
+					log.Fatal(ε)
 				}
-
 			}
-
 		}
 
 		if ç == 0 {
@@ -155,17 +152,16 @@ func format(ß, я string) {
 
 			fmt.Println(emptyMessage)
 		}
-
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// execute prior main
 func init() {
 	rootCmd.AddCommand(bibloCmd)
 
 	// flags
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

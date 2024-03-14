@@ -30,11 +30,11 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// buildCmd represents the build command
+// buildCmd
 var buildCmd = &cobra.Command{
 	Use:   "build",
 	Short: `Build bibliography from ` + chalk.Cyan.Color("nbib") + ` files.`,
-	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` will relocate ` + chalk.Cyan.Color("nbib") + ` files from a target location to a target destination. If target destination does not exist, it will be created.
 
@@ -44,20 +44,18 @@ Next, ` + chalk.Cyan.Color("nbib") + ` files will be compiled into a ` + chalk.C
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
-
 		// execute logic
 		fmt.Println("build called")
-
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// execute prior main
 func init() {
 	bibloCmd.AddCommand(buildCmd)
 
 	// flags
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

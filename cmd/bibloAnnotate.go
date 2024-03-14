@@ -32,11 +32,11 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// annotateCmd represents the annotate command
+// annotateCmd
 var annotateCmd = &cobra.Command{
 	Use:   "annotate",
 	Short: "Annotate articles.",
-	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` will open ` + chalk.Cyan.Color("txt") + ` file with the same name as ` + chalk.Cyan.Color("pdf") + ` file for annotation.
 `,
@@ -44,20 +44,17 @@ var annotateCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
-
 		//command line flags
 		target, _ := κ.Flags().GetString("target")
 
 		// execute logic
 		annotateFile(findHome(), target)
-
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func annotateFile(home, target string) {
-
 	// lineBreaks
 	lineBreaks()
 
@@ -84,19 +81,18 @@ func annotateFile(home, target string) {
 
 	// lineBreaks
 	lineBreaks()
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO: update annotate
+// execute prior main
 func init() {
 	bibloCmd.AddCommand(annotateCmd)
 
 	// flags
 	annotateCmd.Flags().StringP("target", "t", "", "article to annoate")
 	annotateCmd.MarkFlagRequired("target")
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -30,11 +30,11 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// gatherCmd represents the gather command
+// gatherCmd
 var gatherCmd = &cobra.Command{
 	Use:   "gather",
 	Short: "Collect all articles & references.",
-	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` will relocate articles (` + chalk.Cyan.Color("pdf") + `) and their references (` + chalk.Cyan.Color("nbib") + `) downloaded by ` + chalk.Yellow.Color("Kopernico") + `.
 
@@ -44,7 +44,6 @@ Additionally, ` + chalk.Green.Color("Lou") + ` will also relocate manually renam
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
-
 		// execute logic
 		bibloArgs(findHome())
 
@@ -55,17 +54,16 @@ Additionally, ` + chalk.Green.Color("Lou") + ` will also relocate manually renam
 
 		// clean after relocating
 		cleanDir(location)
-
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// execute prior main
 func init() {
 	bibloCmd.AddCommand(gatherCmd)
 
 	// flags
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

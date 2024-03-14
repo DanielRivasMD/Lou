@@ -30,11 +30,11 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// thesisCmd represents the thesis command
+// thesisCmd
 var thesisCmd = &cobra.Command{
 	Use:   "thesis",
 	Short: "Collect theses.",
-	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` will relocate theses.
 `,
@@ -42,20 +42,18 @@ var thesisCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
-
 		// execute logic
 		fmt.Println("thesis called")
-
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// execute prior main
 func init() {
 	bibloCmd.AddCommand(thesisCmd)
 
 	// flags
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
