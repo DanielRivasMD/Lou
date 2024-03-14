@@ -34,9 +34,10 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// rootCmd
 var rootCmd = &cobra.Command{
 	Use:     "lou",
-	Version: "v0.2",
+	Version: "v0.3",
 	Short:   chalk.Green.Color("Lou") + ", personal assitant at your service.",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
