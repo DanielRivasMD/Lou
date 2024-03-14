@@ -16,48 +16,43 @@ _default:
   micro .justfile
 
 ####################################################################################################
-
 # aliases
+####################################################################################################
+####################################################################################################
+# import
+####################################################################################################
+
+# config
+import '.just/go.conf'
+
+####################################################################################################
+# jobs
+####################################################################################################
+
+# build for OSX
+osx app=goapp:
+  @echo "Building..."
+  go build -v -o excalibur/{{app}}
 
 ####################################################################################################
 
-# build bender for osx & store `excalibur`
-osx:
-  #!/bin/bash
-  set -euo pipefail
-
-  # declarations
-  source .just.sh
-
-  echo "Building..."
-  go build -v -o ${lou}/excalibur/lou
+# build for linux
+linux app=goapp:
+  @echo "Building..."
+  env GOOS=linux GOARCH=amd64 go build -v -o excalibur/{{app}}
 
 ####################################################################################################
 
-# build bender for linux & store `excalibur`
-linux:
-  #!/bin/bash
-  set -euo pipefail
-
-  # declarations
-  source .just.sh
-
-  echo "Building..."
-  env GOOS=linux GOARCH=amd64 go build -v -o ${lou}/excalibur/lou
-
-####################################################################################################
-
-# install Lou locally
-install:
-  #!/bin/bash
-  set -euo pipefail
-
-  # declarations
-  source .just.sh
-
-  echo "Install..."
-  # Lou
+# install locally
+install app=goapp exe=goexe:
+  @echo "Install..."
   go install
-  mv -v ${HOME}/.go/bin/Lou ${HOME}/.go/bin/lou
+  mv -v "${HOME}/.go/bin/{{app}}" "${HOME}/.go/bin/{{exe}}"
+
+####################################################################################################
+
+# watch changes
+watch:
+  watchexec --clear --watch cmd -- 'just install'
 
 ####################################################################################################
