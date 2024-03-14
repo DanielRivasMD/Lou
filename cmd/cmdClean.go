@@ -30,21 +30,21 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // declarations
-const я = `\(\d\)\w*` // backticks are used here to contain the expression
+const Я = `\(\d\)\w*` // backticks are used here to contain the expression
 
 // declare regex
 var (
-	ρ = regexp.MustCompile(я)
+	ρ = regexp.MustCompile(Я)
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// cleanCmd represents the clean command
+// cleanCmd
 var cleanCmd = &cobra.Command{
 	Use:     "clean",
 	Aliases: []string{"c"},
 	Short:   "Clean duplicates.",
-	Long: `Daniel Rivas <danielrivasmd@gmail.com>
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` will clean duplicates at a target location.
 `,
@@ -56,29 +56,26 @@ var cleanCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
-
 		// determine location
 		location, _ := κ.Flags().GetString("location")
 
 		// execute logic
 		cleanDir(location)
-
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func matchDir(location string) {
-
-	directory, ę := os.Open(location)
-	if ę != nil {
-		log.Fatal(ę)
+	directory, ε := os.Open(location)
+	if ε != nil {
+		log.Fatal(ε)
 	}
 	defer directory.Close()
 
-	ł, ę := directory.Readdir(0)
-	if ę != nil {
-		log.Fatal(ę)
+	ł, ε := directory.Readdir(0)
+	if ε != nil {
+		log.Fatal(ε)
 	}
 
 	// switch
@@ -93,17 +90,15 @@ func matchDir(location string) {
 		}
 	}
 
-	// trigger if no duplicates are found
+	// trigger if no duplicates found
 	if ζ {
 		fmt.Println(chalk.Cyan.Color("\tNo files to remove"))
 	}
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func cleanDir(location string) {
-
 	// lineBreaks
 	lineBreaks()
 
@@ -124,16 +119,15 @@ func cleanDir(location string) {
 
 	// lineBreaks
 	lineBreaks()
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// execute prior main
 func init() {
 	rootCmd.AddCommand(cleanCmd)
 
 	// flags
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
