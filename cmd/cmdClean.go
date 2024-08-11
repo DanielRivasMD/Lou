@@ -66,6 +66,7 @@ var cleanCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// TODO: migrate functions to files
 func matchDir(location string) {
 	directory, ε := os.Open(location)
 	if ε != nil {
