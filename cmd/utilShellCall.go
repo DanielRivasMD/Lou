@@ -11,7 +11,7 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func ShellCall(command string) (error, string, string) {
+func shellCall(command string) (error, string, string) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	cmd := exec.Command("bash", "-c", command)
