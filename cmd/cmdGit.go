@@ -41,13 +41,29 @@ var gitCmd = &cobra.Command{
 	Example: `
 ` + chalk.Cyan.Color("tabularasa") + ` help ` + chalk.Yellow.Color("git"),
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
 
-	_, stdout, _ := shellCall("sh/git.sh")
+		shcmds := []string{
+			"git status --short",
+			"git stash list",
+			"git log --graph --topo-order --abbrev-commit --date=relative --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset' -10",
+		}
 
-	fmt.Println(stdout);
-		
+		for _, shcmd := range shcmds {
+			err, stdout, stderr := shellCall(shcmd)
+			if err != nil {
+			  fmt.Println(err.Error())
+			}
+
+			lineBreaks()
+			fmt.Println()
+			fmt.Println(stdout)
+			fmt.Println(stderr)
+
+		}
+
 	},
 }
 
