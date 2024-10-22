@@ -5,7 +5,7 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
-	"log"
+	// "log"
 
 	"github.com/labstack/gommon/color"
 )
@@ -16,12 +16,6 @@ import (
 func lineBreaks() {
 	for ι := 0; ι < 100; ι++ {
 		color.Print(color.Grey("=", color.B))
-	}
-
-	ç := 1
-	for ç <= 2 {
-		log.Fatal()
-		ç++
 	}
 }
 
