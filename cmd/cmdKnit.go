@@ -17,6 +17,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -41,6 +43,26 @@ var knitCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	Run: func(κ *cobra.Command, args []string) {
+
+		shcmds := []string{
+			// "R --slave -e "rmarkdown::render('$1')" > /dev/null",
+		}
+
+		for _, shcmd := range shcmds {
+			err, stdout, stderr := shellCall(shcmd)
+			if err != nil {
+			  fmt.Println(err.Error())
+			}
+
+			lineBreaks()
+			fmt.Println()
+			fmt.Println(stdout)
+			fmt.Println(stderr)
+
+		}
+
+	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
