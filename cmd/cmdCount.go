@@ -49,14 +49,36 @@ var countCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
+
+		// parse flags
+		ϙ_hidden, ε := κ.Flags().GetBool("hidden")
+		checkErr(ε)
+
+		hidden := ""
+		if ϙ_hidden {
+			hidden = "--hidden "
+		}
+
+		// parse flags
+		ϙ_no_ignore, ε := κ.Flags().GetBool("no-ignore")
+		checkErr(ε)
+
+		no_ignore := ""
+		if ϙ_no_ignore {
+			no_ignore = "--no-ignore "
+		}
+
+		// declare cmd
+		cmd := "fd . "
+
 		switch args[0] {
 		case "dir":
-			shcmd := "fd . --type=d --max-depth=1 | /usr/bin/wc -l"
+			shcmd := cmd + hidden + no_ignore + "--type=d --max-depth=1 | /usr/bin/wc -l"
 			ε, stdout, _ := shellCall(shcmd)
 			checkErr(ε)
 			fmt.Print(chalk.Yellow.Color("Number of dirs: "), stdout)
 		case "file":
-			shcmd := "fd . --type=f --max-depth=1 | /usr/bin/wc -l"
+			shcmd := cmd + hidden + no_ignore + "--type=f --max-depth=1 | /usr/bin/wc -l"
 			ε, stdout, _ := shellCall(shcmd)
 			checkErr(ε)
 			fmt.Print(chalk.Yellow.Color("Number of files: "), stdout)
