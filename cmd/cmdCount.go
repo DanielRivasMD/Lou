@@ -72,7 +72,8 @@ func init() {
 	osCmd.AddCommand(countCmd)
 
 	// flags
+	countCmd.Flags().BoolP("hidden", "H", false, "account hidden files/dirs.")
+	countCmd.Flags().BoolP("no-ignore", "I", false, "don't respect ignore files.")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
