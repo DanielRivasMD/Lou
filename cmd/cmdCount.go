@@ -17,6 +17,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -41,6 +43,26 @@ var countCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	ValidArgs: []string{"dir", "file"},
+	Args:      cobra.ExactValidArgs(1),
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Run: func(κ *cobra.Command, args []string) {
+		switch args[0] {
+		case "dir":
+			shcmd := "fd . --type=d --max-depth=1 | /usr/bin/wc -l"
+			ε, stdout, _ := shellCall(shcmd)
+			checkErr(ε)
+			fmt.Print(chalk.Yellow.Color("Number of dirs: "), stdout)
+		case "file":
+			shcmd := "fd . --type=f --max-depth=1 | /usr/bin/wc -l"
+			ε, stdout, _ := shellCall(shcmd)
+			checkErr(ε)
+			fmt.Print(chalk.Yellow.Color("Number of files: "), stdout)
+		}
+
+	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
