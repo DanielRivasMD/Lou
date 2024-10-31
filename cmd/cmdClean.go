@@ -30,11 +30,11 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // declarations
-const Я = `\(\d\)\w*` // backticks are used here to contain the expression
+const я = `\(\d\)\w*` // backticks are used here to contain the expression
 
 // declare regex
 var (
-	ρ = regexp.MustCompile(Я)
+	ρ = regexp.MustCompile(я)
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,19 +80,19 @@ func matchDir(location string) {
 	}
 
 	// switch
-	ζ := true
+	ϙ := true
 
 	// check each file @ location
 	for _, ƒ := range ł {
 		if ρ.MatchString(ƒ.Name()) {
-			ζ = false
+			ϙ = false
 			fmt.Println(location + ƒ.Name())
 			os.Remove(location + ƒ.Name())
 		}
 	}
 
 	// trigger if no duplicates found
-	if ζ {
+	if ϙ {
 		fmt.Println(chalk.Cyan.Color("\tNo files to remove"))
 	}
 }
