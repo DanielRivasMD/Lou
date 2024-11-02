@@ -26,7 +26,10 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // declarations
-var ()
+var (
+	ϙ_hidden bool
+	ϙ_no_ignore bool
+)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -51,18 +54,12 @@ var countCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// parse flags
-		ϙ_hidden, ε := κ.Flags().GetBool("hidden")
-		checkErr(ε)
-
 		hidden := ""
 		if ϙ_hidden {
 			hidden = "--hidden "
 		}
 
 		// parse flags
-		ϙ_no_ignore, ε := κ.Flags().GetBool("no-ignore")
-		checkErr(ε)
-
 		no_ignore := ""
 		if ϙ_no_ignore {
 			no_ignore = "--no-ignore "
@@ -94,8 +91,8 @@ func init() {
 	osCmd.AddCommand(countCmd)
 
 	// flags
-	countCmd.Flags().BoolP("hidden", "H", false, "account hidden files/dirs.")
-	countCmd.Flags().BoolP("no-ignore", "I", false, "don't respect ignore files.")
+	countCmd.Flags().BoolVarP(&ϙ_hidden, "hidden", "H", false, "account hidden files/dirs.")
+	countCmd.Flags().BoolVarP(&ϙ_no_ignore, "no-ignore", "I", false, "don't respect ignore files.")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
