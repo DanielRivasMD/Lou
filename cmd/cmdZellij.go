@@ -17,6 +17,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -37,10 +39,27 @@ var zellijCmd = &cobra.Command{
 `,
 
 	Example: `
-` + chalk.Cyan.Color("tabularasa") + ` help ` + chalk.Yellow.Color("zellij"),
+` + chalk.Cyan.Color("lou") + ` help ` + chalk.Yellow.Color("zellij"),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	DisableFlagsInUseLine: true,
+	ValidArgs:             []string{"control", "explore", "repl", "go", "julia", "rust"},
+	Args:                  cobra.ExactValidArgs(1),
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Run: func(κ *cobra.Command, args []string) {
+
+		// $HOME/.archive/in-situ/zellij/layouts/*kdl
+		cmd := "zellij --layout " + findHome() + "/.archive/in-situ/zellij/layouts/" + args[0] + ".kdl"
+
+		fmt.Println(cmd)
+		shcmd := cmd
+		ε, _, _ := shellCall(shcmd)
+		checkErr(ε)
+
+	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,4 +72,3 @@ func init() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
