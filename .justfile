@@ -55,10 +55,6 @@ install app=goapp exe=goexe:
   go install
   @echo "\n\033[1;33mLinking\033[0;37m...\n=================================================="
   @mv -v "${HOME}/go/bin/{{app}}" "${HOME}/go/bin/{{exe}}"
-  @echo "\n\033[1;33mCopying\033[0;37m...\n=================================================="
-  @if [ ! -d "${HOME}/.lou" ]; then mkdir "${HOME}/.lou"; fi
-  @if test -e "${HOME}/.lou/update.sh"; then rm "${HOME}/.lou/update.sh"; fi && echo "\033[1;33mupdate\033[0;37m" && cp -v -R "sh/update.sh" "${HOME}/.lou/"
-
 
 ####################################################################################################
 
