@@ -17,8 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -32,22 +30,23 @@ var ()
 
 // explorerCmd
 var explorerCmd = &cobra.Command{
-	Use:   "explorer",
+	Use:   "x",
 	Short: "" + chalk.Yellow.Color("") + ".",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` help ` + chalk.Yellow.Color("os") + chalk.Yellow.Color("explorer"),
+` + chalk.Cyan.Color("lou") + ` help ` + chalk.Yellow.Color("os") + " " + chalk.Yellow.Color("explorer"),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
 
-		cmd := "zellij run -- lsd --header --long --classify --git $(pwd)/" + args[0]
-
-		fmt.Println(cmd)
+		// command
+		cmd := "zellij run --name SHELL --floating --height 100 --width 100 --x 100 --y 0 -- lsd --header --long --classify --git $(pwd)/" + args[0]
 		shcmd := cmd
+
+		// error
 		ε, _, _ := shellCall(shcmd)
 		checkErr(ε)
 
