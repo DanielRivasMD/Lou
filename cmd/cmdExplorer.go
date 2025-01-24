@@ -36,7 +36,7 @@ var explorerCmd = &cobra.Command{
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` help ` + chalk.Yellow.Color("os") + " " + chalk.Yellow.Color("explorer"),
+` + chalk.Cyan.Color("lou") + ` help ` + chalk.Yellow.Color("explorer"),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,7 +57,7 @@ var explorerCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	osCmd.AddCommand(explorerCmd)
+	rootCmd.AddCommand(explorerCmd)
 
 	// flags
 }
