@@ -17,8 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -51,13 +49,17 @@ var zellijCmd = &cobra.Command{
 
 	Run: func(κ *cobra.Command, args []string) {
 
-		// $HOME/.archive/in-situ/zellij/layouts/*kdl
-		cmd := "zellij --layout " + findHome() + "/.archive/in-situ/zellij/layouts/" + args[0] + ".kdl"
+		// command lock
+		cmdLock := "zellij action switch-mode locked"
+		shcmdLock := cmdLock
+		εlock, _, _ := shellCall(shcmdLock)
+		checkErr(εlock)
 
-		fmt.Println(cmd)
-		shcmd := cmd
-		ε, _, _ := shellCall(shcmd)
-		checkErr(ε)
+		// command session
+		cmdSession := "zellij --layout " + findHome() + "/.archive/in-situ/zellij/layouts/" + args[0] + ".kdl"
+		shcmdSession := cmdSession
+		εsession, _, _ := shellCall(shcmdSession)
+		checkErr(εsession)
 
 	},
 }
