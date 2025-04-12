@@ -1,70 +1,36 @@
 
-## Lou is a personal assitant to automatize routine tasks
 
-![](assets/Lou.png)
+# Lou is a personal assitant to automatize routine tasks
 
+**Lou** is a lightweight CLI tool for streamlining local file operations. Perform batch actions, deduplicate files, and automate mundane tasks with simple commands.
 
-## Table of contents
+![Lou Logo](./assets/Lou01.png)
 
-  - [Table of contents](#table-of-contents)
-  - [Overview](#overview)
-  - [Installation](#installation)
-    - [Via Homebrew (for macOS)](#via-homebrew-for-macos)
-    - [Via APT (for Debian-based Linux distros)](#via-apt-for-debian-based-linux-distros)
-    - [From Github release](#from-github-release)
-  - [Documentation](#documentation)
-    - [Usage](#usage)
-  - [Examples](#examples)
-  - [Acknowledgements](#acknowledgements)
-  - [License](#license)
+---
 
+## Features
 
-## Overview
-
+- **Smart Copy/Move**: Preserve structure or flatten directories
+- **Duplicate Detection**: Find and remove redundant files (MD5 checksum)
+- **Batch Renaming**: Regex support for pattern-based renaming
+- **Dry Run Mode**: Preview changes before executing
+- **Cross-Platform**: Windows/macOS/Linux support
 
 ## Installation
 
+### Pre-built Binaries
+Download for your OS from [Releases](https://github.com/yourusername/lou/releases).
 
-<!-- TODO: -->
-**Not currently working**
-
-### Via Homebrew (for macOS)
-
-Prerequisites:
-
-- [Homebrew](https://brew.sh/)
-
-```
-brew install danielrivasmd/Lou
+### From Source (Go 1.20+)
+```bash
+git clone https://github.com/yourusername/lou.git
+cd lou
+go build -o lou cmd/main.go## Documentation
 ```
 
-
-
-<!-- TODO: -->
-**Not currently working**
-
-### Via APT (for Debian-based Linux distros)
-
 ```
-curl -SsL https://fbecart.github.io/ppa/debian/KEY.gpg | sudo apt-key add -
-sudo curl -SsL -o /etc/apt/sources.list.d/fbecart.list https://fbecart.github.io/ppa/debian/fbecart.list
-sudo apt update
-sudo apt install lou
+go install github.com/yourusername/lou@latest
 ```
-
-
-
-<!-- TODO: -->
-**Not currently working**
-
-### From Github release
-
-<!-- TODO: -->
-**Not currently working**
-
-
-
-## Documentation
 
 ### Usage
 
@@ -99,11 +65,16 @@ lou biblo format
 
 ## Acknowledgements
 
+Contributing
+Fork the repository
 
+Create a feature branch
 
-## License
+Submit a pull request
 
-Lou is distributed under the terms of the GNU GENERAL PUBLIC LICENSE.
+License
+MIT License - See LICENSE for details.
 
-See [LICENSE](LICENSE) for details.
-
+Contact
+Daniel Rivas, MD
+danielrivasmd@gmail.com
