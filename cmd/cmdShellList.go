@@ -57,20 +57,20 @@ var listCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 		// functions, err := parseFiles(os.Args[1:])
 
-		// Example: Parse a shell script file
-		content := `# function: zek (zellij kill)
-# description: kill current zellij session
-zek() {
-  zellij kill-session "$(zellij list-sessions | grep '(current)' | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')"
-}`
+// 		// example: parse shell script file
+// 		content := `# function: zek (zellij kill)
+// # description: kill current zellij session
+// zek() {
+//   zellij kill-session "$(zellij list-sessions | grep '(current)' | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')"
+// }`
 
-		functions, err := parseShellFunction(content)
+		functions, err := parseFile(inFile)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error parsing functions: %v\n", err)
 			os.Exit(1)
 		}
 
-		// Generate and print Markdown
+		// generate & print Markdown
 		markdown := generateMarkdown(functions)
 		fmt.Println(markdown)
 
@@ -80,12 +80,12 @@ zek() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// parseShellFunction extracts metadata from a shell function definition
+// parseShellFunction extracts metadata from function definition
 func parseShellFunction(content string) ([]Function, error) {
 	var functions []Function
 
-	// Regex to match Zsh/Bash functions with descriptions
-	// Example format:
+	// regex match zsh/bash function descriptions
+	// example format:
 	//   # function: zek
 	//   # description: kill current zellij session
 	//   zek() { ... }
@@ -113,6 +113,8 @@ func parseShellFunction(content string) ([]Function, error) {
 	return functions, nil
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // generateMarkdown creates a Markdown table from parsed functions
 func generateMarkdown(functions []Function) string {
 	var builder strings.Builder
@@ -133,19 +135,17 @@ func generateMarkdown(functions []Function) string {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func parseFiles(filePaths []string) ([]Function, error) {
+func parseFile(path string) ([]Function, error) {
 	var allFuncs []Function
-	for _, path := range filePaths {
-		content, err := os.ReadFile(path)
-		if err != nil {
-			return nil, err
-		}
-		funcs, err := parseShellFunction(string(content))
-		if err != nil {
-			return nil, err
-		}
-		allFuncs = append(allFuncs, funcs...)
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
 	}
+	funcs, err := parseShellFunction(string(content))
+	if err != nil {
+		return nil, err
+	}
+	allFuncs = append(allFuncs, funcs...)
 	return allFuncs, nil
 }
 
@@ -156,6 +156,7 @@ func init() {
 	shellCmd.AddCommand(listCmd)
 
 	// flags
+	listCmd.MarkFlagRequired("file")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
