@@ -17,6 +17,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
+	"os"
+	"strings"
+	"regexp"
+
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -25,6 +30,15 @@ import (
 
 // declarations
 var ()
+
+// Function represents a parsed shell function
+type Function struct {
+	Name        string
+	Description string
+	Usage       string
+	Shell       string
+	Code        string
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,6 +54,99 @@ var listCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	Run: func(κ *cobra.Command, args []string) {
+		// functions, err := parseFiles(os.Args[1:])
+
+		// Example: Parse a shell script file
+		content := `# function: zek (zellij kill)
+# description: kill current zellij session
+zek() {
+  zellij kill-session "$(zellij list-sessions | grep '(current)' | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')"
+}`
+
+		functions, err := parseShellFunction(content)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error parsing functions: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Generate and print Markdown
+		markdown := generateMarkdown(functions)
+		fmt.Println(markdown)
+
+	},
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// parseShellFunction extracts metadata from a shell function definition
+func parseShellFunction(content string) ([]Function, error) {
+	var functions []Function
+
+	// Regex to match Zsh/Bash functions with descriptions
+	// Example format:
+	//   # function: zek
+	//   # description: kill current zellij session
+	//   zek() { ... }
+	re := regexp.MustCompile(
+		`#\s*function:\s*(?P<name>\w+).*?\n` +
+			`#\s*description:\s*(?P<desc>[^\n]+).*?\n` +
+			`(?P<code>(?P<name2>\w+)\(\)\s*\{[^}]+\})`,
+	)
+
+	matches := re.FindAllStringSubmatch(content, -1)
+	for _, match := range matches {
+		name := match[re.SubexpIndex("name")]
+		desc := match[re.SubexpIndex("desc")]
+		code := match[re.SubexpIndex("code")]
+
+		functions = append(functions, Function{
+			Name:        name,
+			Description: strings.TrimSpace(desc),
+			Usage:       fmt.Sprintf("`%s`", name), // Default usage
+			Shell:       "zsh",
+			Code:        code,
+		})
+	}
+
+	return functions, nil
+}
+
+// generateMarkdown creates a Markdown table from parsed functions
+func generateMarkdown(functions []Function) string {
+	var builder strings.Builder
+
+	builder.WriteString("# Shell Functions Documentation\n\n")
+	builder.WriteString("| Function | Description | Usage | Shell |\n")
+	builder.WriteString("|----------|-------------|-------|-------|\n")
+
+	for _, fn := range functions {
+		builder.WriteString(fmt.Sprintf(
+			"| `%s` | %s | %s | %s |\n",
+			fn.Name, fn.Description, fn.Usage, fn.Shell,
+		))
+	}
+
+	return builder.String()
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func parseFiles(filePaths []string) ([]Function, error) {
+	var allFuncs []Function
+	for _, path := range filePaths {
+		content, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		funcs, err := parseShellFunction(string(content))
+		if err != nil {
+			return nil, err
+		}
+		allFuncs = append(allFuncs, funcs...)
+	}
+	return allFuncs, nil
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
