@@ -89,16 +89,13 @@ func parseShellFunction(content string) ([]Function, error) {
 	)
 
 	matches := re.FindAllStringSubmatch(content, -1)
-	for _, match := range matches {
-		name := match[re.SubexpIndex("name")]
-		desc := match[re.SubexpIndex("desc")]
-		args := match[re.SubexpIndex("args")]
 
+	for _, match := range matches {
 		functions = append(functions, Function{
 			Shell:       "zsh",
-			Name:        name,
-			Description: strings.TrimSpace(desc),
-			Arguments: args,
+			Name:        match[re.SubexpIndex("name")],
+			Description: strings.TrimSpace(match[re.SubexpIndex("desc")]),
+			Arguments:   strings.TrimSpace(match[re.SubexpIndex("args")]),
 		})
 	}
 
@@ -133,15 +130,19 @@ func generateMarkdown(functions []Function) string {
 
 	// rows
 	for _, fn := range functions {
+		argDisplay := fmt.Sprintf("`%s`", fn.Arguments)
+		if fn.Arguments == "" {
+			argDisplay = "``"
+		}
+
 		builder.WriteString(fmt.Sprintf(
 			"| %-*s | %-*s | %-*s | %-*s |\n",
 			shellPad, fn.Shell,
 			namePad, fmt.Sprintf("`%s`", fn.Name),
 			descPad, fn.Description,
-			argsPad, fmt.Sprintf("`%s`", fn.Arguments),
+			argsPad, argDisplay,
 		))
 	}
-
 	return builder.String()
 }
 
@@ -165,19 +166,14 @@ func parseFile(path string) ([]Function, error) {
 
 // calculatePadding determines max width for column
 func calculatePadding(functions []Function) (shellPad, namePad, descPad, argsPad int) {
+	// initialize with header lengths
+	shellPad, namePad, descPad, argsPad = len("Shell"), len("Function"), len("Description"), len("Arguments")
+
 	for _, fn := range functions {
-		if len(fn.Shell) > shellPad {
-			shellPad = len(fn.Shell)
-		}
-		if len(fn.Name)+2 > namePad { // +2 for backticks
-			namePad = len(fn.Name) + 2
-		}
-		if len(fn.Description) > descPad {
-			descPad = len(fn.Description)
-		}
-		if len(fn.Arguments)+2 > argsPad { // +2 for backticks
-			argsPad = len(fn.Arguments) + 2
-		}
+		shellPad = max(shellPad, len(fn.Shell))
+		namePad = max(namePad, len(fn.Name)+2)    // +2 for backticks
+		descPad = max(descPad, len(fn.Description))
+		argsPad = max(argsPad, len(fn.Arguments)+2) // +2 for backticks
 	}
 	return
 }
