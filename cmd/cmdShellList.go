@@ -107,18 +107,38 @@ func parseShellFunction(content string) ([]Function, error) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// generateMarkdown creates a Markdown table from parsed functions
+// generateMarkdown creates Markdown table from parsed functions
 func generateMarkdown(functions []Function) string {
 	var builder strings.Builder
+	shellPad, namePad, descPad, argsPad := calculatePadding(functions)
 
+	// header
 	builder.WriteString("# Shell Functions Documentation\n\n")
-	builder.WriteString("| Shell | Function | Description | Arguments |\n")
-	builder.WriteString("|-------|----------|-------------|-----------|\n")
+	builder.WriteString(fmt.Sprintf(
+		"| %-*s | %-*s | %-*s | %-*s |\n",
+		shellPad, "Shell",
+		namePad, "Function",
+		descPad, "Description",
+		argsPad, "Arguments",
+	))
 
+	// separator
+	builder.WriteString(fmt.Sprintf(
+		"|%s|%s|%s|%s|\n",
+		strings.Repeat("-", shellPad+2),
+		strings.Repeat("-", namePad+2),
+		strings.Repeat("-", descPad+2),
+		strings.Repeat("-", argsPad+2),
+	))
+
+	// rows
 	for _, fn := range functions {
 		builder.WriteString(fmt.Sprintf(
-			"| %s | `%s` | %s | `%s` |\n",
-			fn.Shell, fn.Name, fn.Description, fn.Arguments,
+			"| %-*s | %-*s | %-*s | %-*s |\n",
+			shellPad, fn.Shell,
+			namePad, fmt.Sprintf("`%s`", fn.Name),
+			descPad, fn.Description,
+			argsPad, fmt.Sprintf("`%s`", fn.Arguments),
 		))
 	}
 
@@ -139,6 +159,27 @@ func parseFile(path string) ([]Function, error) {
 	}
 	allFuncs = append(allFuncs, funcs...)
 	return allFuncs, nil
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// calculatePadding determines max width for column
+func calculatePadding(functions []Function) (shellPad, namePad, descPad, argsPad int) {
+	for _, fn := range functions {
+		if len(fn.Shell) > shellPad {
+			shellPad = len(fn.Shell)
+		}
+		if len(fn.Name)+2 > namePad { // +2 for backticks
+			namePad = len(fn.Name) + 2
+		}
+		if len(fn.Description) > descPad {
+			descPad = len(fn.Description)
+		}
+		if len(fn.Arguments)+2 > argsPad { // +2 for backticks
+			argsPad = len(fn.Arguments) + 2
+		}
+	}
+	return
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
