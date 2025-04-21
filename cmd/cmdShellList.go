@@ -35,6 +35,7 @@ var ()
 type Function struct {
 	Name        string
 	Description string
+	Arguments   string
 	Usage       string
 	Shell       string
 	Code        string
@@ -55,15 +56,7 @@ var listCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
-		// functions, err := parseFiles(os.Args[1:])
-
-// 		// example: parse shell script file
-// 		content := `# function: zek (zellij kill)
-// # description: kill current zellij session
-// zek() {
-//   zellij kill-session "$(zellij list-sessions | grep '(current)' | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')"
-// }`
-
+		// collect documentation
 		functions, err := parseFile(inFile)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error parsing functions: %v\n", err)
@@ -86,24 +79,28 @@ func parseShellFunction(content string) ([]Function, error) {
 
 	// regex match zsh/bash function descriptions
 	// example format:
-	//   # function: zek
-	//   # description: kill current zellij session
-	//   zek() { ... }
+	//   # function: fn
+	//   # description: cool function
+	//   # arguments: some args
+	//   fn() { ... }
 	re := regexp.MustCompile(
 		`#\s*function:\s*(?P<name>\w+).*?\n` +
-			`#\s*description:\s*(?P<desc>[^\n]+).*?\n` +
-			`(?P<code>(?P<name2>\w+)\(\)\s*\{[^}]+\})`,
+		`#\s*description:\s*(?P<desc>[^\n]+).*?\n` +
+		`(#\s*arguments:\s*(?P<args>[^\n]+).*?\n)?` +  // Optional arguments line
+		`(?P<code>(?P<name2>\w+)\(\)\s*\{[^}]+\})`,
 	)
 
 	matches := re.FindAllStringSubmatch(content, -1)
 	for _, match := range matches {
 		name := match[re.SubexpIndex("name")]
 		desc := match[re.SubexpIndex("desc")]
+		args := match[re.SubexpIndex("args")]
 		code := match[re.SubexpIndex("code")]
 
 		functions = append(functions, Function{
 			Name:        name,
 			Description: strings.TrimSpace(desc),
+			Arguments: args,
 			Usage:       fmt.Sprintf("`%s`", name), // Default usage
 			Shell:       "zsh",
 			Code:        code,
@@ -120,13 +117,13 @@ func generateMarkdown(functions []Function) string {
 	var builder strings.Builder
 
 	builder.WriteString("# Shell Functions Documentation\n\n")
-	builder.WriteString("| Function | Description | Usage | Shell |\n")
-	builder.WriteString("|----------|-------------|-------|-------|\n")
+	builder.WriteString("| Function | Description | Arguments | Usage | Shell |\n")
+	builder.WriteString("|----------|-------------|-----------|-------|-------|\n")
 
 	for _, fn := range functions {
 		builder.WriteString(fmt.Sprintf(
-			"| `%s` | %s | %s | %s |\n",
-			fn.Name, fn.Description, fn.Usage, fn.Shell,
+			"| `%s` | %s | %s | %s | %s |\n",
+			fn.Name, fn.Description, fn.Arguments, fn.Usage, fn.Shell,
 		))
 	}
 
