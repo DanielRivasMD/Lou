@@ -33,12 +33,10 @@ var ()
 
 // Function represents a parsed shell function
 type Function struct {
+	Shell       string
 	Name        string
 	Description string
 	Arguments   string
-	Usage       string
-	Shell       string
-	Code        string
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,15 +93,12 @@ func parseShellFunction(content string) ([]Function, error) {
 		name := match[re.SubexpIndex("name")]
 		desc := match[re.SubexpIndex("desc")]
 		args := match[re.SubexpIndex("args")]
-		code := match[re.SubexpIndex("code")]
 
 		functions = append(functions, Function{
+			Shell:       "zsh",
 			Name:        name,
 			Description: strings.TrimSpace(desc),
 			Arguments: args,
-			Usage:       fmt.Sprintf("`%s`", name), // Default usage
-			Shell:       "zsh",
-			Code:        code,
 		})
 	}
 
@@ -117,13 +112,13 @@ func generateMarkdown(functions []Function) string {
 	var builder strings.Builder
 
 	builder.WriteString("# Shell Functions Documentation\n\n")
-	builder.WriteString("| Function | Description | Arguments | Usage | Shell |\n")
-	builder.WriteString("|----------|-------------|-----------|-------|-------|\n")
+	builder.WriteString("| Shell | Function | Description | Arguments |\n")
+	builder.WriteString("|-------|----------|-------------|-----------|\n")
 
 	for _, fn := range functions {
 		builder.WriteString(fmt.Sprintf(
-			"| `%s` | %s | %s | %s | %s |\n",
-			fn.Name, fn.Description, fn.Arguments, fn.Usage, fn.Shell,
+			"| %s | `%s` | %s | `%s` |\n",
+			fn.Shell, fn.Name, fn.Description, fn.Arguments,
 		))
 	}
 
