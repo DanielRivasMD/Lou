@@ -17,8 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -45,15 +43,9 @@ var updateCmd = &cobra.Command{
 
 	Run: func(κ *cobra.Command, args []string) {
 
-		// command
-		cmd := findHome() + "/" + ".lou" + "/" + "update.sh"
-
-		fmt.Println(cmd)
-		fmt.Println("updating")
-		shcmd := cmd
-		ε, _, _ := shellCall(shcmd)
-		checkErr(ε)
-
+	// command
+	cmdUpdate := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "update.sh"
+	execCmd(cmdUpdate)
 	},
 }
 
