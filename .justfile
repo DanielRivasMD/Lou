@@ -50,11 +50,15 @@ linux app=goapp:
 
 # install locally
 [group('go')]
-install app=goapp exe=goexe:
+install app=goapp exe=goexe dir=dir:
   @echo "\n\033[1;33mInstalling\033[0;37m...\n=================================================="
   go install
   @echo "\n\033[1;33mLinking\033[0;37m...\n=================================================="
   @mv -v "${HOME}/go/bin/{{app}}" "${HOME}/go/bin/{{exe}}"
+  @echo "\n\033[1;33mCopying\033[0;37m...\n=================================================="
+  @if [ ! -d "${HOME}/{{dir}}" ]; then mkdir "${HOME}/{{dir}}"; fi
+  @if test -e "${HOME}/{{sh}}"; then rm -r "${HOME}/{{sh}}"; fi && echo "\033[1;33msh\033[0;37m" && cp -v -R "sh" "${HOME}/{{sh}}"
+  @if test -e "${HOME}/{{layouts}}"; then rm -r "${HOME}/{{layouts}}"; fi && echo "\033[1;33mlayouts\033[0;37m" && cp -v -R "layouts" "${HOME}/{{layouts}}"
 
 ####################################################################################################
 
