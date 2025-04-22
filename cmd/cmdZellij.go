@@ -24,7 +24,10 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // declarations
-var ()
+var (
+	path string
+	fun string
+)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -41,25 +44,26 @@ var zellijCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	DisableFlagsInUseLine: true,
-	ValidArgs:             []string{"control", "explore", "repl", "go", "julia", "rust"},
-	Args:                  cobra.ExactValidArgs(1),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	Run: func(κ *cobra.Command, args []string) {
 
-		// command lock
-		cmdLock := "zellij action switch-mode locked"
-		shcmdLock := cmdLock
-		εlock, _, _ := shellCall(shcmdLock)
-		checkErr(εlock)
+	// command
+	cmdZellij := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "explorer.sh"
+	execCmd(cmdZellij, fun, path)
 
-		// command session
-		cmdSession := "zellij --layout " + findHome() + "/.archive/in-situ/zellij/layouts/" + args[0] + ".kdl"
-		shcmdSession := cmdSession
-		εsession, _, _ := shellCall(shcmdSession)
-		checkErr(εsession)
+
+
+		// command lock
+		// cmdLock := "sh/ztest.sh"
+		// execCmd(cmdLock)
+		// shcmdLock := cmdLock
+		// εlock, _, _ := shellCall(shcmdLock)
+		// checkErr(εlock)
+
+		// // command session
+		// cmdSession := "zellij --layout " + findHome() + "/.archive/in-situ/zellij/layouts/" + args[0] + ".kdl"
+		// shcmdSession := cmdSession
+		// εsession, _, _ := shellCall(shcmdSession)
+		// checkErr(εsession)
 
 	},
 }
@@ -71,6 +75,10 @@ func init() {
 	rootCmd.AddCommand(zellijCmd)
 
 	// flags
+	zellijCmd.Flags().StringVarP(&fun, "fun", "n", "", "Function")
+	zellijCmd.MarkFlagRequired("fun")
+	zellijCmd.Flags().StringVarP(&path, "path", "p", "", "Data path")
+	zellijCmd.MarkFlagRequired("path")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
