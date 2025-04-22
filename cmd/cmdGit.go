@@ -17,7 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
+	// "fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -45,24 +45,13 @@ var gitCmd = &cobra.Command{
 
 	Run: func(κ *cobra.Command, args []string) {
 
-		shcmds := []string{
-			"git status --short",
-			"git stash list",
-			"git log --graph --topo-order --abbrev-commit --date=relative --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset' -10",
-		}
-
-		for _, shcmd := range shcmds {
-			err, stdout, stderr := shellCall(shcmd)
-			if err != nil {
-			  fmt.Println(err.Error())
-			}
-
-			lineBreaks()
-			fmt.Println()
-			fmt.Println(stdout)
-			fmt.Println(stderr)
-
-		}
+		lineBreaks()
+		execGit("status", "--short")
+		lineBreaks()
+		execGit("stash", "list")
+		lineBreaks()
+		execGit("log", "--graph", "--topo-order", "--abbrev-commit", "--date=relative", "--decorate", "--all", "--boundary", "--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset", "-10")
+		lineBreaks()
 
 	},
 }
