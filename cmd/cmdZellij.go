@@ -46,24 +46,9 @@ var zellijCmd = &cobra.Command{
 
 	Run: func(κ *cobra.Command, args []string) {
 
-	// command
-	cmdZellij := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "explorer.sh"
-	execCmd(cmdZellij, fun, path)
-
-
-
-		// command lock
-		// cmdLock := "sh/ztest.sh"
-		// execCmd(cmdLock)
-		// shcmdLock := cmdLock
-		// εlock, _, _ := shellCall(shcmdLock)
-		// checkErr(εlock)
-
-		// // command session
-		// cmdSession := "zellij --layout " + findHome() + "/.archive/in-situ/zellij/layouts/" + args[0] + ".kdl"
-		// shcmdSession := cmdSession
-		// εsession, _, _ := shellCall(shcmdSession)
-		// checkErr(εsession)
+		// command
+		cmdZellij := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "zellij.sh"
+		execCmd(cmdZellij, fun, path)
 
 	},
 }
