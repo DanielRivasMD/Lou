@@ -24,7 +24,9 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // declarations
-var ()
+var (
+	path string
+)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,13 +44,9 @@ var explorerCmd = &cobra.Command{
 
 	Run: func(κ *cobra.Command, args []string) {
 
-		// command
-		cmd := "zellij run --name SHELL --floating --height 100 --width 100 --x 100 --y 0 -- lsd --header --long --classify --git $(pwd)/" + args[0]
-		shcmd := cmd
-
-		// error
-		ε, _, _ := shellCall(shcmd)
-		checkErr(ε)
+	// command
+	cmdUpdate := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "explorer.sh"
+	execCmd(cmdUpdate, path)
 
 	},
 }
@@ -60,6 +58,8 @@ func init() {
 	rootCmd.AddCommand(explorerCmd)
 
 	// flags
+	explorerCmd.Flags().StringVarP(&path, "path", "p", "", "Path to explore")
+	explorerCmd.MarkFlagRequired("path")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
