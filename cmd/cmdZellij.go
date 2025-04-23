@@ -17,16 +17,46 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"errors"
+
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// custom type restricting `fn` flag values
+type fnType string
+
+const (
+	fnBat fnType = "bat"
+)
+
+func (f *fnType) String() string {
+	return string(*f)
+}
+
+func (f *fnType) Set(value string) error {
+	switch value {
+
+	case string(fnBat):
+		*f = fnType(value)
+		return nil
+	default:
+		return errors.New(`invalid value`)
+	}
+}
+
+func (f *fnType) Type() string {
+	return "fnType"
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // declarations
 var (
 	path string
-	fn string
+	fn fnType
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +78,7 @@ var zellijCmd = &cobra.Command{
 
 		// command
 		cmdZellij := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "zellij.sh"
-		execCmd(cmdZellij, fn, path)
+		execCmd(cmdZellij, fn.String(), path)
 
 	},
 }
@@ -60,10 +90,10 @@ func init() {
 	rootCmd.AddCommand(zellijCmd)
 
 	// flags
-	zellijCmd.Flags().StringVarP(&fn, "fun", "n", "", "Function")
+	zellijCmd.Flags().VarP(&fn, "fn", "n", "Function (allowed: bat)")
 	zellijCmd.Flags().StringVarP(&path, "path", "p", "", "Data path")
 
-	zellijCmd.MarkFlagRequired("fun")
+	zellijCmd.MarkFlagRequired("fn")
 	zellijCmd.MarkFlagRequired("path")
 }
 
