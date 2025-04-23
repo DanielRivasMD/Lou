@@ -26,7 +26,7 @@ import (
 // declarations
 var (
 	path string
-	fun string
+	fn string
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ var zellijCmd = &cobra.Command{
 
 		// command
 		cmdZellij := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "zellij.sh"
-		execCmd(cmdZellij, fun, path)
+		execCmd(cmdZellij, fn, path)
 
 	},
 }
@@ -60,9 +60,10 @@ func init() {
 	rootCmd.AddCommand(zellijCmd)
 
 	// flags
-	zellijCmd.Flags().StringVarP(&fun, "fun", "n", "", "Function")
-	zellijCmd.MarkFlagRequired("fun")
+	zellijCmd.Flags().StringVarP(&fn, "fun", "n", "", "Function")
 	zellijCmd.Flags().StringVarP(&path, "path", "p", "", "Data path")
+
+	zellijCmd.MarkFlagRequired("fun")
 	zellijCmd.MarkFlagRequired("path")
 }
 
