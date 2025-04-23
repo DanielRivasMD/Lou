@@ -27,8 +27,8 @@ import (
 
 // declarations
 var (
-	ϙ_hidden bool
-	ϙ_no_ignore bool
+	hidden bool
+	no_ignore bool
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,33 +53,34 @@ var countCmd = &cobra.Command{
 
 	Run: func(κ *cobra.Command, args []string) {
 
-		// parse flags
-		hidden := ""
-		if ϙ_hidden {
-			hidden = "--hidden "
+		// base command
+		cmdCount := "fd ."
+
+		// append flags
+		if hidden {
+			cmdCount += " --hidden"
 		}
 
-		// parse flags
-		no_ignore := ""
-		if ϙ_no_ignore {
-			no_ignore = "--no-ignore "
+		// append flags
+		if no_ignore {
+			cmdCount += " --no-ignore"
 		}
 
-		// declare cmd
-		cmd := "fd . "
+		// validate input
+		arg := args[0]
 
-		switch args[0] {
-		case "dir":
-			shcmd := cmd + hidden + no_ignore + "--type=d --max-depth=1 | /usr/bin/wc -l"
-			ε, stdout, _ := shellCall(shcmd)
-			checkErr(ε)
-			fmt.Print(chalk.Yellow.Color("Number of dirs: "), stdout)
-		case "file":
-			shcmd := cmd + hidden + no_ignore + "--type=f --max-depth=1 | /usr/bin/wc -l"
-			ε, stdout, _ := shellCall(shcmd)
-			checkErr(ε)
-			fmt.Print(chalk.Yellow.Color("Number of files: "), stdout)
+		// args
+		switch arg {
+			case "dir":
+				cmdCount += ` --type=d --max-depth=1 | /usr/bin/wc -l`
+			case "file":
+				cmdCount += ` --type=f --max-depth=1 | /usr/bin/wc -l`
+			default:
+				fmt.Printf("Invalid argument: %s\n", arg)
 		}
+
+		// execute command
+		shellCall(cmdCount)
 
 	},
 }
@@ -88,11 +89,11 @@ var countCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	osCmd.AddCommand(countCmd)
+	rootCmd.AddCommand(countCmd)
 
 	// flags
-	countCmd.Flags().BoolVarP(&ϙ_hidden, "hidden", "H", false, "account hidden files/dirs.")
-	countCmd.Flags().BoolVarP(&ϙ_no_ignore, "no-ignore", "I", false, "don't respect ignore files.")
+	countCmd.Flags().BoolVarP(&hidden, "hidden", "H", false, "account hidden files/dirs.")
+	countCmd.Flags().BoolVarP(&no_ignore, "no-ignore", "I", false, "don't respect ignore files.")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
