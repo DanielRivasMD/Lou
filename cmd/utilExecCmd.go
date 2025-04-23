@@ -5,42 +5,22 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
-	"bytes"
+	"os"
 	"os/exec"
-
-	"github.com/labstack/gommon/color"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute shell command
-func execCmd(cmd, fun, args string) {
+func execCmd(cmd string, args ...string) {
+	cmdRun := exec.Command(cmd, args...)
 
-	// lineBreaks
-	lineBreaks()
+	// output terminal preserve color codes
+	cmdRun.Stdout = os.Stdout
+	cmdRun.Stderr = os.Stderr
 
-	// buffers
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-
-	// shell call
-	shCmd := exec.Command(cmd, fun, args)
-
-	// run
-	shCmd.Stdout = &stdout
-	shCmd.Stderr = &stderr
-	_ = shCmd.Run()
-
-	// stdout
-	color.Println(color.Cyan(stdout.String(), color.B))
-
-	// stderr
-	if stderr.String() != "" {
-		color.Println(color.Red(stderr.String(), color.B))
-	}
-
-	// lineBreaks
-	lineBreaks()
-
+	// run the command
+	err := cmdRun.Run()
+	checkErr(err)
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
