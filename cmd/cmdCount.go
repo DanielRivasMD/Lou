@@ -42,7 +42,7 @@ var countCmd = &cobra.Command{
 `,
 
 	Example: `
-` + chalk.Cyan.Color("tabularasa") + ` help ` + chalk.Yellow.Color("count"),
+` + chalk.Cyan.Color("lou") + ` help ` + chalk.Yellow.Color("count"),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -92,8 +92,8 @@ func init() {
 	rootCmd.AddCommand(countCmd)
 
 	// flags
-	countCmd.Flags().BoolVarP(&hidden, "hidden", "H", false, "account hidden files/dirs.")
-	countCmd.Flags().BoolVarP(&no_ignore, "no-ignore", "I", false, "don't respect ignore files.")
+	countCmd.Flags().BoolVarP(&hidden, "hidden", "H", false, "Account hidden data.")
+	countCmd.Flags().BoolVarP(&no_ignore, "no-ignore", "I", false, "Do not respect ignore config")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
