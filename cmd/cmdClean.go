@@ -17,10 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"bytes"
-	"fmt"
-	"log"
-	"os"
 	"regexp"
 
 	"github.com/spf13/cobra"
@@ -30,11 +26,11 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // declarations
-const я = `\(\d\)\w*` // backticks are used here to contain the expression
+const regParenthesis = `\(\d\)\w*` // backticks here contain expression
 
 // declare regex
 var (
-	ρ = regexp.MustCompile(я)
+	regMatch = regexp.MustCompile(regParenthesis)
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,64 +58,6 @@ var cleanCmd = &cobra.Command{
 		// execute logic
 		cleanDir(location)
 	},
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// TODO: migrate functions to files
-func matchDir(location string) {
-	directory, ε := os.Open(location)
-	if ε != nil {
-		log.Fatal(ε)
-	}
-	defer directory.Close()
-
-	ł, ε := directory.Readdir(0)
-	if ε != nil {
-		log.Fatal(ε)
-	}
-
-	// switch
-	ϙ := true
-
-	// check each file @ location
-	for _, ƒ := range ł {
-		if ρ.MatchString(ƒ.Name()) {
-			ϙ = false
-			fmt.Println(location + ƒ.Name())
-			os.Remove(location + ƒ.Name())
-		}
-	}
-
-	// trigger if no duplicates found
-	if ϙ {
-		fmt.Println(chalk.Cyan.Color("\tNo files to remove"))
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-func cleanDir(location string) {
-	// lineBreaks
-	lineBreaks()
-
-	// function call
-	matchDir(location)
-
-	// buffers
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-
-	// stdout
-	fmt.Println(chalk.Cyan.Color(stdout.String()))
-
-	// stderr
-	if stderr.String() != "" {
-		fmt.Println(chalk.Red.Color(stderr.String()))
-	}
-
-	// lineBreaks
-	lineBreaks()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
