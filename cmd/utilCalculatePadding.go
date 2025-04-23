@@ -1,0 +1,26 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+package cmd
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+import ()
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// calculatePadding determines max width for column
+func calculatePadding(functions []Function) (shellPad, namePad, descPad, argsPad int) {
+	// initialize with header lengths
+	shellPad, namePad, descPad, argsPad = len("Shell"), len("Function"), len("Description"), len("Arguments")
+
+	for _, fn := range functions {
+		shellPad = max(shellPad, len(fn.Shell))
+		namePad = max(namePad, len(fn.Name)+2)    // +2 for backticks
+		descPad = max(descPad, len(fn.Description))
+		argsPad = max(argsPad, len(fn.Arguments)+2) // +2 for backticks
+	}
+	return
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
