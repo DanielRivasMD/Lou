@@ -44,11 +44,11 @@ var gitCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		lineBreaks()
-		execGit("status", "--short")
+		execCmd("git", "status", "--short")
 		lineBreaks()
-		execGit("stash", "list")
+		execCmd("git", "stash", "list")
 		lineBreaks()
-		execGit("log", "--graph", "--topo-order", "--abbrev-commit", "--date=relative", "--decorate", "--all", "--boundary", "--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset", "-10")
+		execCmd("git", "log", "--graph", "--topo-order", "--abbrev-commit", "--date=relative", "--decorate", "--all", "--boundary", "--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset", "-10")
 		lineBreaks()
 
 	},
