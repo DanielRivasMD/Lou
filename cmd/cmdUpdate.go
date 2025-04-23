@@ -45,7 +45,7 @@ var updateCmd = &cobra.Command{
 
 	// command
 	cmdUpdate := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "update.sh"
-	execCmd(cmdUpdate, "", "")
+	execCmd(cmdUpdate)
 
 	},
 }
