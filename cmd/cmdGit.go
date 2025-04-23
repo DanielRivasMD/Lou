@@ -17,8 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	// "fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -60,7 +58,7 @@ var gitCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	osCmd.AddCommand(gitCmd)
+	rootCmd.AddCommand(gitCmd)
 
 	// flags
 }
