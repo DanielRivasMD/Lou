@@ -17,7 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -25,46 +25,17 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// custom type restricting `fn` flag values
-type fnType string
-
-const (
-	fnBat fnType = "bat"
-)
-
-func (f *fnType) String() string {
-	return string(*f)
-}
-
-func (f *fnType) Set(value string) error {
-	switch value {
-
-	case string(fnBat):
-		*f = fnType(value)
-		return nil
-	default:
-		return errors.New(`invalid value`)
-	}
-}
-
-func (f *fnType) Type() string {
-	return "fnType"
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 // declarations
 var (
 	path string
-	fn fnType
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijCmd
-var zellijCmd = &cobra.Command{
+// zellijViewCmd
+var zellijViewCmd = &cobra.Command{
 
-	Use:   "zellij",
+	Use:   "zview",
 	Short: "" + chalk.Yellow.Color("cobra") + ".",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
@@ -74,11 +45,39 @@ var zellijCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	ValidArgs: []string{"bat", "hx", "micro", "lsd"},
+	Args:      cobra.ExactValidArgs(1),
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	Run: func(κ *cobra.Command, args []string) {
 
-		// command
-		cmdZellij := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "zellij.sh"
-		execCmd(cmdZellij, fn.String(), path)
+		// base command
+		cmdView := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
+
+		// validate input
+		arg := args[0]
+
+		switch arg {
+			case "bat":
+				cmdView += `bat `
+			case "hx":
+				cmdView += `hx `
+			case "micro":
+				cmdView += `micro `
+			case "lsd":
+				cmdView += `lsd  --header --long --classify --git `
+			default:
+				fmt.Printf("Invalid argument: %s\n", arg)
+		}
+
+		cmdView += path
+
+		shellCall(cmdView)
+
+		// cmdZellij := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "zellij.sh"
+		// execCmd(cmdZellij, fn.String(), path)
 
 	},
 }
@@ -87,14 +86,12 @@ var zellijCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zellijCmd)
+	rootCmd.AddCommand(zellijViewCmd)
 
 	// flags
-	zellijCmd.Flags().VarP(&fn, "fn", "n", "Function (allowed: bat)")
-	zellijCmd.Flags().StringVarP(&path, "path", "p", "", "Data path")
+	zellijViewCmd.Flags().StringVarP(&path, "path", "p", "", "Data path")
 
-	zellijCmd.MarkFlagRequired("fn")
-	zellijCmd.MarkFlagRequired("path")
+	zellijViewCmd.MarkFlagRequired("path")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
