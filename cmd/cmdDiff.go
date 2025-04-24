@@ -42,6 +42,7 @@ var diffCmd = &cobra.Command{
 
 	Run: func(κ *cobra.Command, args []string) {
 
+		// command
 		 cmdDiff := "git diff --name-only --relative --diff-filter=d | xargs bat --diff"
 		 shellCall(cmdDiff)
 	},

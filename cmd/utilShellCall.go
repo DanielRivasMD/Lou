@@ -13,8 +13,12 @@ import (
 
 func shellCall(cmd string) {
 	cmdRun := exec.Command("bash", "-c", cmd)
+
+	// output terminal preserve color codes
 	cmdRun.Stdout = os.Stdout
 	cmdRun.Stderr = os.Stderr
+
+	// run the command
 	ε := cmdRun.Run()
 	checkErr(ε)
 }
