@@ -72,13 +72,9 @@ var zellijViewCmd = &cobra.Command{
 				fmt.Printf("Invalid argument: %s\n", arg)
 		}
 
+		// execute command
 		cmdView += path
-
 		shellCall(cmdView)
-
-		// cmdZellij := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "zellij.sh"
-		// execCmd(cmdZellij, fn.String(), path)
-
 	},
 }
 
