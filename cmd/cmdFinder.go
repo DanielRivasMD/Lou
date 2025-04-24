@@ -17,6 +17,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -41,13 +43,40 @@ var finderCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	ValidArgs: []string{"off", "on"},
+	Args:      cobra.ExactValidArgs(1),
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Run: func(κ *cobra.Command, args []string) {
+
+
+		// base command
+		cmdFinder := ""
+
+		// validate input
+		arg := args[0]
+
+		switch arg {
+			case "off":
+				cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles false && killall Finder`
+			case "on":
+				cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles true && killall Finder`
+			default:
+				fmt.Printf("Invalid argument: %s\n", arg)
+		}
+
+		// execute command
+		shellCall(cmdFinder)
+	},
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // execute prior main
 func init() {
-	osCmd.AddCommand(finderCmd)
+	rootCmd.AddCommand(finderCmd)
 
 	// flags
 }
