@@ -32,14 +32,16 @@ var ()
 
 // gitCmd
 var gitCmd = &cobra.Command{
-
 	Use:   "git",
-	Short: "" + chalk.Yellow.Color("cobra") + ".",
+	Aliases: []string{"g"},
+	Short:  "Get the status of the repository effortlessly",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` + chalk.Green.Color("Lou") + ` simplifies interactions with Git by providing streamlined commands and features
 `,
 
 	Example: `
-` + chalk.Cyan.Color("tabularasa") + ` help ` + chalk.Yellow.Color("git"),
+` + chalk.Cyan.Color("lou") + ` git`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
