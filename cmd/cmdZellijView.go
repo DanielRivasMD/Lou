@@ -49,7 +49,7 @@ Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextS
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ValidArgs: []string{"bat", "eza", "hx", "micro", "lsd"},
+	ValidArgs: []string{"b", "e", "h", "m", "l", "bat", "eza", "hx", "micro", "lsd"},
 	Args:      cobra.ExactValidArgs(1),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,15 +64,15 @@ Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextS
 		arg := args[0]
 
 		switch arg {
-			case "bat":
+			case "b", "bat":
 				cmdView += `bat`
-			case "eza":
+			case "e", "eza":
 				cmdView += `eza --header --long --icons --classify --git --group`
-			case "hx":
+			case "h", "hx":
 				cmdView += `hx`
-			case "micro":
+			case "m", "micro":
 				cmdView += `micro`
-			case "lsd":
+			case "l", "lsd":
 				cmdView += `lsd  --header --long --classify --git`
 			default:
 				fmt.Printf("Invalid argument: %s\n", arg)
