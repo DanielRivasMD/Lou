@@ -34,14 +34,17 @@ var (
 
 // knitCmd
 var knitCmd = &cobra.Command{
-
 	Use:   "knit",
-	Short: "" + chalk.Yellow.Color("cobra") + ".",
+	Aliases: []string{"k"},
+	Short:  "Compile markdown files using R",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` + chalk.Green.Color("Lou") + ` leverages R to render Markdown files into polished outputs
 `,
 
 	Example: `
-` + chalk.Cyan.Color("tabularasa") + ` help ` + chalk.Yellow.Color("knit"),
+` + chalk.Cyan.Color("lou") + ` knit --file file.Rmd
+` + chalk.Cyan.Color("lou") + ` knit -f file.Rmd`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -67,4 +70,3 @@ func init() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
