@@ -44,7 +44,7 @@ var cleanCmd = &cobra.Command{
 	Short:   "Clean duplicates",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` will clean duplicates at a target location
+` + chalk.Green.Color("Lou") + ` clean duplicates at a target location
 `,
 
 	Example: `

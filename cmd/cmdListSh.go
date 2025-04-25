@@ -43,7 +43,7 @@ type Function struct {
 // listShCmd
 var listShCmd = &cobra.Command{
     Use:   "list --file <path>",
-    Aliases: []string{"l"},
+    Aliases: []string{"ls"},
     Short:  "List shell functions from a specified file",
     Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
