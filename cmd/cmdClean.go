@@ -31,6 +31,8 @@ const regParenthesis = `\(\d\)\w*` // backticks here contain expression
 // declare regex
 var (
 	regMatch = regexp.MustCompile(regParenthesis)
+
+	loc string
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,11 +54,9 @@ var cleanCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
-		// determine location
-		location, _ := κ.Flags().GetString("location")
 
 		// execute logic
-		cleanDir(location)
+		cleanDir(loc)
 	},
 }
 
