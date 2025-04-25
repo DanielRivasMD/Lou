@@ -31,12 +31,15 @@ var ()
 // diffCmd
 var diffCmd = &cobra.Command{
 	Use:   "diff",
-	Short: "" + chalk.Yellow.Color("") + ".",
+	Aliases: []string{"d"},
+	Short:  "Compare differences in the repository",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` + chalk.Green.Color("Lou") + ` helps identify and display differences in the repository
 `,
 
 	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("diff"),
+` + chalk.Cyan.Color("lou") + ` diff`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
