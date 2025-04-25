@@ -34,7 +34,7 @@ var (
 
 // zellijViewCmd
 var zellijViewCmd = &cobra.Command{
-	Use:   "zview [bat|hx|micro|lsd] --path <path>",
+	Use:   "zview [bat|eza|hx|micro|lsd] --path <path>",
 	Aliases: []string{"v"},
 	Short:  "View data in a floating Zellij window",
 Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -49,7 +49,7 @@ Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextS
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ValidArgs: []string{"bat", "hx", "micro", "lsd"},
+	ValidArgs: []string{"bat", "eza", "hx", "micro", "lsd"},
 	Args:      cobra.ExactValidArgs(1),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,19 +65,21 @@ Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextS
 
 		switch arg {
 			case "bat":
-				cmdView += `bat `
+				cmdView += `bat`
+			case "eza":
+				cmdView += `eza --header --long --icons --classify --git --group`
 			case "hx":
-				cmdView += `hx `
+				cmdView += `hx`
 			case "micro":
-				cmdView += `micro `
+				cmdView += `micro`
 			case "lsd":
-				cmdView += `lsd  --header --long --classify --git `
+				cmdView += `lsd  --header --long --classify --git`
 			default:
 				fmt.Printf("Invalid argument: %s\n", arg)
 		}
 
 		// execute command
-		cmdView += path
+		cmdView += " " + path
 		shellCall(cmdView)
 	},
 
