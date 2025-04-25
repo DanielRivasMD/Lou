@@ -39,7 +39,8 @@ var updateCmd = &cobra.Command{
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` update`,
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("update") + `
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

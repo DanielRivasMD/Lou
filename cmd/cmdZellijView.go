@@ -43,8 +43,9 @@ Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextS
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` zview bat --path ./file.txt
-` + chalk.Cyan.Color("lou") + ` zview lsd --path ./data`,
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("zview") + ` bat --path ./file.txt` + `
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("zview") + ` lsd --path ./data` + `
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

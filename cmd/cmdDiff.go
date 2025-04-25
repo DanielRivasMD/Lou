@@ -39,7 +39,8 @@ var diffCmd = &cobra.Command{
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` diff`,
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("diff") + `
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

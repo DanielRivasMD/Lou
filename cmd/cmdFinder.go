@@ -42,8 +42,9 @@ Toggle between showing and hiding hidden files using the appropriate argument
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` finder off
-` + chalk.Cyan.Color("lou") + ` finder on`,
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("finder") + ` off` + `
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("finder") + ` on` + `
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

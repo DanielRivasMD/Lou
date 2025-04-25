@@ -45,10 +45,11 @@ Options for hidden data and ignoring configurations are included for flexible us
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` count dir
-` + chalk.Cyan.Color("lou") + ` count file
-` + chalk.Cyan.Color("lou") + ` count --hidden file
-` + chalk.Cyan.Color("lou") + ` count --no-ignore dir`,
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` dir` + `
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` file` + `
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` --hidden file` + `
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` --no-ignore dir` + `
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

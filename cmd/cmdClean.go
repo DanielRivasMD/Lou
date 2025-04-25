@@ -48,8 +48,9 @@ var cleanCmd = &cobra.Command{
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` clean
-` + chalk.Cyan.Color("lou") + ` clean -l $(pwd)`,
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("clean") + `
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("clean") + ` -l $(pwd)` + `
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

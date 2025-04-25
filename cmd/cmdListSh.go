@@ -51,7 +51,8 @@ var listShCmd = &cobra.Command{
 `,
 
     Example: `
-` + chalk.Cyan.Color("lou") + ` list --file functions.sh`,
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("list") + ` --file functions.sh` + `
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

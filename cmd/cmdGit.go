@@ -41,7 +41,8 @@ var gitCmd = &cobra.Command{
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` git`,
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("git") + `
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

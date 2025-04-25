@@ -43,8 +43,9 @@ var knitCmd = &cobra.Command{
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` knit --file file.Rmd
-` + chalk.Cyan.Color("lou") + ` knit -f file.Rmd`,
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("knit") + ` --file file.Rmd` + `
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("knit") + ` -f file.Rmd` + `
+`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
