@@ -44,8 +44,8 @@ var updateCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 	// command
-	cmdUpdate := findHome() + "/" + ".lou" + "/" + "sh" + "/" + "update.sh"
-	execCmd(cmdUpdate)
+	cmdUpdate := `zellij action new-tab --layout ~/.lou/layouts/update.kdl`
+	shellCall(cmdUpdate)
 
 	},
 }
