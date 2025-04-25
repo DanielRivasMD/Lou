@@ -30,7 +30,7 @@ var ()
 
 // zellijKillCmd
 var zellijKillCmd = &cobra.Command{
-	Use:   "zkill",
+	Use:   "kill",
 	Aliases: []string{"k"},
 	Short:  "Kill the current Zellij session",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `

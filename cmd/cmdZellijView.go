@@ -34,7 +34,7 @@ var (
 
 // zellijViewCmd
 var zellijViewCmd = &cobra.Command{
-	Use:   "zview [bat|eza|hx|micro|lsd] --path <path>",
+	Use:   "view [bat|eza|hx|micro|lsd] --path <path>",
 	Aliases: []string{"v"},
 	Short:  "View data in a floating Zellij window",
 Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
