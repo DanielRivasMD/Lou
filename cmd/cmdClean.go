@@ -40,11 +40,11 @@ var (
 // cleanCmd
 var cleanCmd = &cobra.Command{
 	Use:     "clean",
-	Aliases: []string{"c"},
-	Short:   "Clean duplicates.",
+	Aliases: []string{"C"},
+	Short:   "Clean duplicates",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` will clean duplicates at a target location.
+` + chalk.Green.Color("Lou") + ` will clean duplicates at a target location
 `,
 
 	Example: `
@@ -58,6 +58,7 @@ var cleanCmd = &cobra.Command{
 		// execute logic
 		cleanDir(loc)
 	},
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
