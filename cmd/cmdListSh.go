@@ -18,7 +18,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -28,7 +27,7 @@ import (
 
 // declarations
 var (
-	inFile string
+	listFile string
 )
 
 // Function represents a parsed shell function
@@ -54,17 +53,14 @@ var listShCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
+
 		// collect documentation
-		functions, err := parseFile(inFile)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error parsing functions: %v\n", err)
-			os.Exit(1)
-		}
+		functions, ε := parseFile(listFile)
+		checkErr(ε)
 
 		// generate & print Markdown
 		markdown := generateMD(functions)
 		fmt.Println(markdown)
-
 	},
 
 }
@@ -76,6 +72,8 @@ func init() {
 	rootCmd.AddCommand(listShCmd)
 
 	// flags
+	listShCmd.Flags().StringVarP(&listFile, "file", "f", "", "File to review")
+
 	listShCmd.MarkFlagRequired("file")
 }
 
