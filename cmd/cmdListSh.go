@@ -42,13 +42,16 @@ type Function struct {
 
 // listShCmd
 var listShCmd = &cobra.Command{
-	Use:   "list",
-	Short: "" + chalk.Yellow.Color("") + ".",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+    Use:   "list --file <path>",
+    Aliases: []string{"l"},
+    Short:  "List shell functions from a specified file",
+    Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` + chalk.Green.Color("Lou") + ` extracts and lists shell function details, including descriptions and arguments, from a specified file
 `,
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("shell") + chalk.Yellow.Color("list"),
+    Example: `
+` + chalk.Cyan.Color("lou") + ` list --file functions.sh`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
