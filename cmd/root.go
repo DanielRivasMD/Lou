@@ -106,7 +106,6 @@ func bindFlags(κ *cobra.Command, ω *viper.Viper) {
 func init() {
 
 	// persistent flags
-	rootCmd.PersistentFlags().StringP("location", "l", "/Users/drivas/Downloads/", "Location to clean")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
