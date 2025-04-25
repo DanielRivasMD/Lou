@@ -34,14 +34,17 @@ var (
 
 // zellijViewCmd
 var zellijViewCmd = &cobra.Command{
+	Use:   "zview [bat|hx|micro|lsd] --path <path>",
+	Aliases: []string{"v"},
+	Short:  "View data in a floating Zellij window",
+Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-	Use:   "zview",
-	Short: "" + chalk.Yellow.Color("cobra") + ".",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+` + chalk.Green.Color("Lou") + ` allows you to open and visualize data in a floating Zellij canvas using specified tools such as bat, hx, micro, or lsd.
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` help ` + chalk.Yellow.Color("zellij"),
+` + chalk.Cyan.Color("lou") + ` zview bat --path ./file.txt
+` + chalk.Cyan.Color("lou") + ` zview lsd --path ./data`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -76,6 +79,7 @@ var zellijViewCmd = &cobra.Command{
 		cmdView += path
 		shellCall(cmdView)
 	},
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
