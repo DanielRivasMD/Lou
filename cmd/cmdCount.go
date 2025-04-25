@@ -35,14 +35,20 @@ var (
 
 // countCmd
 var countCmd = &cobra.Command{
-
-	Use:   "count",
-	Short: "" + chalk.Yellow.Color("cobra") + ".",
+	Use:   "count [dir|file]",
+	Aliases: []string{"c"},
+	Short:  "Count directories or files in the current location",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` + chalk.Green.Color("Lou") + ` efficiently counts directories or files in the specified target location
+Options for hidden data and ignoring configurations are included for flexible usage
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` help ` + chalk.Yellow.Color("count"),
+` + chalk.Cyan.Color("lou") + ` count dir
+` + chalk.Cyan.Color("lou") + ` count file
+` + chalk.Cyan.Color("lou") + ` count --hidden file
+` + chalk.Cyan.Color("lou") + ` count --no-ignore dir`,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -81,8 +87,8 @@ var countCmd = &cobra.Command{
 
 		// execute command
 		shellCall(cmdCount)
-
 	},
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +98,7 @@ func init() {
 	rootCmd.AddCommand(countCmd)
 
 	// flags
-	countCmd.Flags().BoolVarP(&hidden, "hidden", "H", false, "Account hidden data.")
+	countCmd.Flags().BoolVarP(&hidden, "hidden", "H", false, "Account for hidden data")
 	countCmd.Flags().BoolVarP(&no_ignore, "no-ignore", "I", false, "Do not respect ignore config")
 }
 
