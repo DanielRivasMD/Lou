@@ -40,7 +40,7 @@ var countCmd = &cobra.Command{
 	Short:  "Count directories or files in the current location",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` efficiently counts directories or files in the specified target location
+` + chalk.Green.Color("Lou") + ` efficiently count directories or files in the specified target location
 Options for hidden data and ignoring configurations are included for flexible usage
 `,
 

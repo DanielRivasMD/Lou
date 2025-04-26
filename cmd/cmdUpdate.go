@@ -35,7 +35,7 @@ var updateCmd = &cobra.Command{
 	Short:  "Lou update dependencies",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` executes an update script to refresh its internal components and ensure the latest features and fixes are applied
+` + chalk.Green.Color("Lou") + ` execute an update script to refresh its internal components and ensure the latest features and fixes are applied
 `,
 
 	Example: `

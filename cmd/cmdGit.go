@@ -37,7 +37,7 @@ var gitCmd = &cobra.Command{
 	Short:  "Get the status of the repository effortlessly",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` simplifies interactions with Git by providing streamlined commands and features
+` + chalk.Green.Color("Lou") + ` simplifie interactions with Git by providing streamlined commands and features
 `,
 
 	Example: `

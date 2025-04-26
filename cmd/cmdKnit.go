@@ -35,11 +35,11 @@ var (
 // knitCmd
 var knitCmd = &cobra.Command{
 	Use:   "knit",
-	Aliases: []string{"k"},
+	Aliases: []string{"n"},
 	Short:  "Compile markdown files using R",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` leverages R to render Markdown files into polished outputs
+` + chalk.Green.Color("Lou") + ` leverage R to render Markdown files into polished outputs
 `,
 
 	Example: `

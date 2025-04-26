@@ -39,7 +39,7 @@ var zellijKillCmd = &cobra.Command{
 `,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("zkill") + `
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("kill") + `
 `,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
