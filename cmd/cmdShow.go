@@ -42,9 +42,9 @@ type Function struct {
 
 // listShCmd
 var listShCmd = &cobra.Command{
-	Use:   "show --file <path>",
+	Use:     "show --file <path>",
 	Aliases: []string{"s"},
-	Short:  "List shell functions from a specified file",
+	Short:   "List shell functions from a specified file",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` extract and list shell function details, including descriptions and arguments, from a specified file
@@ -66,7 +66,6 @@ var listShCmd = &cobra.Command{
 		markdown := generateMD(functions)
 		fmt.Println(markdown)
 	},
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -11,7 +11,7 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// generateMD creates Markdown table from parsed functions
+// create Markdown table from parsed functions
 func generateMD(functions []Function) string {
 	var builder strings.Builder
 	shellPad, namePad, descPad, argsPad := calculatePadding(functions)
@@ -54,5 +54,3 @@ func generateMD(functions []Function) string {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
