@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -27,7 +28,7 @@ import (
 
 // declarations
 var (
-	hidden bool
+	hidden    bool
 	no_ignore bool
 )
 
@@ -36,8 +37,7 @@ var (
 // countCmd
 var countCmd = &cobra.Command{
 	Use:   "count [dir|file]",
-	Aliases: []string{"c"},
-	Short:  "Count directories or files in the current location",
+	Short: "Count directories or files in the current location",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` efficiently count directories or files in the specified target location
@@ -78,18 +78,17 @@ Options for hidden data and ignoring configurations are included for flexible us
 
 		// args
 		switch arg {
-			case "dir":
-				cmdCount += ` --type=d --max-depth=1 | /usr/bin/wc -l`
-			case "file":
-				cmdCount += ` --type=f --max-depth=1 | /usr/bin/wc -l`
-			default:
-				fmt.Printf("Invalid argument: %s\n", arg)
+		case "dir":
+			cmdCount += ` --type=d --max-depth=1 | /usr/bin/wc -l`
+		case "file":
+			cmdCount += ` --type=f --max-depth=1 | /usr/bin/wc -l`
+		default:
+			fmt.Printf("Invalid argument: %s\n", arg)
 		}
 
 		// execute command
-		shellCall(cmdCount)
+		domovoi.ExecCmd("bash", "-c", cmdCount)
 	},
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
