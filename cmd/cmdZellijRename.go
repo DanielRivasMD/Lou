@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -46,7 +47,7 @@ var zellijRenameCmd = &cobra.Command{
 
 		// command
 		cmdZellijRename := `zellij action rename-tab "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
-		shellCall(cmdZellijRename)
+		domovoi.ExecCmd("bash", "-c", cmdZellijRename)
 	},
 }
 
