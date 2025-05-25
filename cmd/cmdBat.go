@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -31,7 +32,6 @@ var ()
 // batCmd
 var batCmd = &cobra.Command{
 	Use:     "bat",
-	Aliases: []string{"b"},
 	Short:   "View data in a floating Zellij window using bat",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
@@ -44,15 +44,15 @@ var batCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// base command
-		cmdView := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
-		cmdView += `bat`
+		cmdBat := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
+		cmdBat += `bat`
 
 		// validate input
 		arg := args[0]
 
 		// execute command
-		cmdView += " " + arg
-		shellCall(cmdView)
+		cmdBat += " " + arg
+		domovoi.ExecCmd("bash", "-c", cmdBat)
 	},
 }
 
