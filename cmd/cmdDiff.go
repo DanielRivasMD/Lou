@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -31,8 +32,7 @@ var ()
 // diffCmd
 var diffCmd = &cobra.Command{
 	Use:   "diff",
-	Aliases: []string{"d"},
-	Short:  "Compare differences in the repository",
+	Short: "Compare differences in the repository",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` help identify and display differences in the repository
@@ -47,10 +47,9 @@ var diffCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// command
-		 cmdDiff := "git diff --name-only --relative --diff-filter=d | xargs bat --diff"
-		 shellCall(cmdDiff)
+		cmdDiff := "git diff --name-only --relative --diff-filter=d | xargs bat --diff"
+		domovoi.ExecCmd("bash", "-c", cmdDiff)
 	},
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
