@@ -31,8 +31,10 @@ var ()
 // zellijRenameCmd
 var zellijRenameCmd = &cobra.Command{
 	Use:   "rename",
-	Short: "" + chalk.Yellow.Color("") + ".",
+	Short: "Rename current tab with working directory",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` + chalk.Green.Color("Lou") + ` allow to rename current Zellij tab effortlessly with working directory
 `,
 
 	Example: `
@@ -43,8 +45,8 @@ var zellijRenameCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// command
-		cmdZellijTab := `zellij action rename-tab "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
-		shellCall(cmdZellijTab)
+		cmdZellijRename := `zellij action rename-tab "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
+		shellCall(cmdZellijRename)
 	},
 }
 
