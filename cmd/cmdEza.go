@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -44,15 +45,15 @@ var ezaCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// base command
-		cmdView := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
-		cmdView += `eza --header --long --icons --classify --git --group`
+		cmdEza := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
+		cmdEza += `eza --header --long --icons --classify --git --group`
 
 		// validate input
 		arg := args[0]
 
 		// execute command
-		cmdView += " " + arg
-		shellCall(cmdView)
+		cmdEza += " " + arg
+		domovoi.ExecCmd("bash", "-c", cmdEza)
 	},
 }
 
