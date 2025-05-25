@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -55,7 +56,7 @@ var rootCmd = &cobra.Command{
 // execute
 func Execute() {
 	ε := rootCmd.Execute()
-	checkErr(ε)
+	horus.CheckErr(ε)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
