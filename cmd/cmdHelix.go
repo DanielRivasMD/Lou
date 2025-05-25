@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -30,9 +31,9 @@ var ()
 
 // helixCmd
 var helixCmd = &cobra.Command{
-	Use:   "helix",
+	Use:     "helix",
 	Aliases: []string{"hx"},
-	Short:  "View data in a floating Zellij window using helix",
+	Short:   "View data in a floating Zellij window using helix",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
 
@@ -44,15 +45,15 @@ var helixCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// base command
-		cmdView := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
-		cmdView += `hx`
+		cmdHelix := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
+		cmdHelix += `hx`
 
 		// validate input
 		arg := args[0]
 
 		// execute command
-		cmdView += " " + arg
-		shellCall(cmdView)
+		cmdHelix += " " + arg
+		domovoi.ExecCmd("bash", "-c", cmdHelix)
 	},
 }
 
