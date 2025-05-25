@@ -8,19 +8,19 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/DanielRivasMD/horus"
 	"github.com/ttacon/chalk"
 )
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func matchDir(location string) {
 	directory, ε := os.Open(location)
-	checkErr(ε)
+	horus.CheckErr(ε)
 	defer directory.Close()
 
 	ł, ε := directory.Readdir(0)
-	checkErr(ε)
+	horus.CheckErr(ε)
 
 	// switch
 	ϙ := true
