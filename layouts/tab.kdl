@@ -7,7 +7,7 @@ layout {
     }
 
 
-    tab name="Dev" {
+    tab {
         pane stacked=true split_direction="horizontal" {
             pane name="git" command="lazygit"
             pane name="editor" command="hx" focus=true
