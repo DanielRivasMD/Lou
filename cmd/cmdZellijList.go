@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -30,9 +31,8 @@ var ()
 
 // zellijlistCmd
 var zellijlistCmd = &cobra.Command{
-	Use:   "list",
-	Aliases: []string{"k"},
-	Short: "List Zellij sessions",
+	Use:     "list",
+	Short:   "List Zellij sessions",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` display Zellij sessions
@@ -48,9 +48,8 @@ var zellijlistCmd = &cobra.Command{
 
 		// command
 		cmdZellijList := `zellij list-sessions`
-		shellCall(cmdZellijList)
+		domovoi.ExecCmd("bash", "-c", cmdZellijList)
 	},
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
