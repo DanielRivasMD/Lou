@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -33,8 +34,7 @@ var ()
 // gitCmd
 var gitCmd = &cobra.Command{
 	Use:   "git",
-	Aliases: []string{"g"},
-	Short:  "Get the status of the repository effortlessly",
+	Short: "Get the status of the repository effortlessly",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` simplifie interactions with Git by providing streamlined commands and features
@@ -51,19 +51,18 @@ var gitCmd = &cobra.Command{
 		// command
 		lineBreaks()
 		fmt.Println()
-		execCmd("git", "status", "--short")
+		domovoi.ExecCmd("git", "status", "--short")
 
 		lineBreaks()
 		fmt.Println()
-		execCmd("git", "stash", "list")
+		domovoi.ExecCmd("git", "stash", "list")
 		lineBreaks()
 		fmt.Println()
 
-		execCmd("git", "log", "--graph", "--topo-order", "--abbrev-commit", "--date=relative", "--decorate", "--all", "--boundary", "--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset", "-10")
+		domovoi.ExecCmd("git", "log", "--graph", "--topo-order", "--abbrev-commit", "--date=relative", "--decorate", "--all", "--boundary", "--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset", "-10")
 		lineBreaks()
 		fmt.Println()
 	},
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
