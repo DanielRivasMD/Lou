@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -33,8 +34,7 @@ var ()
 // finderCmd
 var finderCmd = &cobra.Command{
 	Use:   "finder [off|on]",
-	Aliases: []string{"f"},
-	Short:  "Toggle Finder visibility of hidden files",
+	Short: "Toggle Finder visibility of hidden files",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` control the visibility of hidden files in Finder on macOS
@@ -55,7 +55,6 @@ Toggle between showing and hiding hidden files using the appropriate argument
 
 	Run: func(κ *cobra.Command, args []string) {
 
-
 		// base command
 		cmdFinder := ""
 
@@ -63,18 +62,17 @@ Toggle between showing and hiding hidden files using the appropriate argument
 		arg := args[0]
 
 		switch arg {
-			case "off":
-				cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles false && killall Finder`
-			case "on":
-				cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles true && killall Finder`
-			default:
-				fmt.Printf("Invalid argument: %s\n", arg)
+		case "off":
+			cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles false && killall Finder`
+		case "on":
+			cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles true && killall Finder`
+		default:
+			fmt.Printf("Invalid argument: %s\n", arg)
 		}
 
 		// execute command
-		shellCall(cmdFinder)
+		domovoi.ExecCmd("bash", "-c", cmdFinder)
 	},
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
