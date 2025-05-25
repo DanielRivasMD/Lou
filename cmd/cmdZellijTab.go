@@ -47,7 +47,7 @@ var zellijTabCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// command
-		cmdZellijTab := `zellij action new-tab --layout $HOME/.lou/layouts/tab.kdl`
+		cmdZellijTab := `zellij action new-tab --layout $HOME/.lou/layouts/tab.kdl --name "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
 		shellCall(cmdZellijTab)
 	},
 }
