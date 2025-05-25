@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -30,9 +31,8 @@ var ()
 
 // zellijTabCmd
 var zellijTabCmd = &cobra.Command{
-	Use:     "tab",
-	Aliases: []string{"t"},
-	Short:   "Launch a new Zellij tab with style",
+	Use:   "tab",
+	Short: "Launch a new Zellij tab with style",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` allow to launch a new tab with the current active Zellij session effortlessly with convenient custom layout
@@ -48,7 +48,7 @@ var zellijTabCmd = &cobra.Command{
 
 		// command
 		cmdZellijTab := `zellij action new-tab --layout $HOME/.lou/layouts/tab.kdl --name "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
-		shellCall(cmdZellijTab)
+		domovoi.ExecCmd("bash", "-c", cmdZellijTab)
 	},
 }
 
