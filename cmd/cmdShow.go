@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -43,7 +44,6 @@ type Function struct {
 // listShCmd
 var listShCmd = &cobra.Command{
 	Use:     "show --file <path>",
-	Aliases: []string{"s"},
 	Short:   "List shell functions from a specified file",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
@@ -60,7 +60,7 @@ var listShCmd = &cobra.Command{
 
 		// collect documentation
 		functions, ε := parseFile(listFile)
-		checkErr(ε)
+		horus.CheckErr(ε)
 
 		// generate & print Markdown
 		markdown := generateMD(functions)
