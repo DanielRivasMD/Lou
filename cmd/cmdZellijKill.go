@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -30,9 +31,8 @@ var ()
 
 // zellijKillCmd
 var zellijKillCmd = &cobra.Command{
-	Use:   "kill",
-	Aliases: []string{"k"},
-	Short:  "Kill the current Zellij session",
+	Use:     "kill",
+	Short:   "Kill the current Zellij session",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` allow to terminate the current active Zellij session effortlessly by identifying and killing it directly
@@ -48,9 +48,8 @@ var zellijKillCmd = &cobra.Command{
 
 		// command
 		cmdZellijKill := `zellij kill-session "$(zellij list-sessions | grep '(current)' | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')"`
-		shellCall(cmdZellijKill)
+		domovoi.ExecCmd("bash", "-c", cmdZellijKill)
 	},
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
