@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -34,9 +35,8 @@ var (
 
 // knitCmd
 var knitCmd = &cobra.Command{
-	Use:   "knit",
-	Aliases: []string{"n"},
-	Short:  "Compile markdown files using R",
+	Use:     "knit",
+	Short:   "Compile markdown files using R",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` leverage R to render Markdown files into polished outputs
@@ -53,9 +53,8 @@ var knitCmd = &cobra.Command{
 
 		// execute command
 		cmdKnit := fmt.Sprintf(`R --slave -e "rmarkdown::render('%s')" > /dev/null`, knitFile)
-		shellCall(cmdKnit)
+		domovoi.ExecCmd("bash", "-c", cmdKnit)
 	},
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
