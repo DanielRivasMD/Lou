@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -31,7 +32,7 @@ var ()
 // zellijUpdateCmd
 var zellijUpdateCmd = &cobra.Command{
 	Use:   "update",
-	Short:  "Lou update dependencies",
+	Short: "Lou update dependencies",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` execute an update script to refresh its internal components and ensure the latest features and fixes are applied
@@ -45,10 +46,9 @@ var zellijUpdateCmd = &cobra.Command{
 
 	Run: func(κ *cobra.Command, args []string) {
 
-	// command
-	cmdZellijUpdate := `zellij action new-tab --layout ~/.lou/layouts/update.kdl`
-	shellCall(cmdZellijUpdate)
-
+		// command
+		cmdZellijUpdate := `zellij action new-tab --layout ~/.lou/layouts/update.kdl`
+		domovoi.ExecCmd("bash", "-c", cmdZellijUpdate)
 	},
 }
 
