@@ -28,10 +28,9 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// updateCmd
-var updateCmd = &cobra.Command{
+// zellijUpdateCmd
+var zellijUpdateCmd = &cobra.Command{
 	Use:   "update",
-	Aliases: []string{"u"},
 	Short:  "Lou update dependencies",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
@@ -47,8 +46,8 @@ var updateCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 	// command
-	cmdUpdate := `zellij action new-tab --layout ~/.lou/layouts/update.kdl`
-	shellCall(cmdUpdate)
+	cmdZellijUpdate := `zellij action new-tab --layout ~/.lou/layouts/update.kdl`
+	shellCall(cmdZellijUpdate)
 
 	},
 }
@@ -57,7 +56,7 @@ var updateCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(updateCmd)
+	rootCmd.AddCommand(zellijUpdateCmd)
 
 	// flags
 }
