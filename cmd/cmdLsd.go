@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -32,7 +33,7 @@ var ()
 var lsdCmd = &cobra.Command{
 	Use:     "lsd",
 	Aliases: []string{"l"},
-	Short:  "View data in a floating Zellij window using lsd",
+	Short:   "View data in a floating Zellij window using lsd",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
 
@@ -44,15 +45,15 @@ var lsdCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// base command
-		cmdView := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
-		cmdView += `lsd  --header --long --classify --git`
+		cmdLsd := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
+		cmdLsd += `lsd  --header --long --classify --git`
 
 		// validate input
 		arg := args[0]
 
 		// execute command
-		cmdView += " " + arg
-		shellCall(cmdView)
+		cmdLsd += " " + arg
+		domovoi.ExecCmd("bash", "-c", cmdLsd)
 	},
 }
 
