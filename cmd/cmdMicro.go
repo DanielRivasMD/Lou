@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -32,7 +33,7 @@ var ()
 var microCmd = &cobra.Command{
 	Use:     "micro",
 	Aliases: []string{"mc"},
-	Short:  "View data in a floating Zellij window using micro",
+	Short:   "View data in a floating Zellij window using micro",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
 
@@ -52,7 +53,7 @@ var microCmd = &cobra.Command{
 
 		// execute command
 		cmdView += " " + arg
-		shellCall(cmdView)
+		domovoi.ExecCmd("bash", "-c", cmdView)
 	},
 }
 
