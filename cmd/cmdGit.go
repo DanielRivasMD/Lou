@@ -49,18 +49,18 @@ var gitCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// command
-		lineBreaks()
+		domovoi.LineBreaks()
 		fmt.Println()
 		domovoi.ExecCmd("git", "status", "--short")
 
-		lineBreaks()
+		domovoi.LineBreaks()
 		fmt.Println()
 		domovoi.ExecCmd("git", "stash", "list")
-		lineBreaks()
+		domovoi.LineBreaks()
 		fmt.Println()
 
 		domovoi.ExecCmd("git", "log", "--graph", "--topo-order", "--abbrev-commit", "--date=relative", "--decorate", "--all", "--boundary", "--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset", "-10")
-		lineBreaks()
+		domovoi.LineBreaks()
 		fmt.Println()
 	},
 }
