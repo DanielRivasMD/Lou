@@ -8,15 +8,15 @@ import (
 	"bytes"
 	"fmt"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/ttacon/chalk"
 )
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func cleanDir(location string) {
 	// lineBreaks
-	lineBreaks()
+	domovoi.LineBreaks()
 
 	// function call
 	matchDir(location)
@@ -34,7 +34,7 @@ func cleanDir(location string) {
 	}
 
 	// lineBreaks
-	lineBreaks()
+	domovoi.LineBreaks()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
