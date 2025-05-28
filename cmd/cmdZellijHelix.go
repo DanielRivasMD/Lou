@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// helixCmd
-var helixCmd = &cobra.Command{
+// zellijHelixCmd
+var zellijHelixCmd = &cobra.Command{
 	Use:     "helix",
 	Aliases: []string{"hx"},
 	Short:   "View data in a floating Zellij window using helix",
@@ -42,7 +42,7 @@ var helixCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
 		cmdHelix := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
@@ -61,7 +61,7 @@ var helixCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(helixCmd)
+	rootCmd.AddCommand(zellijHelixCmd)
 
 	// flags
 }
