@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// lsdCmd
-var lsdCmd = &cobra.Command{
+// zellijLsdCmd
+var zellijLsdCmd = &cobra.Command{
 	Use:     "lsd",
 	Aliases: []string{"l"},
 	Short:   "View data in a floating Zellij window using lsd",
@@ -42,7 +42,7 @@ var lsdCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
 		cmdLsd := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
@@ -61,7 +61,7 @@ var lsdCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(lsdCmd)
+	rootCmd.AddCommand(zellijLsdCmd)
 
 	// flags
 }
