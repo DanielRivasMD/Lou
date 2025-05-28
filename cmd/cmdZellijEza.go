@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// ezaCmd
-var ezaCmd = &cobra.Command{
+// zellijEzaCmd
+var zellijEzaCmd = &cobra.Command{
 	Use:     "eza",
 	Aliases: []string{"e"},
 	Short:   "View data in a floating Zellij window using eza",
@@ -42,7 +42,7 @@ var ezaCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
 		cmdEza := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
@@ -61,7 +61,7 @@ var ezaCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(ezaCmd)
+	rootCmd.AddCommand(zellijEzaCmd)
 
 	// flags
 }
