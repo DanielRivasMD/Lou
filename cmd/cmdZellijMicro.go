@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// microCmd
-var microCmd = &cobra.Command{
+// zellijMicroCmd
+var zellijMicroCmd = &cobra.Command{
 	Use:     "micro",
 	Aliases: []string{"mc"},
 	Short:   "View data in a floating Zellij window using micro",
@@ -42,7 +42,7 @@ var microCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
 		cmdView := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
@@ -61,7 +61,7 @@ var microCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(microCmd)
+	rootCmd.AddCommand(zellijMicroCmd)
 
 	// flags
 }
