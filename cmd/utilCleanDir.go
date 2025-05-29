@@ -15,25 +15,25 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func cleanDir(location string) {
-	// lineBreaks
+	// Insert visual separators to enhance console readability.
 	domovoi.LineBreaks()
 
-	// function call
+	// Invoke matchDir to remove matching files from the specified directory.
 	matchDir(location)
 
-	// buffers
+	// Initialize buffers for capturing any process output.
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 
-	// stdout
+	// Display any captured standard output in cyan.
 	fmt.Println(chalk.Cyan.Color(stdout.String()))
 
-	// stderr
+	// If any error output is captured, display it in red.
 	if stderr.String() != "" {
 		fmt.Println(chalk.Red.Color(stderr.String()))
 	}
 
-	// lineBreaks
+	// Insert additional visual separators to conclude the output block.
 	domovoi.LineBreaks()
 }
 
