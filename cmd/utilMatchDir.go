@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////
 
 package cmd
 
@@ -14,28 +14,33 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func matchDir(location string) {
-	directory, ε := os.Open(location)
-	horus.CheckErr(ε)
-	defer directory.Close()
+func matchDir(directoryPath string) {
+	// Open the target directory
+	dir, err := os.Open(directoryPath)
+	horus.CheckErr(err)
+	defer dir.Close()
 
-	ł, ε := directory.Readdir(0)
-	horus.CheckErr(ε)
+	// Read all entries in the directory
+	entries, err := dir.Readdir(0)
+	horus.CheckErr(err)
 
-	// switch
-	ϙ := true
+	// Flag to track if at least one file was removed.
+	removedAny := false
 
-	// check each file @ location
-	for _, ƒ := range ł {
-		if regMatch.MatchString(ƒ.Name()) {
-			ϙ = false
-			fmt.Println(location + ƒ.Name())
-			os.Remove(location + ƒ.Name())
+	// Check each file @ the directory
+	for _, entry := range entries {
+		if fileNamePattern.MatchString(entry.Name()) {
+			removedAny = true
+			fullPath := directoryPath + entry.Name()
+			fmt.Println(fullPath)
+			err = os.Remove(fullPath)
+			horus.CheckErr(err)
+			fmt.Printf("Removed file: %s\n", fullPath)
 		}
 	}
 
-	// trigger if no duplicates found
-	if ϙ {
+	// Trigger if no matching files were found to remove
+	if !removedAny {
 		fmt.Println(chalk.Cyan.Color("\tNo files to remove"))
 	}
 }
