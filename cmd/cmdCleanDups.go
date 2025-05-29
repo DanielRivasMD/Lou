@@ -30,7 +30,8 @@ const regParenthesis = `\(\d\)\w*` // backticks here contain expression
 
 // declare regex
 var (
-	regMatch = regexp.MustCompile(regParenthesis)
+	// Define the regular expression pattern for matching file names.
+	fileNamePattern = regexp.MustCompile(regParenthesis)
 
 	loc string
 )
@@ -55,11 +56,9 @@ var cleanCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(κ *cobra.Command, args []string) {
-
 		// execute logic
 		cleanDir(loc)
 	},
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +68,7 @@ func init() {
 	rootCmd.AddCommand(cleanCmd)
 
 	// flags
-	cleanCmd.Flags().StringVarP(&loc, "location", "l", "/Users/drivas/Downloads/", "Location to clean")
+	cleanCmd.Flags().StringVarP(&loc, "location", "", "/Users/drivas/Downloads/", "Location to clean")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
