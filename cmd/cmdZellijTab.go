@@ -44,7 +44,9 @@ var zellijTabCmd = &cobra.Command{
 		`
 
 ` + chalk.Green.Color("Lou") + ` allows you to launch a new tab in the active Zellij session effortlessly,
-using a custom layout. Optionally, you can change to a specified directory prior to launching the tab,
+using a custom layout.
+
+Optionally, you can change to a specified directory prior to launching the tab,
 and then return to your original directory.`,
 	Example: `
 ` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("tab --target /path/to/directory") + `
