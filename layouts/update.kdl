@@ -13,13 +13,13 @@ layout {
     }
 
     tab name="Update" split_direction="vertical" {
-        pane command="sh" {
+        pane command="bash" {
             args "/Users/drivas/.archive/in-silico/.update/brew.sh"
         }
-        pane command="sh" {
+        pane command="bash" {
             args "/Users/drivas/.archive/in-silico/.update/rust.sh"
         }
-        pane command="sh" {
+        pane command="bash" {
             args "/Users/drivas/.archive/in-silico/.update/go.sh"
         }
     }
