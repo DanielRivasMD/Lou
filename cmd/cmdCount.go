@@ -18,8 +18,10 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -28,8 +30,8 @@ import (
 
 // declarations
 var (
-	hidden    bool
-	no_ignore bool
+	hidden   bool
+	noIgnore bool
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,56 +40,77 @@ var (
 var countCmd = &cobra.Command{
 	Use:   "count [dir|file]",
 	Short: "Count directories or files in the current location",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` efficiently count directories or files in the specified target location
-Options for hidden data and ignoring configurations are included for flexible usage
-`,
+` + chalk.Green.Color("Lou") + ` efficiently count directories or files in the specified target location.
+Options for hidden data and ignoring configurations are included for flexible usage.`,
 
 	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` dir` + `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` file` + `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` --hidden file` + `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` --no-ignore dir` + `
-`,
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` dir
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` file
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` --hidden file
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("count") + ` --no-ignore dir`,
 
 	ValidArgs: []string{"dir", "file"},
-	Args:      cobra.ExactValidArgs(1),
+	// allow 0 or 1 args, handle zero case manually
+	Args: cobra.MaximumNArgs(1),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
+		const op = "cmd.count"
 
-		// base command
-		cmdCount := "fd ."
+		if len(args) == 0 {
+			// build the Herror
+			herr := horus.NewHerrorErrorf(
+				op,
+				"accepts 1 arg(s), received %d",
+				len(args),
+			)
 
-		// append flags
+			// try to downcast to *Herror so we can colorize
+			if he, ok := herr.(*horus.Herror); ok {
+				fmt.Fprintln(cmd.ErrOrStderr(), horus.SimpleColoredFormatter(he))
+			} else {
+				// fallback
+				fmt.Fprintln(cmd.ErrOrStderr(), herr.Error())
+			}
+
+			_ = cmd.Usage()
+			os.Exit(1)
+		}
+
+		target := args[0]
+
+		// build base fd invocation
+		fdCmd := "fd ."
 		if hidden {
-			cmdCount += " --hidden"
+			fdCmd += " --hidden"
+		}
+		if noIgnore {
+			fdCmd += " --no-ignore"
 		}
 
-		// append flags
-		if no_ignore {
-			cmdCount += " --no-ignore"
-		}
-
-		// validate input
-		arg := args[0]
-
-		// args
-		switch arg {
+		switch target {
 		case "dir":
-			cmdCount += ` --type=d --max-depth=1 | /usr/bin/wc -l`
+			fdCmd += " --type=d --max-depth=1 | wc -l"
 		case "file":
-			cmdCount += ` --type=f --max-depth=1 | /usr/bin/wc -l`
+			fdCmd += " --type=f --max-depth=1 | wc -l"
 		default:
-			fmt.Printf("Invalid argument: %s\n", arg)
+			panic(horus.NewCategorizedHerror(
+				op,
+				"InvalidArgument",
+				fmt.Sprintf("unsupported mode %q; use \"dir\" or \"file\"", target),
+				nil,
+				map[string]any{"arg": target},
+			))
 		}
 
-		// execute command
-		domovoi.ExecCmd("bash", "-c", cmdCount)
+		// execute the command and panic on error
+		if err := domovoi.ExecCmd("bash", "-c", fdCmd); err != nil {
+			panic(horus.Wrap(err, op, "failed to execute count command"))
+		}
 	},
 }
 
@@ -97,9 +120,8 @@ Options for hidden data and ignoring configurations are included for flexible us
 func init() {
 	rootCmd.AddCommand(countCmd)
 
-	// flags
-	countCmd.Flags().BoolVarP(&hidden, "hidden", "H", false, "Account for hidden data")
-	countCmd.Flags().BoolVarP(&no_ignore, "no-ignore", "I", false, "Do not respect ignore config")
+	countCmd.Flags().BoolVarP(&hidden, "hidden", "H", false, "include hidden files and dirs")
+	countCmd.Flags().BoolVarP(&noIgnore, "no-ignore", "I", false, "do not respect ignore config")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
