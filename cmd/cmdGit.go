@@ -18,16 +18,13 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// declarations
-var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,33 +32,52 @@ var ()
 var gitCmd = &cobra.Command{
 	Use:   "git",
 	Short: "Get the status of the repository effortlessly",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` simplifie interactions with Git by providing streamlined commands and features
+` + chalk.Green.Color("Lou") + ` simplifies interactions with Git by providing
+streamlined commands and features.
 `,
 
 	Example: `
 ` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("git") + `
 `,
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	RunE: func(cmd *cobra.Command, args []string) error {
+		const op = "cmd.git"
 
-	Run: func(κ *cobra.Command, args []string) {
+		// Section: git status
+		domovoi.PrintCentered("Status")
 
-		// command
-		domovoi.LineBreaks()
-		fmt.Println()
-		domovoi.ExecCmd("git", "status", "--short")
+		if err := domovoi.ExecCmd("git", "status", "--short"); err != nil {
+			return horus.Wrap(err, op, "failed to run git status")
+		}
 
-		domovoi.LineBreaks()
-		fmt.Println()
-		domovoi.ExecCmd("git", "stash", "list")
-		domovoi.LineBreaks()
-		fmt.Println()
+		// Section: git stash list (capture output)
+		domovoi.PrintCentered("Stash List")
+		stdout, _, err := domovoi.CaptureExecCmd("git", "stash", "list")
+		if err != nil {
+			return horus.Wrap(err, op, "failed to list stashes")
+		}
+		stash := strings.TrimSpace(stdout)
+		if stash == "" {
+			fmt.Println(chalk.Yellow.Color("No stashes found"))
+		} else {
+			fmt.Println(stash)
+		}
 
-		domovoi.ExecCmd("git", "log", "--graph", "--topo-order", "--abbrev-commit", "--date=relative", "--decorate", "--all", "--boundary", "--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset", "-10")
-		domovoi.LineBreaks()
-		fmt.Println()
+		// Section: git log
+		domovoi.PrintCentered("Recent Commits")
+		if err := domovoi.ExecCmd(
+			"git", "log", "--graph", "--topo-order", "--abbrev-commit",
+			"--date=relative", "--decorate", "--all", "--boundary",
+			"--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset",
+			"-10",
+		); err != nil {
+			return horus.Wrap(err, op, "failed to show git log")
+		}
+		domovoi.LineBreaks(true)
+		return nil
 	},
 }
 
@@ -71,7 +87,7 @@ var gitCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(gitCmd)
 
-	// flags
+	// no flags for this command
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
