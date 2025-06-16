@@ -98,13 +98,14 @@ Options for hidden data and ignoring configurations are included for flexible us
 		case "file":
 			fdCmd += " --type=f --max-depth=1 | wc -l"
 		default:
-			panic(horus.NewCategorizedHerror(
+			// invalid target: print a colored panic message, usage, then exit 1
+			msg := horus.FormatPanic(
 				op,
-				"InvalidArgument",
 				fmt.Sprintf("unsupported mode %q; use \"dir\" or \"file\"", target),
-				nil,
-				map[string]any{"arg": target},
-			))
+			)
+			fmt.Fprintln(cmd.ErrOrStderr(), msg)
+			_ = cmd.Usage()
+			os.Exit(1)
 		}
 
 		// execute the command and panic on error
