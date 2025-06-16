@@ -37,77 +37,61 @@ var ()
 var rootCmd = &cobra.Command{
 	Use:     "lou",
 	Version: "v0.3",
-	Short:   chalk.Green.Color("Lou") + ", personal assitant at your service.",
+	Short:   chalk.Green.Color("Lou") + ", personal assistant at your service.",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + `, personal assitant at your service
+` + chalk.Green.Color("Lou") + `, personal assistant at your service
 `,
 
 	Example: `
 ` + chalk.Cyan.Color("lou") + ` ` + chalk.Magenta.Color("help") + `
 `,
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute
+// Execute runs the root command.
 func Execute() {
-	ε := rootCmd.Execute()
-	horus.CheckErr(ε)
+	err := rootCmd.Execute()
+	horus.CheckErr(err)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// initialize config
-func initializeConfig(κ *cobra.Command, configPath string, configName string) error {
+// initializeConfig loads configuration from file into Viper.
+func initializeConfig(cmd *cobra.Command, configPath, configName string) error {
+	vip := viper.New()
+	vip.AddConfigPath(configPath)
+	vip.SetConfigName(configName)
 
-	// initialize viper
-	ω := viper.New()
-
-	// collect config path & file from persistent flags
-	ω.AddConfigPath(configPath)
-	ω.SetConfigName(configName)
-
-	// read config file
-	ε := ω.ReadInConfig()
-	if ε != nil {
-		// okay if no config file
-		_, ϙ := ε.(viper.ConfigFileNotFoundError)
-		if !ϙ {
-			// error if not parse config file
-			return ε
+	err := vip.ReadInConfig()
+	if err != nil {
+		_, notFound := err.(viper.ConfigFileNotFoundError)
+		if !notFound {
+			return err
 		}
 	}
 
-	// bind flags viper
-	bindFlags(κ, ω)
-
+	bindFlags(cmd, vip)
 	return nil
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// bind each cobra flag viper configuration
-func bindFlags(κ *cobra.Command, ω *viper.Viper) {
-
-	κ.Flags().VisitAll(func(ζ *pflag.Flag) {
-
-		// apply viper config value flag
-		if !ζ.Changed && ω.IsSet(ζ.Name) {
-			ν := ω.Get(ζ.Name)
-			κ.Flags().Set(ζ.Name, fmt.Sprintf("%v", ν))
+// bindFlags maps Viper values back into Cobra flags.
+func bindFlags(cmd *cobra.Command, vip *viper.Viper) {
+	cmd.Flags().VisitAll(func(flag *pflag.Flag) {
+		if !flag.Changed && vip.IsSet(flag.Name) {
+			val := vip.Get(flag.Name)
+			cmd.Flags().Set(flag.Name, fmt.Sprintf("%v", val))
 		}
 	})
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
+// execute prior to main
 func init() {
-
 	// persistent flags
 }
 
