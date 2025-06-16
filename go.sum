@@ -16,6 +16,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/DanielRivasMD/domovoi v0.0.0-20250523133919-940e8593d874 h1:HJG6e5DhxIISPUWC1F8k9elcMvDajxPxCMIe7SaqhYw=
 github.com/DanielRivasMD/domovoi v0.0.0-20250523133919-940e8593d874/go.mod h1:AfBfXSLpb7L0u2WqMs/uxEOTzTshRR6//UZgyJ1M72w=
+github.com/DanielRivasMD/domovoi v0.0.0-20250616110520-01910b295b4f h1:vRuIe16YytViDqGwgDoQR58m9i+HSInUfB9qH3iIYBs=
+github.com/DanielRivasMD/domovoi v0.0.0-20250616110520-01910b295b4f/go.mod h1:QCn0PsK6P5IDNbtAb0652e3OSE4EOq0qtl7AaN6gw9s=
 github.com/DanielRivasMD/horus v0.0.0-20250523133459-5080b4e7620d h1:P4n2lVCMaVyzDjTmDpYYpyGYYlZ8JBPul8VohRYC7yE=
 github.com/DanielRivasMD/horus v0.0.0-20250523133459-5080b4e7620d/go.mod h1:RxifFjF4J7o+TTS00sIgeWwbvZyQ57L4D2xTlEJle5Y=
 github.com/DanielRivasMD/horus v0.0.0-20250615195633-7d67b9071abd h1:4DJ13Cuvg55FiItzHtJFDa+m8XYVdICo0nMHLn/eJ58=

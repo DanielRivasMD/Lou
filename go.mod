@@ -3,7 +3,7 @@ module github.com/DanielRivasMD/Lou
 go 1.23.4
 
 require (
-	github.com/DanielRivasMD/domovoi v0.0.0-20250523133919-940e8593d874
+	github.com/DanielRivasMD/domovoi v0.0.0-20250616110520-01910b295b4f
 	github.com/DanielRivasMD/horus v0.0.0-20250616104502-40ba77a36f83
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/pflag v1.0.5
