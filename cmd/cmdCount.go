@@ -109,7 +109,7 @@ Options for hidden data and ignoring configurations are included for flexible us
 		}
 
 		// execute the command and panic on error
-		if err := domovoi.ExecCmd("bash", "-c", fdCmd); err != nil {
+		if err := domovoi.ExecSh(fdCmd); err != nil {
 			panic(horus.Wrap(err, op, "failed to execute count command"))
 		}
 	},
