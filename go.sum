@@ -20,6 +20,8 @@ github.com/DanielRivasMD/horus v0.0.0-20250523133459-5080b4e7620d h1:P4n2lVCMaVy
 github.com/DanielRivasMD/horus v0.0.0-20250523133459-5080b4e7620d/go.mod h1:RxifFjF4J7o+TTS00sIgeWwbvZyQ57L4D2xTlEJle5Y=
 github.com/DanielRivasMD/horus v0.0.0-20250615195633-7d67b9071abd h1:4DJ13Cuvg55FiItzHtJFDa+m8XYVdICo0nMHLn/eJ58=
 github.com/DanielRivasMD/horus v0.0.0-20250615195633-7d67b9071abd/go.mod h1:BisGQ8GHkm7XjzTnXRhGznkg9wFaCHiIQXroK3vhKu8=
+github.com/DanielRivasMD/horus v0.0.0-20250616104502-40ba77a36f83 h1:cvZJC7Ae8YRF0ZNDvNfPvBx6Gpco8o+Vdudc2+ccIkw=
+github.com/DanielRivasMD/horus v0.0.0-20250616104502-40ba77a36f83/go.mod h1:BisGQ8GHkm7XjzTnXRhGznkg9wFaCHiIQXroK3vhKu8=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
