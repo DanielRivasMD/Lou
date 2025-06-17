@@ -19,7 +19,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
@@ -65,17 +64,10 @@ streamlined commands and features.
 
 		// Section: git stash list (capture output)
 		domovoi.PrintCentered("Stash List")
-		stdout, _, err := domovoi.CaptureExecCmd("git", "stash", "list")
-		if err != nil {
+		if err := domovoi.ExecCmd("git", "stash", "list"); err != nil {
 			msg := horus.FormatPanic(op, "failed to list stashes")
 			fmt.Fprintln(cmd.ErrOrStderr(), msg)
 			os.Exit(1)
-		}
-		stash := strings.TrimSpace(stdout)
-		if stash == "" {
-			fmt.Println(chalk.Yellow.Color("No stashes found"))
-		} else {
-			fmt.Println(stash)
 		}
 
 		// Section: git log
