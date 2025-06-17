@@ -33,9 +33,10 @@ var ()
 var diffCmd = &cobra.Command{
 	Use:   "diff",
 	Short: "Compare differences in the repository",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` help identify and display differences in the repository
+` + chalk.Green.Color("Lou") + ` helps identify and display differences in the repository
 `,
 
 	Example: `
@@ -44,9 +45,7 @@ var diffCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
-
-		// command
+	Run: func(cmd *cobra.Command, args []string) {
 		cmdDiff := "git diff --name-only --relative --diff-filter=d | xargs bat --diff"
 		domovoi.ExecCmd("bash", "-c", cmdDiff)
 	},
