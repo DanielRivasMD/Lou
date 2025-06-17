@@ -18,6 +18,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/DanielRivasMD/domovoi"
@@ -43,21 +44,32 @@ streamlined commands and features.
 ` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("git") + `
 `,
 
-	RunE: func(cmd *cobra.Command, args []string) error {
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Run: func(cmd *cobra.Command, args []string) {
 		const op = "cmd.git"
+
+		// Are we inside a git repo?
+		if _, _, err := domovoi.CaptureExecCmd("git", "rev-parse", "--is-inside-work-tree"); err != nil {
+			fmt.Println(chalk.Blue.Color("Not a git repository"))
+			return
+		}
 
 		// Section: git status
 		domovoi.PrintCentered("Status")
-
 		if err := domovoi.ExecCmd("git", "status", "--short"); err != nil {
-			return horus.Wrap(err, op, "failed to run git status")
+			msg := horus.FormatPanic(op, "failed to run git status")
+			fmt.Fprintln(cmd.ErrOrStderr(), msg)
+			os.Exit(1)
 		}
 
 		// Section: git stash list (capture output)
 		domovoi.PrintCentered("Stash List")
 		stdout, _, err := domovoi.CaptureExecCmd("git", "stash", "list")
 		if err != nil {
-			return horus.Wrap(err, op, "failed to list stashes")
+			msg := horus.FormatPanic(op, "failed to list stashes")
+			fmt.Fprintln(cmd.ErrOrStderr(), msg)
+			os.Exit(1)
 		}
 		stash := strings.TrimSpace(stdout)
 		if stash == "" {
@@ -74,10 +86,12 @@ streamlined commands and features.
 			"--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset",
 			"-10",
 		); err != nil {
-			return horus.Wrap(err, op, "failed to show git log")
+			msg := horus.FormatPanic(op, "failed to show git log")
+			fmt.Fprintln(cmd.ErrOrStderr(), msg)
+			os.Exit(1)
 		}
+
 		domovoi.LineBreaks(true)
-		return nil
 	},
 }
 
