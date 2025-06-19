@@ -28,7 +28,7 @@ import (
 
 // Global flag variable that holds the target directory, if provided.
 var (
-	targetDir string
+	tabTarget string
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +51,7 @@ and then return to your original directory.`,
 	Example: `
 ` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("tab --target /path/to/directory") + `
 `,
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
@@ -59,7 +60,7 @@ and then return to your original directory.`,
 		const cmdZellijTab = `zellij action new-tab --layout $HOME/.lou/layouts/tab.kdl --name "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
 
 		// If the targetDir flag is provided, change the directory accordingly.
-		if targetDir != "" {
+		if tabTarget != "" {
 			// Recall the current directory so we can revert back later.
 			originalDir, err := domovoi.RecallDir()
 			if err != nil {
@@ -68,14 +69,14 @@ and then return to your original directory.`,
 			}
 
 			// Change to the target directory before launching the new tab.
-			err = domovoi.ChangeDir(targetDir)
+			err = domovoi.ChangeDir(tabTarget)
 			if err != nil {
 				fmt.Println(chalk.Red.Color("Error changing directory to target: " + err.Error()))
 				return
 			}
 
 			// Launch the new tab from the new (target) directory.
-			if err := domovoi.ExecCmd("bash", "-c", cmdZellijTab); err != nil {
+			if err := domovoi.ExecSh(cmdZellijTab); err != nil {
 				fmt.Println(chalk.Red.Color("Error launching new tab: " + err.Error()))
 			}
 
@@ -85,7 +86,7 @@ and then return to your original directory.`,
 			}
 		} else {
 			// If no target directory is provided, launch the tab from the current directory.
-			if err := domovoi.ExecCmd("bash", "-c", cmdZellijTab); err != nil {
+			if err := domovoi.ExecSh(cmdZellijTab); err != nil {
 				fmt.Println(chalk.Red.Color("Error launching new tab: " + err.Error()))
 			}
 		}
@@ -99,7 +100,7 @@ func init() {
 	rootCmd.AddCommand(zellijTabCmd)
 
 	// Bind the --target (or -t) flag to the targetDir variable.
-	zellijTabCmd.Flags().StringVarP(&targetDir, "target", "t", "", "If provided, change to this directory before launching the new tab and then revert to the original directory")
+	zellijTabCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "If provided, change to this directory before launching the new tab and then revert to the original directory")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
