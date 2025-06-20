@@ -20,6 +20,7 @@ import (
 	"fmt"
 
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -59,35 +60,37 @@ and then return to your original directory.`,
 		// It sets the tab name as either "~" (if in $HOME) or the basename of the current directory.
 		const cmdZellijTab = `zellij action new-tab --layout $HOME/.lou/layouts/tab.kdl --name "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
 
+		const op = "cmd.open-tab"
+
 		// If the targetDir flag is provided, change the directory accordingly.
 		if tabTarget != "" {
-			// Recall the current directory so we can revert back later.
+			// recall current dir or panic with a wrapped Horus error
 			originalDir, err := domovoi.RecallDir()
 			if err != nil {
-				fmt.Println(chalk.Red.Color("Error recalling current directory: " + err.Error()))
-				return
+				panic(horus.Wrap(err, op, "failed to recall current directory"))
 			}
+			//  ensure we always revert, even if ExecSh panics
+			defer func() {
+				if err := domovoi.ChangeDir(originalDir); err != nil {
+					panic(horus.Wrap(err, op, "failed to revert to original directory"))
+				}
+			}()
 
-			// Change to the target directory before launching the new tab.
-			err = domovoi.ChangeDir(tabTarget)
-			if err != nil {
-				fmt.Println(chalk.Red.Color("Error changing directory to target: " + err.Error()))
-				return
+			// change into the target dir
+			if err := domovoi.ChangeDir(tabTarget); err != nil {
+				panic(horus.Wrap(
+					err, op,
+					fmt.Sprintf("failed to change directory to %q", tabTarget),
+				))
 			}
-
-			// Launch the new tab from the new (target) directory.
+			// launch the new tab
 			if err := domovoi.ExecSh(cmdZellijTab); err != nil {
-				fmt.Println(chalk.Red.Color("Error launching new tab: " + err.Error()))
-			}
-
-			// Revert back to the original directory.
-			if err := domovoi.ChangeDir(originalDir); err != nil {
-				fmt.Println(chalk.Red.Color("Error reverting to original directory: " + err.Error()))
+				panic(horus.Wrap(err, op, "failed to launch new tab"))
 			}
 		} else {
-			// If no target directory is provided, launch the tab from the current directory.
+			// no targetDir → just launch in the current dir
 			if err := domovoi.ExecSh(cmdZellijTab); err != nil {
-				fmt.Println(chalk.Red.Color("Error launching new tab: " + err.Error()))
+				panic(horus.Wrap(err, op, "failed to launch new tab"))
 			}
 		}
 	},
