@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/DanielRivasMD/horus"
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -58,40 +59,43 @@ Optionally, it can wrap that in 'cd <target> && ... && cd <original>'.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		const cmdZellijLaunch = `zellij action write-chars "zellij --new-session-with-layout $HOME/.config/zellij/layouts/rust.kdl"; zellij action write 13`
+		op := "cmd-launch"
 
 		if launchTarget != "" {
+			// build a compound command: new-tab + write-chars + ENTER
 			const cmdZellijTab = `zellij action new-tab --layout $HOME/.lou/layouts/launch.kdl --name "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
 			cmdZellijTabLaunch := cmdZellijTab + "; " + cmdZellijLaunch
 
-			// Recall the current directory so we can revert back later.
+			// recall current dir or panic
 			originalDir, err := domovoi.RecallDir()
 			if err != nil {
-				fmt.Println(chalk.Red.Color("Error recalling current directory: " + err.Error()))
-				return
+				panic(horus.Wrap(err, op, "failed to recall current directory"))
 			}
+			// ensure we always revert, even on panic
+			defer func() {
+				if err := domovoi.ChangeDir(originalDir); err != nil {
+					panic(horus.Wrap(err, op, "failed to revert to original directory"))
+				}
+			}()
 
-			// Change to the target directory before launching the new tab.
-			err = domovoi.ChangeDir(launchTarget)
-			if err != nil {
-				fmt.Println(chalk.Red.Color("Error changing directory to target: " + err.Error()))
-				return
+			// change into target or panic
+			if err := domovoi.ChangeDir(launchTarget); err != nil {
+				panic(horus.Wrap(
+					err, op,
+					fmt.Sprintf("failed to change directory to %q", launchTarget),
+				))
 			}
-
-			// Launch the new tab from the new (target) directory.
+			// execute the Zellij commands or panic
 			if err := domovoi.ExecSh(cmdZellijTabLaunch); err != nil {
-				fmt.Println(chalk.Red.Color("Error launching new tab: " + err.Error()))
-			}
-
-			// Revert back to the original directory.
-			if err := domovoi.ChangeDir(originalDir); err != nil {
-				fmt.Println(chalk.Red.Color("Error reverting to original directory: " + err.Error()))
+				panic(horus.Wrap(err, op, "failed to launch new Zellij session"))
 			}
 		} else {
-			// If no target directory is provided, launch the tab from the current directory.
+			// no target → just send the write-chars + ENTER sequence
 			if err := domovoi.ExecSh(cmdZellijLaunch); err != nil {
-				fmt.Println(chalk.Red.Color("Error launching new tab: " + err.Error()))
+				panic(horus.Wrap(err, op, "failed to write-chars for new Zellij session"))
 			}
 		}
+
 	},
 }
 
