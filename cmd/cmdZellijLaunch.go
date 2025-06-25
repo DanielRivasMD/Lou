@@ -27,17 +27,16 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Global flag variable that holds the target directory, if provided.
+// Global flag variable
 var (
-	launchTarget string
 	layoutFile   string
+	launchTarget string
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // zellijLaunchCmd builds and prints the shell command you should run to open
-// a new Zellij tab with your custom layout. If --target is set, it wraps the
-// launch call in a cd to that directory and back to your original location.
+// a new Zellij tab with your custom layout. The --layout flag is now required.
 var zellijLaunchCmd = &cobra.Command{
 	Use:   "launch",
 	Short: "Prepare the shell command to start a new Zellij tab",
@@ -46,13 +45,9 @@ var zellijLaunchCmd = &cobra.Command{
 		`
 
 ` + chalk.Green.Color("Lou") + ` helps you craft the exact shell invocation
-you need to launch a styled Zellij tab. It will print out:
-
-    launch --layout $HOME/.lou/layouts/launch.kdl --name "<dirname>"
-
-Optionally, it can wrap that in 'cd <target> && ... && cd <original>'.`,
+you need to launch a styled Zellij tab. You must now specify --layout <file.kdl>.`,
 	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("launch --target /path/to/project") + `
+` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("launch --layout rust.kdl") + `
 `,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,42 +55,57 @@ Optionally, it can wrap that in 'cd <target> && ... && cd <original>'.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		op := "cmd-launch"
 
-		// build the dynamic write-chars command
+		// Crash if no layout file was provided
+		if layoutFile == "" {
+			panic(horus.NewCategorizedHerror(
+				op,
+				"missing_flag",
+				"the --layout flag is required but was not provided",
+				nil,
+				map[string]any{"flag": "layout"},
+			))
+		}
+
+		// Build the dynamic write-chars command for creating a new session
 		cmdZellijLaunch := fmt.Sprintf(
 			`zellij action write-chars "zellij --new-session-with-layout $HOME/.config/zellij/layouts/%s"; zellij action write 13`,
 			layoutFile,
 		)
 
 		if launchTarget != "" {
-			// new tab + our dynamic launch
+			// Build the compound new-tab + write-chars + ENTER command
 			const cmdZellijTab = `zellij action new-tab \
-  --layout $HOME/.lou/layouts/launch.kdl \
-  --name "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
+--layout $HOME/.lou/layouts/launch.kdl \
+--name "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
 			fullCmd := cmdZellijTab + "; " + cmdZellijLaunch
 
-			// recall/revert boilerplate
+			// Recall original dir or panic
 			originalDir, err := domovoi.RecallDir()
 			if err != nil {
-				panic(horus.Wrap(err, op, "failed to recall current directory"))
+				panic(horus.Wrap(err, op, "failed to recall original directory"))
 			}
+
+			// Ensure we always revert, even on panic
 			defer func() {
 				if err := domovoi.ChangeDir(originalDir); err != nil {
 					panic(horus.Wrap(err, op, "failed to revert to original directory"))
 				}
 			}()
 
-			// switch into target
+			// Change into target or panic
 			if err := domovoi.ChangeDir(launchTarget); err != nil {
-				panic(horus.Wrap(err, op,
+				panic(horus.Wrap(
+					err, op,
 					fmt.Sprintf("failed to change directory to %q", launchTarget),
 				))
 			}
-			// execute both new-tab + write-chars
+
+			// Execute the Zellij commands or panic
 			if err := domovoi.ExecSh(fullCmd); err != nil {
 				panic(horus.Wrap(err, op, "failed to launch new Zellij session"))
 			}
 		} else {
-			// just the dynamic write-chars command
+			// No target → just send the write-chars + ENTER sequence
 			if err := domovoi.ExecSh(cmdZellijLaunch); err != nil {
 				panic(horus.Wrap(err, op, "failed to write-chars for new Zellij session"))
 			}
@@ -109,9 +119,8 @@ Optionally, it can wrap that in 'cd <target> && ... && cd <original>'.`,
 func init() {
 	rootCmd.AddCommand(zellijLaunchCmd)
 
-	// Bind the --target / -t flag to targetDir.
-	zellijLaunchCmd.Flags().StringVarP(&launchTarget, "target", "t", "", "If set, cd into this path before printing the launch command (and return afterward)")
-	zellijLaunchCmd.Flags().StringVarP(&layoutFile, "layout", "l", "", "which .kdl layout file to launch (in $HOME/.config/zellij/layouts)")
+	zellijLaunchCmd.Flags().StringVarP(&layoutFile, "layout", "l", "", "the .kdl layout file to launch (required)")
+	zellijLaunchCmd.Flags().StringVarP(&launchTarget, "target", "t", "", "if set, cd into this path before printing the launch command (and return afterward)")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
