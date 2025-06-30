@@ -17,6 +17,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"errors"
+	"math/rand"
+	"os"
+	"time"
+
 	"fmt"
 
 	"github.com/DanielRivasMD/domovoi"
@@ -32,6 +37,15 @@ var (
 	layoutFile   string
 	launchTarget string
 )
+
+func maybeFail() error {
+	rand.Seed(time.Now().UnixNano())
+	if rand.Intn(2) == 0 {
+		return errors.New("random failure: the universe rolled a zero")
+	}
+	_, err := os.Open("nonexistent_file.txt")
+	return err
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,6 +67,10 @@ you need to launch a styled Zellij tab. You must now specify --layout <file.kdl>
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
+
+		err := maybeFail()
+		horus.CheckErr(err)
+
 		op := "cmd-launch"
 
 		// Crash if no layout file was provided
