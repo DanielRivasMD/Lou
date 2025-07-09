@@ -67,28 +67,24 @@ and then return to your original directory.`,
 			// recall current dir or panic with a wrapped Horus error
 			originalDir, err := domovoi.RecallDir()
 			if err != nil {
-				horus.Panic(op, "failed to recall current directory")
+				horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to recall current directory"))
 			}
-			//  ensure we always revert, even if ExecSh panics
-			defer func() {
-				if err := domovoi.ChangeDir(originalDir); err != nil {
-					horus.Panic(op, "failed to revert to original directory")
-				}
-			}()
 
 			// change into the target dir
 			if err := domovoi.ChangeDir(tabTarget); err != nil {
-				horus.Panic(op, fmt.Sprintf("failed to change directory to %q", tabTarget))
+				domovoi.ChangeDir(originalDir)
+				horus.CheckErr(err, horus.WithOp(op), horus.WithMessage(fmt.Sprintf("failed to change directory to %q", tabTarget)))
 			}
 			// launch the new tab
 			if err := domovoi.ExecSh(cmdZellijTab); err != nil {
-				horus.Panic(op, "failed to launch new tab")
+				domovoi.ChangeDir(originalDir)
+				horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch new tab"))
 			}
 
 		} else {
 			// no targetDir → just launch in the current dir
 			if err := domovoi.ExecSh(cmdZellijTab); err != nil {
-				horus.Panic(op, "failed to launch new tab")
+				horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch new tab"))
 			}
 		}
 	},
