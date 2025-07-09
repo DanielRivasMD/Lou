@@ -22,6 +22,10 @@ github.com/DanielRivasMD/domovoi v0.0.0-20250616111958-8722796d692a h1:0jqQzNF6f
 github.com/DanielRivasMD/domovoi v0.0.0-20250616111958-8722796d692a/go.mod h1:QCn0PsK6P5IDNbtAb0652e3OSE4EOq0qtl7AaN6gw9s=
 github.com/DanielRivasMD/domovoi v0.0.0-20250616113252-9a15de834367 h1:ZeOziscKrY3ekzdXr53V/qG8InlEbRiZclOZK1NeZx8=
 github.com/DanielRivasMD/domovoi v0.0.0-20250616113252-9a15de834367/go.mod h1:QCn0PsK6P5IDNbtAb0652e3OSE4EOq0qtl7AaN6gw9s=
+github.com/DanielRivasMD/domovoi v0.0.0-20250709023036-6cfba675aa66 h1:wTImtxil3ggvCBS297Eh64gEYWR5sqPBTiTbDzXjiU8=
+github.com/DanielRivasMD/domovoi v0.0.0-20250709023036-6cfba675aa66/go.mod h1:QLEK+y1nwUWB9b8bkfzDHjteoYr/H2fKn3w4cL9HBWQ=
+github.com/DanielRivasMD/domovoi v0.0.0-20250709023351-542763d06ded h1:cNgjihZ0lklaem5Cr22DHVZ5Qp782iQElIRaxJoG5IA=
+github.com/DanielRivasMD/domovoi v0.0.0-20250709023351-542763d06ded/go.mod h1:A+G3Z0BTecntlot/13Yy1AYgnbD2hmyZ8Q9CURuDtog=
 github.com/DanielRivasMD/horus v0.0.0-20250523133459-5080b4e7620d h1:P4n2lVCMaVyzDjTmDpYYpyGYYlZ8JBPul8VohRYC7yE=
 github.com/DanielRivasMD/horus v0.0.0-20250523133459-5080b4e7620d/go.mod h1:RxifFjF4J7o+TTS00sIgeWwbvZyQ57L4D2xTlEJle5Y=
 github.com/DanielRivasMD/horus v0.0.0-20250615195633-7d67b9071abd h1:4DJ13Cuvg55FiItzHtJFDa+m8XYVdICo0nMHLn/eJ58=
@@ -64,6 +68,16 @@ github.com/DanielRivasMD/horus v0.0.0-20250625185256-2b1e28607638 h1:wAWegG7WTVG
 github.com/DanielRivasMD/horus v0.0.0-20250625185256-2b1e28607638/go.mod h1:BisGQ8GHkm7XjzTnXRhGznkg9wFaCHiIQXroK3vhKu8=
 github.com/DanielRivasMD/horus v0.0.0-20250625185708-ca42a38fac8b h1:T99ZNFnW1+ZFLP1SeJc07FtuXb9qXqGZY0+PNDfm9W0=
 github.com/DanielRivasMD/horus v0.0.0-20250625185708-ca42a38fac8b/go.mod h1:BisGQ8GHkm7XjzTnXRhGznkg9wFaCHiIQXroK3vhKu8=
+github.com/DanielRivasMD/horus v0.0.0-20250709022859-36093683a815 h1:KUPFZKMwHTslLYeMTO13hDEzQlEdwQ9GWfGwmaFKzlE=
+github.com/DanielRivasMD/horus v0.0.0-20250709022859-36093683a815/go.mod h1:BisGQ8GHkm7XjzTnXRhGznkg9wFaCHiIQXroK3vhKu8=
+github.com/DanielRivasMD/horus v0.0.0-20250709024421-64da321ffd73 h1:MI5exxz+Lo+8P6ldpUOhhk1DbYMkABWThfKC8Fn+i/A=
+github.com/DanielRivasMD/horus v0.0.0-20250709024421-64da321ffd73/go.mod h1:BisGQ8GHkm7XjzTnXRhGznkg9wFaCHiIQXroK3vhKu8=
+github.com/DanielRivasMD/horus v0.0.0-20250709025541-edb337157635 h1:QdAUr0bwLZ7iyXoIoSgc02vSQYPb/VxyA4FYToC5HIE=
+github.com/DanielRivasMD/horus v0.0.0-20250709025541-edb337157635/go.mod h1:BisGQ8GHkm7XjzTnXRhGznkg9wFaCHiIQXroK3vhKu8=
+github.com/DanielRivasMD/horus v0.0.0-20250709031636-1d13e8165c89 h1:6maLq3tjhs8X4vF0BJsu7Rbt3Ly5AEAHZHHjfSDT7t0=
+github.com/DanielRivasMD/horus v0.0.0-20250709031636-1d13e8165c89/go.mod h1:BisGQ8GHkm7XjzTnXRhGznkg9wFaCHiIQXroK3vhKu8=
+github.com/DanielRivasMD/horus v1.0.0 h1:NFSFxWKxM0VM5UB503YZz1mj3ewjau4UeMuDv0AtQ+E=
+github.com/DanielRivasMD/horus v1.0.0/go.mod h1:BisGQ8GHkm7XjzTnXRhGznkg9wFaCHiIQXroK3vhKu8=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
