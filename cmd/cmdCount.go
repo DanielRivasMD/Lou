@@ -61,29 +61,24 @@ Options for hidden data and ignoring configurations are included for flexible us
 	Run: func(cmd *cobra.Command, args []string) {
 		const op = "cmd.count"
 
-		if len(args) == 0 {
-			// build the Herror
-			herr := horus.NewHerrorErrorf(
+		// 1) validate args
+		if len(args) != 1 {
+			herr := horus.NewCategorizedHerror(
 				op,
-				"accepts 1 arg(s), received %d",
-				len(args),
+				"USAGE_ERROR",
+				fmt.Sprintf("accepts 1 arg(s), received %d", len(args)),
+				nil,
+				nil,
 			)
-
-			// try to downcast to *Herror so we can colorize
-			if he, ok := herr.(*horus.Herror); ok {
-				fmt.Fprintln(cmd.ErrOrStderr(), horus.SimpleColoredFormatter(he))
-			} else {
-				// fallback
-				fmt.Fprintln(cmd.ErrOrStderr(), herr.Error())
-			}
-
+			he, _ := horus.AsHerror(herr)
+			fmt.Fprintln(cmd.ErrOrStderr(), horus.SimpleColoredFormatter(he))
 			_ = cmd.Usage()
 			os.Exit(1)
 		}
 
 		target := args[0]
 
-		// build base fd invocation
+		// 2) build the fd invocation
 		fdCmd := "fd ."
 		if hidden {
 			fdCmd += " --hidden"
@@ -98,19 +93,33 @@ Options for hidden data and ignoring configurations are included for flexible us
 		case "file":
 			fdCmd += " --type=f --max-depth=1 | wc -l"
 		default:
-			// invalid target: print a colored panic message, usage, then exit 1
-			msg := horus.FormatPanic(
+			herr := horus.NewCategorizedHerror(
 				op,
+				"USAGE_ERROR",
 				fmt.Sprintf("unsupported mode %q; use \"dir\" or \"file\"", target),
+				nil,
+				nil,
 			)
-			fmt.Fprintln(cmd.ErrOrStderr(), msg)
+			he, _ := horus.AsHerror(herr)
+			fmt.Fprintln(cmd.ErrOrStderr(), horus.SimpleColoredFormatter(he))
 			_ = cmd.Usage()
 			os.Exit(1)
 		}
 
-		// execute the command and panic on error
+		// 3) execute the command and fatal-exit on error
 		if err := domovoi.ExecSh(fdCmd); err != nil {
-			panic(horus.Wrap(err, op, "failed to execute count command"))
+			// wrap & add context
+			herr := horus.PropagateErr(
+				op,
+				"SYS_CMD",
+				"failed to execute count command",
+				err,
+				nil,
+			)
+			horus.CheckErr(
+				herr,
+				horus.WithFormatter(horus.SimpleColoredFormatter),
+			)
 		}
 	},
 }
