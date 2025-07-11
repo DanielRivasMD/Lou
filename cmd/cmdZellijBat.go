@@ -44,8 +44,8 @@ var batCmd = &cobra.Command{
 	Run: func(κ *cobra.Command, args []string) {
 
 		// base command
-		cmdBat := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
-		cmdBat += `bat`
+		cmdBat := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
+		cmdBat += `bat --paging always`
 
 		// validate input
 		arg := args[0]
