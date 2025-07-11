@@ -44,7 +44,7 @@ var floatCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
-		cmdFloat := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
+		cmdFloat := `zellij run --name canvas --floating --height 100 --width 130 --x 25 --y 0 -- `
 		cmdFloat += `zsh`
 
 		// execute command
