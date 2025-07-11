@@ -45,8 +45,8 @@ var zellijEzaCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
-		cmdEza := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
-		cmdEza += `eza --header --long --icons --classify --git --group`
+		cmdEza := `zellij run --name canvas --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
+		cmdEza += `eza --header --long --icons --classify --git --group --color=always`
 
 		// validate input
 		arg := args[0]
