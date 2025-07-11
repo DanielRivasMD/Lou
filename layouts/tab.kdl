@@ -1,3 +1,5 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 layout {
     default_tab_template {
         pane size=1 borderless=true {
@@ -9,9 +11,10 @@ layout {
 
     tab {
         pane stacked=true split_direction="horizontal" {
-            pane name="git" command="lazygit"
             pane name="editor" command="hx" focus=true
-            pane name="shell"
+            pane name="canvas"
         }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
