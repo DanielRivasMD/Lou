@@ -45,15 +45,15 @@ var zellijMicroCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
-		cmdView := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
-		cmdView += `micro`
+		cmdMicro := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
+		cmdMicro += `micro`
 
 		// validate input
 		arg := args[0]
 
 		// execute command
-		cmdView += " " + arg
-		domovoi.ExecCmd("bash", "-c", cmdView)
+		cmdMicro += " " + arg
+		domovoi.ExecCmd("bash", "-c", cmdMicro)
 	},
 }
 
