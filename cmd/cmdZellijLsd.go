@@ -45,7 +45,7 @@ var zellijLsdCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
-		cmdLsd := `zellij run --name canvas --floating --height 100 --width 100 --x 100 --y 0 -- `
+		cmdLsd := `zellij run --name canvas --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
 		cmdLsd += `lsd  --header --long --classify --git`
 
 		// validate input
