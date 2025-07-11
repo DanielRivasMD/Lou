@@ -35,6 +35,7 @@ var (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// TODO: consider refactor as subcommands
 // zellijTabCmd launches a new Zellij tab with a custom layout.
 // Optionally, it can switch to a specified directory before initiating the new tab,
 // and then revert to the original directory.
