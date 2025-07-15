@@ -16,103 +16,32 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
-import (
-	"fmt"
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	"github.com/DanielRivasMD/domovoi"
-	"github.com/DanielRivasMD/horus"
+import (
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Global flag variables
+// tabTarget is the directory to cd into before creating a tab.
 var (
-	tabTarget  string
+	tabTarget string
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func createTab(layoutType string) {
-
-	const op = "cmd-tab"
-
-	// Validate layout using a known set
-	validLayouts := map[string]bool{
-		"tab":     true,
-		"explore": true,
-		"repl":    true,
-	}
-
-	if !validLayouts[layoutType] {
-		err := fmt.Errorf("invalid layout %q: must be one of [tab, explore, repl]", layoutType)
-		horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("unsupported layout provided"))
-		return // gracefully exit after logging the error
-	}
-
-	// Validate layout
-	switch layoutType {
-	case "tab", "explore", "repl":
-		// valid
-	default:
-		layoutType = "tab"
-	}
-
-	// Build tab launch command
-	cmdZellijTab := fmt.Sprintf(
-		`zellij action new-tab --layout $HOME/.lou/layouts/%s.kdl --name $( [ $PWD = $HOME ] && echo \"~\" || basename $PWD )`,
-		layoutType,
-	)
-
-	if tabTarget != "" {
-		originalDir, err := domovoi.RecallDir()
-		if err != nil {
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to recall current directory"))
-		}
-
-		if err := domovoi.ChangeDir(tabTarget); err != nil {
-			domovoi.ChangeDir(originalDir)
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage(fmt.Sprintf("failed to change directory to %q", tabTarget)))
-		}
-
-		if err := domovoi.ExecSh(cmdZellijTab); err != nil {
-			domovoi.ChangeDir(originalDir)
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch new tab"))
-		}
-	} else {
-		if err := domovoi.ExecSh(cmdZellijTab); err != nil {
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch new tab"))
-		}
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// zellijTabCmd launches a new Zellij tab with a custom layout.
-// Optionally, it can switch to a specified directory before initiating the new tab,
-// and then revert to the original directory.
-// The --layout (or -l) flag selects between "tab" (default), "explore", or "repl".
-var zellijTabCmd = &cobra.Command{
+// tabCmd is the root-level 'lou tab' command.
+var tabCmd = &cobra.Command{
 	Use:   "tab",
-	Short: "Launch a new Zellij tab with style",
+	Short: "Launch a new Zellij tab with a custom layout",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) +
-		`
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` allows you to launch a new tab in the active Zellij session effortlessly,
-using a custom layout.
-
-Optionally, you can change to a specified directory prior to launching the tab,
-and then return to your original directory.
-
-Available layouts: "tab", "explore", "repl"`,
-	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("tab --target /path/to/dir --layout explore") + `
-`,
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
+Lou tab spins up a new Zellij tab using your default layout (` + chalk.Yellow.Color("tab.kdl") + `) 
+and names it after the current directory (or "~" if you're in $HOME).`,
+	Example: chalk.Cyan.Color("lou") + " tab --target /path/to/dir",
 	Run: func(cmd *cobra.Command, args []string) {
 		createTab("tab")
 	},
@@ -120,12 +49,10 @@ Available layouts: "tab", "explore", "repl"`,
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
-	rootCmd.AddCommand(zellijTabCmd)
-
-	// Bind flags
-	zellijTabCmd.PersistentFlags().StringVarP(&tabTarget, "target", "t", "", "If provided, change to this directory before launching the new tab and then revert to the original directory")
+	rootCmd.AddCommand(tabCmd)
+	tabCmd.Flags().
+		StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching the tab")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
