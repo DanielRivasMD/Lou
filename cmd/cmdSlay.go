@@ -19,57 +19,48 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"syscall"
 
-	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//
+// Subcommand: slay
+//
+
 var slayCmd = &cobra.Command{
 	Use:   "slay [name]",
-	Short: "Terminate a Lou daemon by name",
+	Short: "Stop a daemon by name",
 	Args:  cobra.ExactArgs(1),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	Run: func(cmd *cobra.Command, args []string) {
-		const op = "cmd.slay"
 		name := args[0]
-		metaFile := filepath.Join(getDaemonDir(), name+".json")
-
-		data, err := os.ReadFile(metaFile)
-		horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to read metadata file"))
-
-		var d DaemonsMeta
-		horus.CheckErr(json.Unmarshal(data, &d), horus.WithOp(op), horus.WithMessage("invalid metadata format"))
-
-		proc, err := os.FindProcess(d.PID)
-		horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to find process"))
-
-		// Try graceful SIGTERM first
-		if err := proc.Signal(syscall.SIGTERM); err != nil {
-			// fallback to KILL
-			horus.CheckErr(proc.Kill(), horus.WithOp(op), horus.WithMessage("failed to kill process"))
+		meta, err := loadMeta(name)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "No such daemon %q\n", name)
+			os.Exit(1)
 		}
-
-		// Remove metadata
-		horus.CheckErr(os.Remove(metaFile), horus.WithOp(op), horus.WithMessage("failed to remove metadata"))
-
-		fmt.Println(chalk.Green.Color("✔ Process"), name, "with PID", d.PID, "terminated")
+		proc, err := os.FindProcess(meta.PID)
+		if err == nil {
+			proc.Signal(syscall.SIGTERM)
+		}
+		// remove metadata
+		os.Remove(filepath.Join(getDaemonDir(), name+".json"))
+		fmt.Printf("%s slayed %q\n", chalk.Green.Color("OK:"), name)
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 func init() {
-	rootCmd.AddCommand(slayCmd)
+	daemonCmd.AddCommand(slayCmd)
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
