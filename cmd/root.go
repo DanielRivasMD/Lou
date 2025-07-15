@@ -16,6 +16,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"fmt"
 
@@ -36,15 +38,12 @@ var ()
 var rootCmd = &cobra.Command{
 	Use:     "lou",
 	Version: "v0.3",
-	Short:   chalk.Green.Color("Lou") + ", personal assistant at your service.",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + `, personal assistant at your service
+` + chalk.White.Color("Lou") + `, personal assistant at your service
 `,
 
-	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Magenta.Color("help") + `
-`,
+	Example: chalk.White.Color("lou") + ` help`,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
