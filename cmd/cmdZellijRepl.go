@@ -16,6 +16,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -23,23 +25,15 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
-var ()
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// replCmd
 var replCmd = &cobra.Command{
 	Use:   "repl",
-	Short: "" + chalk.Yellow.Color("") + ".",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-`,
+	Short: "Launch a new Zellij tab in REPL layout",
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("zellijtab") + chalk.Yellow.Color("repl"),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
+Start a Zellij tab using the “repl.kdl” layout. Optionally change to
+a directory first with --target, then return to your original cwd.`,
+	Example: chalk.Cyan.Color("lou") + " repl --target /path/to/project",
 	Run: func(cmd *cobra.Command, args []string) {
 		createTab("repl")
 	},
@@ -47,11 +41,13 @@ var replCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
-	zellijTabCmd.AddCommand(replCmd)
+	// add to both root and zellij namespaces
+	rootCmd.AddCommand(replCmd)
+	zellijCmd.AddCommand(replCmd)
 
-	// flags
+	// reuse the global tabTarget flag
+	replCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
