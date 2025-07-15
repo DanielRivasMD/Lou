@@ -24,6 +24,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// tabTarget is the directory to cd into before creating a tab.
+var (
+	tabTarget string
+)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 var (
 	// zellijCmd is the parent for all Zellij-specific subcommands.
 	zellijCmd = &cobra.Command{
@@ -31,28 +38,13 @@ var (
 		Short: "Commands to interact with Zellij terminal multiplexer",
 		Long:  "Group Zellij-related actions under a single command namespace.",
 	}
-
-	// zellijTabCmd is the 'lou zellij tab' subcommand.
-	zellijTabCmd = &cobra.Command{
-		Use:     "tab",
-		Short:   "Launch a new Zellij tab with a custom layout",
-		Long:    "Under the zellij namespace, spins up a new tab using your defined layout.",
-		Example: "lou zellij tab --target /path/to/dir",
-		Run: func(cmd *cobra.Command, args []string) {
-			createTab("tab")
-		},
-	}
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
 	rootCmd.AddCommand(zellijCmd)
-	zellijCmd.AddCommand(zellijTabCmd)
 
-	// reuse the same --target flag
-	zellijTabCmd.Flags().
-		StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching the tab")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

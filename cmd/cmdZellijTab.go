@@ -25,9 +25,8 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// tabTarget is the directory to cd into before creating a tab.
+// variables
 var (
-	tabTarget string
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +49,10 @@ and names it after the current directory (or "~" if you're in $HOME).`,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
+	// add to both root and zellij namespaces
 	rootCmd.AddCommand(tabCmd)
+	zellijCmd.AddCommand(tabCmd)
+
 	tabCmd.Flags().
 		StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching the tab")
 }
