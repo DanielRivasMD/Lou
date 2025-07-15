@@ -19,61 +19,46 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 
-	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	// "github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//
+// Subcommand: summon
+//
+
 var summonCmd = &cobra.Command{
 	Use:   "summon [name]",
-	Short: "Open the log file for a Lou daemon",
+	Short: "View logs for a daemon",
 	Args:  cobra.ExactArgs(1),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	Run: func(cmd *cobra.Command, args []string) {
-		const op = "cmd.summon"
 		name := args[0]
-		metaFile := filepath.Join(getDaemonDir(), name+".json")
-
-		data, err := os.ReadFile(metaFile)
-		horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to read metadata"))
-
-		var d DaemonsMeta
-		horus.CheckErr(json.Unmarshal(data, &d), horus.WithOp(op), horus.WithMessage("invalid metadata"))
-
-		if d.LogPath == "" {
-			horus.CheckErr(
-				fmt.Errorf("no log path defined for %q", name),
-				horus.WithOp(op),
-				horus.WithMessage("cannot summon logs"),
-			)
+		meta, err := loadMeta(name)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "No such daemon %q\n", name)
+			os.Exit(1)
 		}
-
-		fmt.Println(d.LogPath)
-
-		// Launch pager
-		pager := exec.Command("bat", "--paging", "always", d.LogPath)
-		pager.Stdin = os.Stdin
-		pager.Stdout = os.Stdout
-		pager.Stderr = os.Stderr
-
-		horus.CheckErr(pager.Run(), horus.WithOp(op), horus.WithMessage("error running pager"))
+		pager := os.Getenv("PAGER")
+		if pager == "" {
+			pager = "less"
+		}
+		c := exec.Command(pager, "-R", meta.LogPath)
+		c.Stdin = os.Stdin
+		c.Stdout = os.Stdout
+		c.Stderr = os.Stderr
+		c.Run()
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
-	rootCmd.AddCommand(summonCmd)
+	daemonCmd.AddCommand(summonCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
