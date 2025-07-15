@@ -16,6 +16,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -23,23 +25,15 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
-var ()
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// exploreCmd
 var exploreCmd = &cobra.Command{
 	Use:   "explore",
-	Short: "" + chalk.Yellow.Color("") + ".",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-`,
+	Short: "Launch a new Zellij tab in Explore layout",
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("zellijtab") + chalk.Yellow.Color("explore"),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
+Start a Zellij tab using the “explore.kdl” layout. Optionally change to
+a directory first with --target, then return to your original cwd.`,
+	Example: chalk.Cyan.Color("lou") + " explore --target ~/code",
 	Run: func(cmd *cobra.Command, args []string) {
 		createTab("explore")
 	},
@@ -47,11 +41,13 @@ var exploreCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
-	zellijTabCmd.AddCommand(exploreCmd)
+	// add to both root and zellij namespaces
+	rootCmd.AddCommand(exploreCmd)
+	zellijCmd.AddCommand(exploreCmd)
 
-	// flags
+	// reuse the global tabTarget flag
+	exploreCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
