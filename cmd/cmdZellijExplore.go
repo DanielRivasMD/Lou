@@ -46,7 +46,7 @@ func init() {
 	rootCmd.AddCommand(exploreCmd)
 	zellijCmd.AddCommand(exploreCmd)
 
-	// reuse the global tabTarget flag
+	// reuse the zellij tabTarget flag
 	exploreCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching")
 }
 
