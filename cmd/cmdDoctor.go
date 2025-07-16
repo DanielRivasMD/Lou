@@ -29,24 +29,24 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// diagnosticsCmd
-var diagnosticsCmd = &cobra.Command{
-	Use:   "diagnostics",
-	Short: "" + chalk.Yellow.Color("") + ".",
+// doctorCmd
+var doctorCmd = &cobra.Command{
+	Use:   "doctor",
+	Short: ".",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
 
 	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("shelldiagnostics"),
+` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("shelldoctor"),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
-		cmdDiagnostics := `
+		cmddoctor := `
 #────────────────────────────────────────────────────────────
-# Terminal diagnostics on demand
+# Terminal doctor on demand
 #────────────────────────────────────────────────────────────
 echo -e "[ ZSH SESSION DIAGNOSTICS ]"
 echo "───────────────────────────────"
@@ -69,7 +69,7 @@ echo "────────────────────────�
 `
 
 		// execute command
-		domovoi.ExecCmd("zsh", "-c", cmdDiagnostics)
+		domovoi.ExecCmd("zsh", "-c", cmddoctor)
 	},
 }
 
@@ -77,7 +77,7 @@ echo "────────────────────────�
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(diagnosticsCmd)
+	rootCmd.AddCommand(doctorCmd)
 
 	// flags
 }
