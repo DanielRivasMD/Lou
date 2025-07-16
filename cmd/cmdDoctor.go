@@ -57,9 +57,7 @@ echo -n "Loaded Profile: "; [[ -f "$HOME/.profile" ]] && echo "✓" || echo "⚠
 echo -n "Sheldon Plugin Manager: "; command -v sheldon >/dev/null && echo "✓" || echo "⚠ Missing"
 echo -n "Starship Prompt: "; command -v starship >/dev/null && echo "✓" || echo "⚠ Missing"
 echo -n "Atuin History Manager: "; command -v atuin >/dev/null && echo "✓" || echo "⚠ Missing"
-
 echo -n "Zoxide: "; command -v zoxide >/dev/null && echo "✓" || echo "⚠ Missing"
-echo -n "Yazi: "; command -v yazi >/dev/null && echo "✓" || echo "⚠ Missing"
 echo -n "fzf: "; command -v fzf >/dev/null && echo "✓" || echo "⚠ Missing"
 echo ""
 
