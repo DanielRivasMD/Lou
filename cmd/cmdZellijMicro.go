@@ -61,9 +61,7 @@ var zellijMicroCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zellijMicroCmd)
-
-	// flags
+	zellijCmd.AddCommand(zellijMicroCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
