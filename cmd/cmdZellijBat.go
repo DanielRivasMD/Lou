@@ -29,10 +29,10 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// batCmd
-var batCmd = &cobra.Command{
-	Use:     "bat",
-	Short:   "View data in a floating Zellij window using bat",
+// zellijBatCmd
+var zellijBatCmd = &cobra.Command{
+	Use:   "bat",
+	Short: "View data in a floating Zellij window using bat",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
 
@@ -60,9 +60,7 @@ var batCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(batCmd)
-
-	// flags
+	zellijCmd.AddCommand(zellijBatCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
