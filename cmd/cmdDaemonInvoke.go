@@ -30,10 +30,6 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//
-// Subcommand: invoke
-//
-
 var (
 	daemonName string
 	watchDir   string
@@ -45,6 +41,9 @@ var (
 var invokeCmd = &cobra.Command{
 	Use:   "invoke",
 	Short: "Start a new watcher daemon",
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	Run: func(cmd *cobra.Command, args []string) {
 		// validate required flags
 		if daemonName == "" {
@@ -109,7 +108,6 @@ func init() {
 	invokeCmd.Flags().StringVarP(&scriptPath, "script", "s", "", "Script to run on change")
 	invokeCmd.Flags().StringVarP(&groupName, "group", "g", "", "Daemon group name")
 	invokeCmd.Flags().StringVarP(&logPath, "log", "l", "", "Path for log file")
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
