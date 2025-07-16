@@ -57,8 +57,7 @@ var floatCmd = &cobra.Command{
 // execute prior main
 func init() {
 	rootCmd.AddCommand(floatCmd)
-
-	// flags
+	zellijCmd.AddCommand(floatCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
