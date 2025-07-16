@@ -16,6 +16,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"fmt"
 
@@ -35,17 +37,14 @@ var (
 
 // knitCmd
 var knitCmd = &cobra.Command{
-	Use:     "knit",
-	Short:   "Compile markdown files using R",
+	Use:   "knit",
+	Short: "Compile markdown files using R",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` leverage R to render Markdown files into polished outputs
+` + chalk.White.Color("Lou") + ` leverage R to render Markdown files into polished outputs
 `,
 
-	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("knit") + ` --file file.Rmd` + `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("knit") + ` -f file.Rmd` + `
-`,
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color("knit") + ` ` + chalk.Dim.TextStyle(chalk.Blue.Color("--file")) + ` ` + chalk.Dim.TextStyle("<file>"),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
