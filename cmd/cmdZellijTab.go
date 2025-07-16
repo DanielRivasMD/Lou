@@ -40,6 +40,9 @@ var tabCmd = &cobra.Command{
 Lou tab spins up a new Zellij tab using your default layout (` + chalk.Yellow.Color("tab.kdl") + `) 
 and names it after the current directory (or "~" if you're in $HOME).`,
 	Example: chalk.Cyan.Color("lou") + " tab --target /path/to/dir",
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	Run: func(cmd *cobra.Command, args []string) {
 		createTab("tab")
 	},
