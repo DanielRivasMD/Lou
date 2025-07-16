@@ -36,12 +36,10 @@ var diffCmd = &cobra.Command{
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` helps identify and display differences in the repository
+` + chalk.White.Color("Lou") + ` helps identify and display differences in the repository
 `,
 
-	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("diff") + `
-`,
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color("diff"),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
