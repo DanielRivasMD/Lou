@@ -61,9 +61,7 @@ var zellijHelixCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zellijHelixCmd)
-
-	// flags
+	zellijCmd.AddCommand(zellijHelixCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
