@@ -35,13 +35,10 @@ var gitCmd = &cobra.Command{
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` simplifies interactions with Git by providing
-streamlined commands and features.
+` + chalk.White.Color("Lou") + ` simplifies interactions with Git by providing streamlined commands and features
 `,
 
-	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("git") + `
-`,
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color("git"),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
