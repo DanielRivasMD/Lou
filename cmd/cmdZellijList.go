@@ -31,8 +31,8 @@ var ()
 
 // zellijlistCmd
 var zellijlistCmd = &cobra.Command{
-	Use:     "list",
-	Short:   "List Zellij sessions",
+	Use:   "list",
+	Short: "List Zellij sessions",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` display Zellij sessions
@@ -56,9 +56,7 @@ var zellijlistCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zellijlistCmd)
-
-	// flags
+	zellijCmd.AddCommand(zellijlistCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
