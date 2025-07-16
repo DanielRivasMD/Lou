@@ -16,6 +16,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"fmt"
 
@@ -43,16 +45,14 @@ type Function struct {
 
 // listShCmd
 var listShCmd = &cobra.Command{
-	Use:     "show --file <path>",
-	Short:   "List shell functions from a specified file",
+	Use:   "show" + ` ` + chalk.Dim.TextStyle(chalk.Blue.Color("--file")) + ` ` + chalk.Dim.TextStyle("<file>"),
+	Short: "List shell functions from a specified file",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Green.Color("Lou") + ` extract and list shell function details, including descriptions and arguments, from a specified file
+` + chalk.White.Color("Lou") + ` extract and list shell function details, including descriptions and arguments, from a specified file
 `,
 
-	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("show") + ` --file functions.sh` + `
-`,
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color("show") + ` ` + chalk.Dim.TextStyle(chalk.Blue.Color("--file")) + ` ` + chalk.Dim.TextStyle("<file>"),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
