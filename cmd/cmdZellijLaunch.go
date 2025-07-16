@@ -119,6 +119,7 @@ you need to launch a styled Zellij tab. You must now specify --layout <file.kdl>
 // execute prior main
 func init() {
 	rootCmd.AddCommand(zellijLaunchCmd)
+	zellijCmd.AddCommand(zellijLaunchCmd)
 
 	zellijLaunchCmd.Flags().StringVarP(&layoutFile, "layout", "l", "", "the .kdl layout file to launch (required)")
 	zellijLaunchCmd.Flags().StringVarP(&launchTarget, "target", "t", "", "if set, cd into this path before printing the launch command (and return afterward)")
