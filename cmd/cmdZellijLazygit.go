@@ -33,7 +33,7 @@ var ()
 var zellijLazygitCmd = &cobra.Command{
 	Use:     "lazygit",
 	Aliases: []string{"lg"},
-	Short:   "View data in a floating Zellij window using helix",
+	Short:   "Lazygit in a floating Zellij window",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
 
@@ -48,7 +48,6 @@ var zellijLazygitCmd = &cobra.Command{
 		cmdLazygit := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 140 --x 0 --y 0 -- `
 		cmdLazygit += `lazygit`
 
-
 		// execute command
 		domovoi.ExecCmd("bash", "-c", cmdLazygit)
 	},
@@ -59,8 +58,7 @@ var zellijLazygitCmd = &cobra.Command{
 // execute prior main
 func init() {
 	rootCmd.AddCommand(zellijLazygitCmd)
-
-	// flags
+	zellijCmd.AddCommand(zellijLazygitCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
