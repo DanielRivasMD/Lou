@@ -31,8 +31,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// finderCmd
-var finderCmd = &cobra.Command{
+// osFinderCmd
+var osFinderCmd = &cobra.Command{
 	Use:   "finder [off|on]",
 	Short: "Toggle Finder visibility of hidden files",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -79,7 +79,7 @@ Toggle between showing and hiding hidden files using the appropriate argument
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(finderCmd)
+	osCmd.AddCommand(osFinderCmd)
 
 	// flags
 }
