@@ -31,8 +31,8 @@ var ()
 
 // zellijKillCmd
 var zellijKillCmd = &cobra.Command{
-	Use:     "kill",
-	Short:   "Kill the current Zellij session",
+	Use:   "kill",
+	Short: "Kill the current Zellij session",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` allow to terminate the current active Zellij session effortlessly by identifying and killing it directly
@@ -56,9 +56,7 @@ var zellijKillCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zellijKillCmd)
-
-	// flags
+	zellijCmd.AddCommand(zellijKillCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
