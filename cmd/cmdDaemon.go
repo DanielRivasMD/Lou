@@ -29,10 +29,7 @@ import (
 	"github.com/ttacon/chalk"
 )
 
-//
 // Metadata structure and helpers
-//
-
 // daemonMeta holds persistent info about a watcher process.
 type daemonMeta struct {
 	Name       string    `json:"name"`
@@ -111,28 +108,19 @@ func spawnWatcher(meta *daemonMeta) (int, error) {
 	return pid, nil
 }
 
-//
 // Parent Command: lou daemon
-//
-
 var daemonCmd = &cobra.Command{
 	Use:   "daemon",
 	Short: "Manage background watcher daemons",
-	Long: chalk.Green.Color("lou daemon") + ` is a namespace for controlling
-background watcher processes.  Subcommands:
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-  invoke    start a new watcher
-  tally     list all daemons
-  slay      stop a daemon by name
-  summon    view logs for a daemon
-  rekindle  restart a stopped daemon`,
+` + chalk.Dim.TextStyle(chalk.Blue.Color("lou daemon")) + ` is a namespace for controlling background watcher processes`,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
 	rootCmd.AddCommand(daemonCmd)
-	// daemonCmd.AddCommand(invokeCmd, tallyCmd, slayCmd, summonCmd, rekindleCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
