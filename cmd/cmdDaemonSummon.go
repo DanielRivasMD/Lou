@@ -28,14 +28,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//
-// Subcommand: summon
-//
-
 var summonCmd = &cobra.Command{
 	Use:   "summon [name]",
 	Short: "View logs for a daemon",
 	Args:  cobra.ExactArgs(1),
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	Run: func(cmd *cobra.Command, args []string) {
 		name := args[0]
 		meta, err := loadMeta(name)
@@ -47,7 +46,7 @@ var summonCmd = &cobra.Command{
 		if pager == "" {
 			pager = "less"
 		}
-		c := exec.Command(pager, "-R", meta.LogPath)
+		c := exec.Command(pager, "--paging", "always", meta.LogPath)
 		c.Stdin = os.Stdin
 		c.Stdout = os.Stdout
 		c.Stderr = os.Stderr
