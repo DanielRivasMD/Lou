@@ -44,7 +44,6 @@ a directory first with --target, then return to your original cwd.`,
 func init() {
 	// add to both root and zellij namespaces
 	rootCmd.AddCommand(replCmd)
-	zellijCmd.AddCommand(replCmd)
 
 	// reuse the zellij tabTarget flag
 	replCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching")
