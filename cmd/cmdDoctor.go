@@ -67,7 +67,9 @@ echo "────────────────────────�
 `
 
 		// execute command
+		domovoi.LineBreaks(true)
 		domovoi.ExecCmd("zsh", "-c", cmddoctor)
+		domovoi.LineBreaks(true)
 	},
 }
 
