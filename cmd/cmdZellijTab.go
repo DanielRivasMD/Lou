@@ -25,39 +25,64 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// variables
 var (
-	tabTarget string
+	tabTarget    string
+	tabLayout    string
+	validLayouts = map[string]string{
+		"tab":     "Default tab layout",
+		"explore": "Explore layout",
+		"repl":    "REPL layout",
+	}
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zTabCmd is the root-level 'lou tab' command.
-var zTabCmd = &cobra.Command{
+// tabCmd unifies launching tab, explore, and repl layouts.
+var tabCmd = &cobra.Command{
 	Use:   "tab",
-	Short: "Launch a new Zellij tab with a custom layout",
+	Short: "Launch a new Zellij tab",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-Lou tab spins up a new Zellij tab using your default layout (` + chalk.Yellow.Color("tab.kdl") + `) 
-and names it after the current directory (or "~" if you're in $HOME).`,
-	Example: chalk.Cyan.Color("lou") + " tab --target /path/to/dir",
+Launch a Zellij tab with one of the following layouts:
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+  tab      - ` + validLayouts["tab"] + `
+  explore  - ` + validLayouts["explore"] + `
+  repl     - ` + validLayouts["repl"] + `
 
+Pass --layout to choose one, or omit to use “tab”.
+`,
+	Example: chalk.Cyan.Color("lou") + " tab --layout explore --target ~/code",
+	Args:    cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		createTab("tab")
+		if tabLayout == "" {
+			tabLayout = "tab"
+		}
+		createTab(tabLayout)
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
-	// add to both root and zellij namespaces
-	rootCmd.AddCommand(zTabCmd)
+	rootCmd.AddCommand(tabCmd)
 
-	// reuse the zellij tabTarget flag
-	zTabCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching the tab")
+	tabCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching")
+	tabCmd.Flags().StringVarP(&tabLayout, "layout", "l", "", "Layout to use [tab, explore, repl]")
+
+	tabCmd.RegisterFlagCompletionFunc("layout", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		var out []string
+		for name := range validLayouts {
+			if toComplete == "" || name == toComplete || startsWith(name, toComplete) {
+				out = append(out, name)
+			}
+		}
+		return out, cobra.ShellCompDirectiveNoFileComp
+	})
+}
+
+func startsWith(s string, prefix string) bool {
+	return len(s) >= len(prefix) && s[:len(prefix)] == prefix
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
