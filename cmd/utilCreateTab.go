@@ -27,46 +27,41 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// createTab performs the common logic for both commands.
-func createTab(layoutType string) {
-	const op = "cmd.createTab"
+// createTab performs the common logic for launching tabs.
+func createTab(layout string) {
+	const op = "tab.launch"
 
-	// Allowed layouts
-	valids := map[string]bool{"tab": true, "explore": true, "repl": true}
-	if !valids[layoutType] {
+	if _, ok := validLayouts[layout]; !ok {
 		horus.CheckErr(
-			fmt.Errorf("invalid layout %q", layoutType),
+			fmt.Errorf("invalid layout %q", layout),
 			horus.WithOp(op),
 			horus.WithMessage("must be one of [tab, explore, repl]"),
 		)
 	}
 
-	// Build the Zellij action
 	cmdStr := fmt.Sprintf(
-		`zellij action new-tab --layout $HOME/.lou/layouts/%s.kdl --name $( [ $PWD = $HOME ] && echo "~" || basename $PWD )`,
-		layoutType,
+		`zellij action new-tab --layout $HOME/.lou/layouts/%s.kdl --name $( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )`,
+		layout,
 	)
 
-	// Optionally change directory
 	if tabTarget != "" {
 		orig, err := domovoi.RecallDir()
 		if err != nil {
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to recall directory"))
+			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to recall working directory"))
 		}
 		if err := domovoi.ChangeDir(tabTarget); err != nil {
 			domovoi.ChangeDir(orig)
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to change directory"))
+			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to change to target directory"))
 		}
 		if err := domovoi.ExecSh(cmdStr); err != nil {
 			domovoi.ChangeDir(orig)
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch new tab"))
+			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch tab"))
 		}
 		return
 	}
 
-	// No directory switch
 	if err := domovoi.ExecSh(cmdStr); err != nil {
-		horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch new tab"))
+		horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch tab"))
 	}
 }
 
