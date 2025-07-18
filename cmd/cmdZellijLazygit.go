@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijLazygitCmd
-var zellijLazygitCmd = &cobra.Command{
+// zLazygitCmd
+var zLazygitCmd = &cobra.Command{
 	Use:     "lazygit",
 	Aliases: []string{"lg"},
 	Short:   "Lazygit in a floating Zellij window",
@@ -57,8 +57,7 @@ var zellijLazygitCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zellijLazygitCmd)
-	zellijCmd.AddCommand(zellijLazygitCmd)
+	rootCmd.AddCommand(zLazygitCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
