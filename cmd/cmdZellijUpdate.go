@@ -24,13 +24,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
+// declacmdations
 var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijUpdateCmd
-var zellijUpdateCmd = &cobra.Command{
+// zUpdateCmd
+var zUpdateCmd = &cobra.Command{
 	Use:   "update",
 	Short: "Lou update dependencies",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -44,7 +44,7 @@ var zellijUpdateCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// command
 		cmdZellijUpdate := `zellij action new-tab --layout ~/.lou/layouts/update.kdl`
@@ -56,7 +56,7 @@ var zellijUpdateCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zellijUpdateCmd)
+	rootCmd.AddCommand(zUpdateCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
