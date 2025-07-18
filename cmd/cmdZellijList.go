@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijlistCmd
-var zellijlistCmd = &cobra.Command{
+// zListCmd
+var zListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List Zellij sessions",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -44,11 +44,11 @@ var zellijlistCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// command
-		cmdZellijList := `zellij list-sessions`
-		domovoi.ExecCmd("bash", "-c", cmdZellijList)
+		cmdList := `zellij list-sessions`
+		domovoi.ExecCmd("bash", "-c", cmdList)
 	},
 }
 
@@ -56,7 +56,7 @@ var zellijlistCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	zellijCmd.AddCommand(zellijlistCmd)
+	rootCmd.AddCommand(zListCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
