@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijBatCmd
-var zellijBatCmd = &cobra.Command{
+// zBatCmd
+var zBatCmd = &cobra.Command{
 	Use:   "bat",
 	Short: "View data in a floating Zellij window using bat",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -41,7 +41,7 @@ var zellijBatCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
 		cmdBat := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
@@ -60,7 +60,7 @@ var zellijBatCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	zellijCmd.AddCommand(zellijBatCmd)
+	rootCmd.AddCommand(zBatCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
