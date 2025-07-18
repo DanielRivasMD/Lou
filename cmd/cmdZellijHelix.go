@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijHelixCmd
-var zellijHelixCmd = &cobra.Command{
+// zHelixCmd
+var zHelixCmd = &cobra.Command{
 	Use:     "helix",
 	Aliases: []string{"hx"},
 	Short:   "View data in a floating Zellij window using helix",
@@ -61,7 +61,7 @@ var zellijHelixCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	zellijCmd.AddCommand(zellijHelixCmd)
+	rootCmd.AddCommand(zHelixCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
