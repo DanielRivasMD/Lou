@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijLsdCmd
-var zellijLsdCmd = &cobra.Command{
+// zLsdCmd
+var zLsdCmd = &cobra.Command{
 	Use:   "lsd",
 	Short: "View data in a floating Zellij window using lsd",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -60,7 +60,7 @@ var zellijLsdCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	zellijCmd.AddCommand(zellijLsdCmd)
+	rootCmd.AddCommand(zLsdCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
