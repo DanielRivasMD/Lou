@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijRenameCmd
-var zellijRenameCmd = &cobra.Command{
+// zRenameCmd
+var zRenameCmd = &cobra.Command{
 	Use:   "rename",
 	Short: "Rename current tab with working directory",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -43,11 +43,11 @@ var zellijRenameCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// command
-		cmdZellijRename := `zellij action rename-tab "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
-		domovoi.ExecCmd("bash", "-c", cmdZellijRename)
+		cmdRename := `zellij action rename-tab "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
+		domovoi.ExecCmd("bash", "-c", cmdRename)
 	},
 }
 
@@ -55,7 +55,7 @@ var zellijRenameCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zellijRenameCmd)
+	rootCmd.AddCommand(zRenameCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
