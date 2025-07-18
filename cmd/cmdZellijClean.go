@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijCleanCmd
-var zellijCleanCmd = &cobra.Command{
+// zCleanCmd
+var zCleanCmd = &cobra.Command{
 	Use:   "clean",
 	Short: "" + chalk.Yellow.Color("") + ".",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -41,7 +41,7 @@ var zellijCleanCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// command
 		cmdZellijList := `zellij delete-all-sessions --yes`
@@ -53,7 +53,7 @@ var zellijCleanCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	zellijCmd.AddCommand(zellijCleanCmd)
+	rootCmd.AddCommand(zCleanCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
