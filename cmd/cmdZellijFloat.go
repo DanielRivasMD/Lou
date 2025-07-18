@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// floatCmd
-var floatCmd = &cobra.Command{
+// zFloatCmd
+var zFloatCmd = &cobra.Command{
 	Use:   "float",
 	Short: "Launch floating Zellij window with ease",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -56,8 +56,7 @@ var floatCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(floatCmd)
-	zellijCmd.AddCommand(floatCmd)
+	rootCmd.AddCommand(zFloatCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
