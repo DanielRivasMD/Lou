@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijEzaCmd
-var zellijEzaCmd = &cobra.Command{
+// zEzaCmd
+var zEzaCmd = &cobra.Command{
 	Use:   "eza",
 	Short: "View data in a floating Zellij window using eza",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -60,7 +60,7 @@ var zellijEzaCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	zellijCmd.AddCommand(zellijEzaCmd)
+	rootCmd.AddCommand(zEzaCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
