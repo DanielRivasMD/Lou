@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijKillCmd
-var zellijKillCmd = &cobra.Command{
+// zKillCmd
+var zKillCmd = &cobra.Command{
 	Use:   "kill",
 	Short: "Kill the current Zellij session",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -44,11 +44,11 @@ var zellijKillCmd = &cobra.Command{
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// command
-		cmdZellijKill := `zellij kill-session "$(zellij list-sessions | grep '(current)' | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')"`
-		domovoi.ExecCmd("bash", "-c", cmdZellijKill)
+		cmdKill := `zellij kill-session "$(zellij list-sessions | grep '(current)' | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')"`
+		domovoi.ExecCmd("bash", "-c", cmdKill)
 	},
 }
 
@@ -56,7 +56,7 @@ var zellijKillCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	zellijCmd.AddCommand(zellijKillCmd)
+	rootCmd.AddCommand(zKillCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
