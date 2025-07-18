@@ -26,12 +26,14 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // variables
-var ()
+var (
+	tabTarget string
+)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// tabCmd is the root-level 'lou tab' command.
-var tabCmd = &cobra.Command{
+// zTabCmd is the root-level 'lou tab' command.
+var zTabCmd = &cobra.Command{
 	Use:   "tab",
 	Short: "Launch a new Zellij tab with a custom layout",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
@@ -52,11 +54,10 @@ and names it after the current directory (or "~" if you're in $HOME).`,
 
 func init() {
 	// add to both root and zellij namespaces
-	rootCmd.AddCommand(tabCmd)
-	zellijCmd.AddCommand(tabCmd)
+	rootCmd.AddCommand(zTabCmd)
 
 	// reuse the zellij tabTarget flag
-	tabCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching the tab")
+	zTabCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching the tab")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
