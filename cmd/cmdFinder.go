@@ -79,7 +79,7 @@ Toggle between showing and hiding hidden files using the appropriate argument
 
 // execute prior main
 func init() {
-	osCmd.AddCommand(osFinderCmd)
+	rootCmd.AddCommand(osFinderCmd)
 
 	// flags
 }
