@@ -25,7 +25,8 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var exploreCmd = &cobra.Command{
+// zExploreCmd
+var zExploreCmd = &cobra.Command{
 	Use:   "explore",
 	Short: "Launch a new Zellij tab in Explore layout",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
@@ -43,11 +44,10 @@ a directory first with --target, then return to your original cwd.`,
 
 func init() {
 	// add to both root and zellij namespaces
-	rootCmd.AddCommand(exploreCmd)
-	zellijCmd.AddCommand(exploreCmd)
+	rootCmd.AddCommand(zExploreCmd)
 
 	// reuse the zellij tabTarget flag
-	exploreCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching")
+	zExploreCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
