@@ -35,9 +35,9 @@ var (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijLaunchCmd builds and prints the shell command you should run to open
+// zLaunchCmd builds and prints the shell command you should run to open
 // a new Zellij tab with your custom layout. The --layout flag is now required.
-var zellijLaunchCmd = &cobra.Command{
+var zLaunchCmd = &cobra.Command{
 	Use:   "launch",
 	Short: "Prepare the shell command to start a new Zellij tab",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
@@ -68,7 +68,7 @@ you need to launch a styled Zellij tab. You must now specify --layout <file.kdl>
 		}
 
 		// Build the dynamic write-chars command for creating a new session
-		cmdZellijLaunch := fmt.Sprintf(
+		cmdLaunch := fmt.Sprintf(
 			`zellij action write-chars "zellij --new-session-with-layout $HOME/.config/zellij/layouts/%s"; zellij action write 13`,
 			layoutFile,
 		)
@@ -78,7 +78,7 @@ you need to launch a styled Zellij tab. You must now specify --layout <file.kdl>
 			const cmdZellijTab = `zellij action new-tab \
 --layout $HOME/.lou/layouts/launch.kdl \
 --name "$( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )"`
-			fullCmd := cmdZellijTab + "; " + cmdZellijLaunch
+			fullCmd := cmdZellijTab + "; " + cmdLaunch
 
 			// Recall original dir or panic
 			originalDir, err := domovoi.RecallDir()
@@ -107,7 +107,7 @@ you need to launch a styled Zellij tab. You must now specify --layout <file.kdl>
 			}
 		} else {
 			// No target → just send the write-chars + ENTER sequence
-			if err := domovoi.ExecSh(cmdZellijLaunch); err != nil {
+			if err := domovoi.ExecSh(cmdLaunch); err != nil {
 				panic(horus.Wrap(err, op, "failed to write-chars for new Zellij session"))
 			}
 		}
@@ -118,11 +118,10 @@ you need to launch a styled Zellij tab. You must now specify --layout <file.kdl>
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zellijLaunchCmd)
-	zellijCmd.AddCommand(zellijLaunchCmd)
+	rootCmd.AddCommand(zLaunchCmd)
 
-	zellijLaunchCmd.Flags().StringVarP(&layoutFile, "layout", "l", "", "the .kdl layout file to launch (required)")
-	zellijLaunchCmd.Flags().StringVarP(&launchTarget, "target", "t", "", "if set, cd into this path before printing the launch command (and return afterward)")
+	zLaunchCmd.Flags().StringVarP(&layoutFile, "layout", "l", "", "the .kdl layout file to launch (required)")
+	zLaunchCmd.Flags().StringVarP(&launchTarget, "target", "t", "", "if set, cd into this path before printing the launch command (and return afterward)")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
