@@ -29,8 +29,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zellijMicroCmd
-var zellijMicroCmd = &cobra.Command{
+// zMicroCmd
+var zMicroCmd = &cobra.Command{
 	Use:     "micro",
 	Aliases: []string{"mc"},
 	Short:   "View data in a floating Zellij window using micro",
@@ -61,7 +61,7 @@ var zellijMicroCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	zellijCmd.AddCommand(zellijMicroCmd)
+	rootCmd.AddCommand(zMicroCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
