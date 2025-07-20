@@ -40,7 +40,7 @@ var rootCmd = &cobra.Command{
 	Version: "v0.3",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.White.Color("Lou") + `, personal assistant at your service
+` + chalk.White.Color("lou") + `, personal assistant at your service
 `,
 
 	Example: chalk.White.Color("lou") + ` help`,

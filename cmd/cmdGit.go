@@ -35,10 +35,10 @@ var gitCmd = &cobra.Command{
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.White.Color("Lou") + ` simplifies interactions with Git by providing streamlined commands and features
+` + chalk.Blue.Color("lou") + ` simplifies interactions with Git by providing streamlined commands and features
 `,
-
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color("git"),
+	Example: chalk.White.Color("lou") + " " +
+		chalk.Bold.TextStyle(chalk.White.Color("git")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -89,8 +89,6 @@ var gitCmd = &cobra.Command{
 // execute prior main
 func init() {
 	rootCmd.AddCommand(gitCmd)
-
-	// no flags for this command
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
