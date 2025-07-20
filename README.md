@@ -1,6 +1,7 @@
 
 
 # Lou is a personal assitant to automatize routine tasks
+`lou` digital side kick
 
 **Lou** is a lightweight CLI tool for streamlining local file operations. Perform batch actions, deduplicate files, and automate mundane tasks with simple commands.
 
