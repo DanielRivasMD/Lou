@@ -27,6 +27,7 @@ import (
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
+	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,22 +37,33 @@ import (
 var pathCmd = &cobra.Command{
 	Use:   "path [which]",
 	Short: "Print entries of PATH, FPATH, or GOPATH",
-	Long: "Show each element of the chosen colon-delimited shell variable.\n" +
-		"If no argument is given, PATH is used.\n" +
-		"Valid options: path, fpath, gopath",
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` + chalk.Blue.Color("lou") + ` path prints each element of the chosen shell variable (PATH, FPATH, or GOPATH), splitting on ":" and printing each entry on its own line.
+`,
+	Example: chalk.White.Color("lou") + " " +
+		chalk.Bold.TextStyle(chalk.White.Color("path")) + " " +
+		chalk.Italic.TextStyle(chalk.Dim.TextStyle("[path|fpath|gopath]")),
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	Args:              cobra.MaximumNArgs(1),
 	ValidArgs:         []string{"path", "fpath", "gopath"},
 	ValidArgsFunction: completePathVars,
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	Run: func(cmd *cobra.Command, args []string) {
 		var envvar string
 		switch {
 		case len(args) == 0:
 			envvar = "PATH"
-		case args[0] == "path" || args[0] == "PATH":
+		case strings.EqualFold(args[0], "path"):
 			envvar = "PATH"
-		case args[0] == "fpath" || args[0] == "FPATH":
+		case strings.EqualFold(args[0], "fpath"):
 			envvar = "FPATH"
-		case args[0] == "gopath" || args[0] == "GOPATH":
+		case strings.EqualFold(args[0], "gopath"):
 			envvar = "GOPATH"
 		default:
 			fmt.Fprintf(os.Stderr, "invalid option %q, must be one of [path, fpath, gopath]\n", args[0])
