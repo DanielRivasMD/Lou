@@ -22,6 +22,7 @@ import (
 	"fmt"
 
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -41,18 +42,19 @@ var knitCmd = &cobra.Command{
 	Short: "Compile markdown files using R",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.White.Color("Lou") + ` leverage R to render Markdown files into polished outputs
+` + chalk.Blue.Color("lou") + ` leverage R to render Markdown files into polished outputs
 `,
 
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color("knit") + ` ` + chalk.Dim.TextStyle(chalk.Blue.Color("--file")) + ` ` + chalk.Dim.TextStyle("<file>"),
+	Example: chalk.White.Color("lou") + ` ` + chalk.Bold.TextStyle(chalk.White.Color("knit")) + ` ` + chalk.Italic.TextStyle(chalk.White.Color("--file")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 
 		// execute command
 		cmdKnit := fmt.Sprintf(`R --slave -e "rmarkdown::render('%s')" > /dev/null`, knitFile)
-		domovoi.ExecCmd("bash", "-c", cmdKnit)
+		err := domovoi.ExecCmd("bash", "-c", cmdKnit)
+		horus.CheckErr(err)
 	},
 }
 
@@ -64,8 +66,9 @@ func init() {
 
 	// flags
 	knitCmd.Flags().StringVarP(&knitFile, "file", "f", "", "File to compile")
-
-	knitCmd.MarkFlagRequired("file")
+	if err := knitCmd.MarkFlagRequired("file"); err != nil {
+		horus.CheckErr(err, horus.WithOp("knit.init"), horus.WithMessage("flag 'file' is required"))
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
