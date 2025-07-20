@@ -18,6 +18,7 @@ package cmd
 
 import (
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -36,16 +37,17 @@ var diffCmd = &cobra.Command{
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.White.Color("Lou") + ` helps identify and display differences in the repository
+` + chalk.Blue.Color("lou") + ` helps identify and display differences in the repository
 `,
-
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color("diff"),
+	Example: chalk.White.Color("lou") + " " +
+		chalk.Bold.TextStyle(chalk.White.Color("diff")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
 		cmdDiff := "git diff --name-only --relative --diff-filter=d | xargs bat --diff"
-		domovoi.ExecCmd("bash", "-c", cmdDiff)
+		err := domovoi.ExecCmd("bash", "-c", cmdDiff)
+		horus.CheckErr(err)
 	},
 }
 
@@ -54,8 +56,6 @@ var diffCmd = &cobra.Command{
 // execute prior main
 func init() {
 	rootCmd.AddCommand(diffCmd)
-
-	// flags
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
