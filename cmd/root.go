@@ -19,11 +19,8 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
-	"fmt"
-
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 	"github.com/ttacon/chalk"
 )
 
@@ -36,53 +33,21 @@ var ()
 
 // rootCmd
 var rootCmd = &cobra.Command{
-	Use:     "lou",
-	Version: "v0.3",
+	Use: "lou",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.White.Color("lou") + `, personal assistant at your service
+` + chalk.Blue.Color("lou") + `, personal assistant at your service
 `,
 
-	Example: chalk.White.Color("lou") + ` help`,
+	Example: chalk.White.Color("lou") + ` ` + chalk.Bold.TextStyle(chalk.White.Color("help")),
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Execute runs the root command.
 func Execute() {
-	rootCmd.Execute()
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// initializeConfig loads configuration from file into Viper.
-func initializeConfig(cmd *cobra.Command, configPath, configName string) error {
-	vip := viper.New()
-	vip.AddConfigPath(configPath)
-	vip.SetConfigName(configName)
-
-	err := vip.ReadInConfig()
-	if err != nil {
-		_, notFound := err.(viper.ConfigFileNotFoundError)
-		if !notFound {
-			return err
-		}
-	}
-
-	bindFlags(cmd, vip)
-	return nil
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// bindFlags maps Viper values back into Cobra flags.
-func bindFlags(cmd *cobra.Command, vip *viper.Viper) {
-	cmd.Flags().VisitAll(func(flag *pflag.Flag) {
-		if !flag.Changed && vip.IsSet(flag.Name) {
-			val := vip.Get(flag.Name)
-			cmd.Flags().Set(flag.Name, fmt.Sprintf("%v", val))
-		}
-	})
+	err := rootCmd.Execute()
+	horus.CheckErr(err)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
