@@ -45,7 +45,7 @@ var zLazygitCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// base command
-		cmdLazygit := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 140 --x 0 --y 0 -- `
+		cmdLazygit := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 130 --x 10 --y 0 -- `
 		cmdLazygit += `lazygit`
 
 		// execute command
