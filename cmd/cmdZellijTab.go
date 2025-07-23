@@ -1,18 +1,9 @@
+// cmd/tab.go
 /*
-Copyright © 2025 Daniel Rivas <danielrivasmd@gmail.com>
+Copyright © 2025 Daniel Rivas
 
 This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+it under the terms of the GNU GPL v3, or (at your option) any later version.
 */
 package cmd
 
@@ -27,7 +18,6 @@ import (
 
 var (
 	tabTarget    string
-	tabLayout    string
 	validLayouts = map[string]string{
 		"tab":     "Default tab layout",
 		"explore": "Explore layout",
@@ -37,9 +27,8 @@ var (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// tabCmd unifies launching tab, explore, and repl layouts.
 var tabCmd = &cobra.Command{
-	Use:   "tab",
+	Use:   "tab [layout]",
 	Short: "Launch a new Zellij tab",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -50,15 +39,24 @@ Launch a Zellij tab with one of the following layouts:
   explore  - ` + validLayouts["explore"] + `
   repl     - ` + validLayouts["repl"] + `
 
-Pass --layout to choose one, or omit to use “tab”.
-`,
-	Example: chalk.Cyan.Color("lou") + " tab --layout explore --target ~/code",
-	Args:    cobra.NoArgs,
+Provide the layout as an argument (defaults to "tab"), and optionally pass --target.`,
+	Example: chalk.Cyan.Color("lou") + " tab explore --target ~/code",
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Args:              cobra.MaximumNArgs(1),
+	ValidArgs:         []string{"tab", "explore", "repl"},
+	ValidArgsFunction: completeLayoutNames,
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	Run: func(cmd *cobra.Command, args []string) {
-		if tabLayout == "" {
-			tabLayout = "tab"
+		layout := "tab"
+		if len(args) == 1 {
+			layout = args[0]
 		}
-		createTab(tabLayout)
+
+		createTab(layout)
 	},
 }
 
@@ -68,20 +66,23 @@ func init() {
 	rootCmd.AddCommand(tabCmd)
 
 	tabCmd.Flags().StringVarP(&tabTarget, "target", "t", "", "Change to this directory before launching")
-	tabCmd.Flags().StringVarP(&tabLayout, "layout", "l", "", "Layout to use [tab, explore, repl]")
-
-	tabCmd.RegisterFlagCompletionFunc("layout", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		var out []string
-		for name := range validLayouts {
-			if toComplete == "" || name == toComplete || startsWith(name, toComplete) {
-				out = append(out, name)
-			}
-		}
-		return out, cobra.ShellCompDirectiveNoFileComp
-	})
 }
 
-func startsWith(s string, prefix string) bool {
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// completeLayoutNames offers tab-completion for the layout argument.
+func completeLayoutNames(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	var out []string
+	for name := range validLayouts {
+		if toComplete == "" || startsWith(name, toComplete) {
+			out = append(out, name)
+		}
+	}
+	return out, cobra.ShellCompDirectiveNoFileComp
+}
+
+// helper to check prefix
+func startsWith(s, prefix string) bool {
 	return len(s) >= len(prefix) && s[:len(prefix)] == prefix
 }
 
