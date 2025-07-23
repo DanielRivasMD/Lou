@@ -43,6 +43,7 @@ var zWatchCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
+		// TODO: test whether `just watch` exists
 		// base command
 		cmdFloat := `zellij run --name canvas --close-on-exit --floating --pinned true --height 20 --width 40 --x 100 --y 0 -- `
 		cmdFloat += `just watch`
@@ -60,4 +61,3 @@ func init() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
