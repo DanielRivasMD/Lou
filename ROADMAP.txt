@@ -1,3 +1,2 @@
 - add color & update help on commands
-- write an `idea` command to quickly write down an epiphany
 - deprecate useless commands
