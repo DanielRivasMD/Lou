@@ -1,2 +1,11 @@
 - add color & update help on commands
 - deprecate useless commands
+- change zellij coordinates as percentages
+- add command `resize` to resize random floating pane as full height top-right anchored & change its name
+- add command `stack` to launch a new tab with stack panes or to stack panes in current tab?
+- lou manipulation functions as potential zellij plugins?
+
+==================================================
+cmd/cmdZellijWatch.go
+  line 46     TODO   test whether `just watch` exists
+==================================================
