@@ -1,81 +1,53 @@
+# PROJECT_NAME
 
+[![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 
-# Lou is a personal assitant to automatize routine tasks
-`lou` digital side kick
+## Overview
+`lou`, automate the grind, master the craft
 
-**Lou** is a lightweight CLI tool for streamlining local file operations. Perform batch actions, deduplicate files, and automate mundane tasks with simple commands.
-
-![Lou Logo](./assets/Lou01.png)
-
----
 
 ## Features
 
-- **Smart Copy/Move**: Preserve structure or flatten directories
-- **Duplicate Detection**: Find and remove redundant files (MD5 checksum)
-- **Batch Renaming**: Regex support for pattern-based renaming
-- **Dry Run Mode**: Preview changes before executing
-- **Cross-Platform**: Windows/macOS/Linux support
+## Quickstart
+```
+```
 
 ## Installation
 
-### Pre-built Binaries
-Download for your OS from [Releases](https://github.com/yourusername/lou/releases).
+### **Language-Specific**
+| Language   | Command                                                                 |
+|------------|-------------------------------------------------------------------------|
+| **Go**     | `go install github.com/DanielRivasMD/Lou@latest`                  |
 
-### From Source (Go 1.20+)
-```bash
-git clone https://github.com/yourusername/lou.git
-cd lou
-go build -o lou cmd/main.go## Documentation
-```
+### **Pre-built Binaries**
+Download from [Releases](https://github.com/DanielRivasMD/Lou/releases).
 
-```
-go install github.com/yourusername/lou@latest
-```
-
-### Usage
-
-Use `lou -h` or `lou --help` to display help on commandline.
+## Usage
 
 ```
-Lou, personal assitant at your service
-
-Usage:
-  lou [command]
-
-Available Commands:
-  help                  Help about any command
-
-Flags:
-  -h, --help            help for Lou
-  -o, --outDir string   Output directory. creates if not exitst
-
-Use "lou [command] --help" for more information about a command.
 ```
 
-
-
-## Examples
-
+## Example
 ```
-lou help
-lou clean -l $(pwd)
-lou biblo format
 ```
 
+## Configuration
 
-## Acknowledgements
+## Development
 
-Contributing
-Fork the repository
+Build from source
+```
+git clone https://github.com/DanielRivasMD/Lou
+cd Lou
+```
 
-Create a feature branch
+## Language-Specific Setup
 
-Submit a pull request
+| Language | Dev Dependencies | Hot Reload           |
+|----------|------------------|----------------------|
+| Go       | `go >= 1.21`     | `air` (live reload)  |
 
-License
-MIT License - See LICENSE for details.
+## License
+Copyright (c) 2025
 
-Contact
-Daniel Rivas, MD
-danielrivasmd@gmail.com
+See the [LICENSE](LICENSE) file for license details.
