@@ -28,12 +28,12 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // createTab performs the common logic for launching tabs.
-func createTab(layout string) {
-	const op = "tab.launch"
+func createTab(tabLayout, tabTarget string) {
+	const op = "tab.create"
 
-	if _, ok := validLayouts[layout]; !ok {
+	if _, ok := validLayouts[tabLayout]; !ok {
 		horus.CheckErr(
-			fmt.Errorf("invalid layout %q", layout),
+			fmt.Errorf("invalid layout %q", tabLayout),
 			horus.WithOp(op),
 			horus.WithMessage("must be one of [tab, explore, repl]"),
 		)
@@ -41,7 +41,7 @@ func createTab(layout string) {
 
 	cmdStr := fmt.Sprintf(
 		`zellij action new-tab --layout $HOME/.lou/layouts/%s.kdl --name $( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )`,
-		layout,
+		tabLayout,
 	)
 
 	if tabTarget != "" {
