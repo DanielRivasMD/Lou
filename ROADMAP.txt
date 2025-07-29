@@ -3,7 +3,9 @@
 - change zellij coordinates as percentages
 - add command `resize` to resize random floating pane as full height top-right anchored & change its name
 - add command `stack` to launch a new tab with stack panes or to stack panes in current tab?
+- refactor `lou tab` to take positional arguments & `layout` as a flag
 - lou manipulation functions as potential zellij plugins?
+- lou roadmap is a good idea, but we must keep the order & format of the file
 
 ==================================================
 cmd/cmdZellijWatch.go
