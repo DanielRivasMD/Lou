@@ -28,30 +28,32 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// gitCmd
 var gitCmd = &cobra.Command{
 	Use:   "git",
-	Short: "Get the status of the repository effortlessly",
+	Short: "Effortlessly interact with Git repositories",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Blue.Color("lou") + ` simplifies interactions with Git by providing streamlined commands and features
+` +
+		`simplify interactions with ` + chalk.Cyan.Color(chalk.Italic.TextStyle("git")) + ` by providing streamlined commands:
+  - status   Show current repo status
+  - log      Display commit history
+  - branch   List and switch branches
 `,
-	Example: chalk.White.Color("lou") + " " +
-		chalk.Bold.TextStyle(chalk.White.Color("git")),
+	Example: chalk.White.Color("lou") + " " + chalk.Bold.TextStyle(chalk.White.Color("git")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
 		const op = "cmd.git"
 
-		// Are we inside a git repo?
+		// inside git repo
 		if _, _, err := domovoi.CaptureExecCmd("git", "rev-parse", "--is-inside-work-tree"); err != nil {
 			fmt.Println(chalk.Blue.Color("Not a git repository"))
 			return
 		}
 
-		// Section: git status
+		// git status
 		domovoi.PrintCentered("Status")
 		if err := domovoi.ExecCmd("git", "status", "--short"); err != nil {
 			msg := horus.FormatPanic(op, "failed to run git status")
@@ -59,7 +61,7 @@ var gitCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// Section: git stash list (capture output)
+		// git stash list (capture output)
 		domovoi.PrintCentered("Stash List")
 		if err := domovoi.ExecCmd("git", "stash", "list"); err != nil {
 			msg := horus.FormatPanic(op, "failed to list stashes")
@@ -67,7 +69,7 @@ var gitCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// Section: git log
+		// git log
 		domovoi.PrintCentered("Recent Commits")
 		if err := domovoi.ExecCmd(
 			"git", "log", "--graph", "--topo-order", "--abbrev-commit",
@@ -86,7 +88,6 @@ var gitCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
 	rootCmd.AddCommand(gitCmd)
 }
