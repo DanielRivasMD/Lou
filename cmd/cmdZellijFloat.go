@@ -16,7 +16,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
+	"fmt"
+
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -24,37 +28,39 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
 var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zFloatCmd
 var zFloatCmd = &cobra.Command{
 	Use:   "float",
-	Short: "Launch floating Zellij window with ease",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Short: `launch floating zellij window with ease`,
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` +
+		`launch a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("float")) + ` with ease
 `,
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("bat"),
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("float")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
-
-		// base command
-		cmdFloat := `zellij run --name canvas --close-on-exit --floating --height 100 --width 130 --x 10 --y 0 -- `
+		cmdFloat := fmt.Sprintf(`
+		zellij run --name canvas --close-on-exit --floating \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s \
+		-- `, floatHeight, floatWidth, floatX, floatY)
 		cmdFloat += `zsh`
-
-		// execute command
 		domovoi.ExecCmd("bash", "-c", cmdFloat)
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
 	rootCmd.AddCommand(zFloatCmd)
 }
