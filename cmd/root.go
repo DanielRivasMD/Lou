@@ -26,7 +26,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
+// flags for zellij floats
+var (
+	floatHeight string
+	floatWidth  string
+	floatX      string
+	floatY      string
+)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -49,6 +55,10 @@ func Execute() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
+	rootCmd.PersistentFlags().StringVarP(&floatHeight, "height", "H", "100%", "pane height as percentage")
+	rootCmd.PersistentFlags().StringVarP(&floatWidth, "width", "W", "95%", "pane width as percentage")
+	rootCmd.PersistentFlags().StringVarP(&floatX, "x", "X", "10", "horizontal offset as percentage")
+	rootCmd.PersistentFlags().StringVarP(&floatY, "y", "Y", "0", "vertical offset as percentage")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
