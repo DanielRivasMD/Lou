@@ -16,20 +16,23 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
+	"fmt"
+
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
 var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zBatCmd
 var zBatCmd = &cobra.Command{
 	Use:   "bat",
 	Short: "View data in a floating Zellij window using bat",
@@ -42,16 +45,26 @@ var zBatCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
-
-		// base command
-		cmdBat := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
-		cmdBat += `bat --paging always`
-
 		// validate input
-		arg := args[0]
+		if len(args) < 1 {
+			horus.CheckErr(
+				horus.NewHerrorErrorf(
+					"bat",
+					"bat command requires a file argument",
+				),
+			)
+		}
+		file := args[0]
 
-		// execute command
-		cmdBat += " " + arg
+		cmdBat := fmt.Sprintf(`
+		zellij run --name canvas --close-on-exit --floating --pinned true \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s \
+		-- `, floatHeight, floatWidth, floatX, floatY)
+		cmdBat += `bat --paging always`
+		cmdBat += " " + file
 		domovoi.ExecCmd("bash", "-c", cmdBat)
 	},
 }
