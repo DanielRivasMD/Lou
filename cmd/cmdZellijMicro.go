@@ -16,7 +16,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
+	"fmt"
+
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -24,35 +28,41 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
 var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zMicroCmd
 var zMicroCmd = &cobra.Command{
-	Use:     "micro",
+	Use:     "micro " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 	Aliases: []string{"mc"},
-	Short:   "View data in a floating Zellij window using micro",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Short:   `view data in a floating zellij window using micro`,
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` +
+		`view data in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("micro")) + `
 `,
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("micro"),
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("micro")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
-
-		// base command
-		cmdMicro := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
+		cmdMicro := fmt.Sprintf(`
+		zellij run --name canvas --close-on-exit --floating --pinned true \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s \
+		-- `, floatHeight, floatWidth, floatX, floatY)
 		cmdMicro += `micro`
 
 		// validate input
-		arg := args[0]
+		if len(args) > 0 {
+			arg := args[0]
+			cmdMicro += " " + arg
+		}
 
-		// execute command
-		cmdMicro += " " + arg
 		domovoi.ExecCmd("bash", "-c", cmdMicro)
 	},
 }
