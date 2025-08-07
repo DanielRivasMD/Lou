@@ -1,9 +1,9 @@
-# PROJECT_NAME
+# Lou, automate the grind, master the craft
 
 [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 
 ## Overview
-`lou`, automate the grind, master the craft
+CLI tool to automate tasks and boost productivity, seamlessly integrated with Zellij
 
 
 ## Features
