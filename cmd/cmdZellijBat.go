@@ -34,13 +34,16 @@ var ()
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var zBatCmd = &cobra.Command{
-	Use:   "bat",
-	Short: "View data in a floating Zellij window using bat",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Use:   "bat " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
+	Short: `view data in a floating zellij window using bat`,
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` +
+		`view data in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("bat")) + ` for a specified file
 `,
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("bat"),
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("bat")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
