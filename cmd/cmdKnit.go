@@ -29,30 +29,25 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
-var (
-	knitFile string
-)
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// knitCmd
 var knitCmd = &cobra.Command{
-	Use:   "knit",
-	Short: "Compile markdown files using R",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Use:   "knit " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
+	Short: "compile a Markdown file using R",
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Blue.Color("lou") + ` leverages R to render Markdown files into polished outputs
+` + `leverage ` + chalk.Cyan.Color(chalk.Italic.TextStyle("R")) + ` to render a Markdown file into a polished output
 `,
+	Example: chalk.White.Color("lou") + " " + chalk.Bold.TextStyle(chalk.White.Color("knit")) + " " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 
-	Example: chalk.White.Color("lou") + ` ` + chalk.Bold.TextStyle(chalk.White.Color("knit")) + ` ` + chalk.Italic.TextStyle(chalk.White.Color("--file")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Args: cobra.ExactArgs(1),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
-
-		// execute command
-		cmdKnit := fmt.Sprintf(`R --slave -e "rmarkdown::render('%s')" > /dev/null`, knitFile)
+		inputFile := args[0]
+		cmdKnit := fmt.Sprintf(`R --slave -e "rmarkdown::render('%s')" > /dev/null`, inputFile)
 		err := domovoi.ExecCmd("bash", "-c", cmdKnit)
 		horus.CheckErr(err)
 	},
@@ -60,15 +55,8 @@ var knitCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
 	rootCmd.AddCommand(knitCmd)
-
-	// flags
-	knitCmd.Flags().StringVarP(&knitFile, "file", "f", "", "File to compile")
-	if err := knitCmd.MarkFlagRequired("file"); err != nil {
-		horus.CheckErr(err, horus.WithOp("knit.init"), horus.WithMessage("flag 'file' is required"))
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
