@@ -16,7 +16,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
+	"fmt"
+
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -24,42 +28,47 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
 var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zHelixCmd
 var zHelixCmd = &cobra.Command{
-	Use:     "helix",
+	Use:     "helix " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 	Aliases: []string{"hx"},
-	Short:   "View data in a floating Zellij window using helix",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Short:   `view data in a floating zellij window using helix`,
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` +
+		`view data in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("helix")) + `
 `,
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("helix"),
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("helix")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
-
-		// base command
-		cmdHelix := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
+		cmdHelix := fmt.Sprintf(`
+		zellij run --name canvas --close-on-exit --floating --pinned true \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s \
+		-- `, floatHeight, floatWidth, floatX, floatY)
 		cmdHelix += `hx`
 
 		// validate input
-		arg := args[0]
+		if len(args) > 0 {
+			arg := args[0]
+			cmdHelix += " " + arg
+		}
 
-		// execute command
-		cmdHelix += " " + arg
 		domovoi.ExecCmd("bash", "-c", cmdHelix)
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
 	rootCmd.AddCommand(zHelixCmd)
 }
