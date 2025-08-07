@@ -16,7 +16,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
+	"fmt"
+
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -24,34 +28,40 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
 var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zEzaCmd
 var zEzaCmd = &cobra.Command{
-	Use:   "eza",
-	Short: "View data in a floating Zellij window using eza",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Use:   "eza " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<path>")),
+	Short: `view data in a floating zellij window using eza`,
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` +
+		`view data in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("eza")) + `
 `,
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("eza"),
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("eza")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<path>")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
-
-		// base command
-		cmdEza := `zellij run --name canvas --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
+		cmdEza := fmt.Sprintf(`
+		zellij run --name canvas --floating --pinned true \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s \
+		-- `, floatHeight, floatWidth, floatX, floatY)
 		cmdEza += `eza --header --long --icons --classify --git --group --color=always`
 
 		// validate input
-		arg := args[0]
+		if len(args) > 0 {
+			path := args[0]
+			cmdEza += " " + path
+		}
 
-		// execute command
-		cmdEza += " " + arg
 		domovoi.ExecCmd("bash", "-c", cmdEza)
 	},
 }
