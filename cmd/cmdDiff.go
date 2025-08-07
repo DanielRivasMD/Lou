@@ -25,22 +25,20 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
 var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// diffCmd
 var diffCmd = &cobra.Command{
 	Use:   "diff",
-	Short: "Compare differences in the repository",
+	Short: `compare differences in the repository`,
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-` + chalk.Blue.Color("lou") + ` helps identify and display differences in the repository
+` +
+		`compare & display differences in the repository using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("git diff")) + `
 `,
-	Example: chalk.White.Color("lou") + " " +
-		chalk.Bold.TextStyle(chalk.White.Color("diff")),
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("diff")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,7 +51,6 @@ var diffCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
 	rootCmd.AddCommand(diffCmd)
 }
