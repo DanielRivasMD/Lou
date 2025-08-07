@@ -17,6 +17,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"fmt"
 
@@ -27,55 +29,45 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// flags for resizing
-var (
-	floatHeight string
-	floatWidth  string
-	floatX      string
-	floatY      string
-)
+var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zResizeCmd resizes a random floating Zellij pane using percentage flags.
 var zResizeCmd = &cobra.Command{
 	Use:   "resize",
-	Short: "Anchor and resize a random floating pane",
+	Short: `anchor and resize a random floating pane`,
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
-Resize one random floating pane to a percentage of screen size and move it to an anchor point.
+` +
+		`resize one random floating pane to a percentage of screen size and move it to an anchor point
 `,
-	Example: `
-  lou resize --height 80% --width 70% --x 5% --y 10%
-`,
-	Run: func(cmd *cobra.Command, args []string) {
-		// build shell script, substituting in flag values
-		cmdResize := fmt.Sprintf(`
-zellij action change-floating-pane-coordinates \
-  --pane-id $ZELLIJ_PANE_ID \
-  --height %s \
-  --width %s \
-  --x %s \
-  --y %s
-		zellij action rename-pane canvas
-`, floatHeight, floatWidth, floatX, floatY)
-		domovoi.ExecCmd("bash", "-c", cmdResize)
 
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("resize")) + ` ` +
+		chalk.White.Color(chalk.Italic.TextStyle("--height")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<100%>")) + ` ` +
+		chalk.White.Color(chalk.Italic.TextStyle("--width")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<95%>")) + ` ` +
+		chalk.White.Color(chalk.Italic.TextStyle("--x")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<10>")) + ` ` +
+		chalk.White.Color(chalk.Italic.TextStyle("--y")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<0>")),
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Run: func(cmd *cobra.Command, args []string) {
+		cmdResize := fmt.Sprintf(`
+		zellij action rename-pane canvas
+		zellij action change-floating-pane-coordinates --pane-id $ZELLIJ_PANE_ID \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s
+	`, floatHeight, floatWidth, floatX, floatY)
+		domovoi.ExecCmd("bash", "-c", cmdResize)
 	},
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 func init() {
 	rootCmd.AddCommand(zResizeCmd)
-
-	// bind flags with defaults
-	zResizeCmd.Flags().StringVarP(&floatHeight, "height", "H", "100%", "pane height as percentage")
-
-	zResizeCmd.Flags().StringVarP(&floatWidth, "width", "W", "95%", "pane width as percentage")
-
-	zResizeCmd.Flags().StringVarP(&floatX, "x", "X", "10", "horizontal offset as percentage")
-
-	zResizeCmd.Flags().StringVarP(&floatY, "y", "Y", "0", "vertical offset as percentage")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
