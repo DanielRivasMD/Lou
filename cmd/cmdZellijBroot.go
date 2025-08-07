@@ -16,7 +16,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
+	"fmt"
+
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -24,38 +28,40 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
 var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// zBrootCmd
 var zBrootCmd = &cobra.Command{
 	Use:     "broot",
 	Aliases: []string{"br"},
-	Short:   "Lazygit in a floating Zellij window",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Short:   `browse files in a floating zellij window using broot`,
+	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
+		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+
+` +
+		`browse files in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("broot")) + `
 `,
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("helix"),
+	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("broot")),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
-
-		// base command
-		cmdBroot := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 130 --x 10 --y 0 -- `
+		cmdBroot := fmt.Sprintf(`
+		zellij run --name canvas --close-on-exit --floating --pinned true \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s \
+		-- `, floatHeight, floatWidth, floatX, floatY)
 		cmdBroot += `broot --dates --sizes --permissions --hidden --git-ignored --show-git-info --sort-by-type-dirs-first`
-
-		// execute command
 		domovoi.ExecCmd("zsh", "-c", cmdBroot)
 	},
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
 	rootCmd.AddCommand(zBrootCmd)
 }
