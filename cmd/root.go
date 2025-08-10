@@ -26,6 +26,20 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+var rootCmd = &cobra.Command{
+	Use:     "lou",
+	Long:    helpRoot,
+	Example: exampleRoot,
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func Execute() {
+	horus.CheckErr(rootCmd.Execute())
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // flags for zellij floats
 var (
 	floatHeight string
@@ -36,30 +50,19 @@ var (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var rootCmd = &cobra.Command{
-	Use: "lou",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-
-` +
-		`personal assistant at your service
-`,
-	Example: chalk.White.Color("lou") + ` ` + chalk.Bold.TextStyle(chalk.White.Color("help")),
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-func Execute() {
-	err := rootCmd.Execute()
-	horus.CheckErr(err)
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&floatHeight, "height", "H", "100%", "pane height as percentage")
 	rootCmd.PersistentFlags().StringVarP(&floatWidth, "width", "W", "95%", "pane width as percentage")
 	rootCmd.PersistentFlags().StringVarP(&floatX, "x", "X", "10", "horizontal offset as percentage")
 	rootCmd.PersistentFlags().StringVarP(&floatY, "y", "Y", "0", "vertical offset as percentage")
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var helpRoot = chalk.Bold.TextStyle(chalk.Green.Color("Daniel Rivas ")) +
+	chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) +
+	chalk.Dim.TextStyle(chalk.Cyan.Color("\n\npersonal assistant at your service"))
+
+var exampleRoot = chalk.White.Color("lou") + " " + chalk.Bold.TextStyle(chalk.White.Color("help"))
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
