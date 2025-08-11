@@ -59,7 +59,7 @@ var zResizeCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Args:      cobra.MaximumNArgs(1),
-	ValidArgs: []string{"full", "half-left", "half-right"},
+	ValidArgs: []string{"full", "half-left", "half-right", "top-left", "bottom-left", "top-right", "bottom-right"},
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -72,6 +72,14 @@ var zResizeCmd = &cobra.Command{
 				floatHeight, floatWidth, floatX, floatY = "100%", "50%", "0", "0"
 			case "half-right":
 				floatHeight, floatWidth, floatX, floatY = "100%", "50%", "50%", "0"
+			case "top-left":
+				floatHeight, floatWidth, floatX, floatY = "45%", "45%", "0", "0"
+			case "bottom-left":
+				floatHeight, floatWidth, floatX, floatY = "45%", "45%", "0", "60%"
+			case "top-right":
+				floatHeight, floatWidth, floatX, floatY = "45%", "45%", "60%", "0"
+			case "bottom-right":
+				floatHeight, floatWidth, floatX, floatY = "45%", "45%", "60%", "60%"
 			default:
 				herr := horus.NewCategorizedHerror(
 					"resize",
