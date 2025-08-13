@@ -32,7 +32,7 @@ import (
 var (
 	tabLayout    = "tab"
 	tabTarget    string
-	validLayouts = map[string]string{
+	validTabLayouts = map[string]string{
 		"tab":     "Default tab layout",
 		"explore": "Explore layout",
 		"repl":    "REPL layout",
@@ -50,9 +50,9 @@ var tabCmd = &cobra.Command{
 ` + chalk.Italic.TextStyle(chalk.Blue.Color("lilith")) + ` tab launches a new Zellij session in the specified directory using one of the available layouts.
 
 Layouts:
-  tab      - ` + validLayouts["tab"] + `
-  explore  - ` + validLayouts["explore"] + `
-  repl     - ` + validLayouts["repl"] + `
+  tab      - ` + validTabLayouts["tab"] + `
+  explore  - ` + validTabLayouts["explore"] + `
+  repl     - ` + validTabLayouts["repl"] + `
 
 Specify --layout to choose a layout (defaults to "tab").`,
 	Example: chalk.Cyan.Color("lou") + " tab ~/src/helix --layout explore",
@@ -94,7 +94,7 @@ func init() {
 	tabCmd.RegisterFlagCompletionFunc("layout",
 		func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			var out []string
-			for name := range validLayouts {
+			for name := range validTabLayouts {
 				if toComplete == "" || strings.HasPrefix(name, toComplete) {
 					out = append(out, name)
 				}

@@ -31,7 +31,7 @@ import (
 func createTab(tabLayout, tabTarget string) {
 	const op = "tab.create"
 
-	if _, ok := validLayouts[tabLayout]; !ok {
+	if _, ok := validTabLayouts[tabLayout]; !ok {
 		horus.CheckErr(
 			fmt.Errorf("invalid layout %q", tabLayout),
 			horus.WithOp(op),
