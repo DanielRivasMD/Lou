@@ -32,7 +32,7 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zEzaCmd = &cobra.Command{
+var zfEzaCmd = &cobra.Command{
 	Use:   "eza " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<path>")),
 	Short: `view data in a floating zellij window using eza`,
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
@@ -47,13 +47,17 @@ var zEzaCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
+		layoutName := layoutFlag
+
+		geom, _ := resolveLayoutGeometry(layoutName)
+
 		cmdEza := fmt.Sprintf(`
 		zellij run --name canvas --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \
 		--y %s \
-		-- `, floatHeight, floatWidth, floatX, floatY)
+		-- `, geom.Height, geom.Width, geom.X, geom.Y)
 		cmdEza += `eza --header --long --icons --classify --git --group --color=always`
 
 		// validate input
@@ -68,9 +72,11 @@ var zEzaCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
-	rootCmd.AddCommand(zEzaCmd)
+	rootCmd.AddCommand(zfEzaCmd)
+	zfCmd.AddCommand(zfEzaCmd)
+
+	zfEzaCmd.Flags().StringVarP(&layoutFlag, "layout", "", "default", "")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
