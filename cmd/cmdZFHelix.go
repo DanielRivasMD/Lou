@@ -19,9 +19,6 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
-	"fmt"
-
-	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -35,38 +32,14 @@ var ()
 var zfHelixCmd = &cobra.Command{
 	Use:     "helix " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 	Aliases: []string{"hx"},
-	Short:   `view data in a floating zellij window using helix`,
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-
-` +
-		`view data in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("helix")) + `
-`,
-
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("helix")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
+	Short:   helpShort("helix"),
+	Long:    helpLong("helix"),
+	Example: helpExample("helix"),
+	Args:    cobra.MaximumNArgs(1),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(cmd *cobra.Command, args []string) {
-		layoutName := layoutFlag
-		geom, _ := resolveLayoutGeometry(layoutName)
-		cmdHelix := fmt.Sprintf(`
-		zellij run --name canvas --close-on-exit --floating --pinned true \
-		--height %s \
-		--width %s \
-		--x %s \
-		--y %s \
-		-- `, geom.Height, geom.Width, geom.X, geom.Y)
-		cmdHelix += `hx`
-
-		// validate input
-		if len(args) > 0 {
-			file := args[0]
-			cmdHelix += " " + file
-		}
-
-		domovoi.ExecCmd("bash", "-c", cmdHelix)
-	},
+	Run: runEditor("hx"),
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
