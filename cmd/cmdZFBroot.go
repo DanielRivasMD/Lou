@@ -32,7 +32,7 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zBrootCmd = &cobra.Command{
+var zfBrootCmd = &cobra.Command{
 	Use:     "broot",
 	Aliases: []string{"br"},
 	Short:   `browse files in a floating zellij window using broot`,
@@ -48,13 +48,21 @@ var zBrootCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
+
+		layoutName := "default"
+		if len(args) == 1 {
+			layoutName = args[0]
+		}
+
+		geom, _ := resolveLayoutGeometry(layoutName)
+
 		cmdBroot := fmt.Sprintf(`
 		zellij run --name canvas --close-on-exit --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \
 		--y %s \
-		-- `, floatHeight, floatWidth, floatX, floatY)
+		-- `, geom.Height, geom.Width, geom.X, geom.Y)
 		cmdBroot += `broot --dates --sizes --permissions --hidden --git-ignored --show-git-info --sort-by-type-dirs-first`
 		domovoi.ExecCmd("zsh", "-c", cmdBroot)
 	},
@@ -63,7 +71,8 @@ var zBrootCmd = &cobra.Command{
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
-	rootCmd.AddCommand(zBrootCmd)
+	rootCmd.AddCommand(zfBrootCmd)
+	zfCmd.AddCommand(zfBrootCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
