@@ -17,7 +17,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
@@ -28,7 +31,7 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var mdcatCmd = &cobra.Command{
+var zfMdcatCmd = &cobra.Command{
 	Use:   "mdcat",
 	Short: "" + chalk.Yellow.Color("") + ".",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -41,15 +44,29 @@ var mdcatCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// base command
-		cmdMdcat := `zellij run --name canvas --close-on-exit --floating --pinned true --height 100 --width 130 --x 25 --y 0 -- `
-		cmdMdcat += `mdcat --paginate`
+		if len(args) < 1 {
+			horus.CheckErr(
+				horus.NewHerrorErrorf(
+					"mdcat",
+					"mdcat command requires a file argument",
+				),
+			)
+		}
+		file := args[0]
 
-		// validate input
-		arg := args[0]
+		layoutName := layoutFlag
 
-		// execute command
-		cmdMdcat += " " + arg
+		geom, _ := resolveLayoutGeometry(layoutName)
+
+		cmdMdcat := fmt.Sprintf(`
+		zellij run --name canvas --close-on-exit --floating --pinned true \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s \
+		-- `, geom.Height, geom.Width, geom.X, geom.Y)
+		cmdMdcat += `mdcat --paging always`
+		cmdMdcat += " " + file
 		domovoi.ExecCmd("bash", "-c", cmdMdcat)
 	},
 }
@@ -57,7 +74,8 @@ var mdcatCmd = &cobra.Command{
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
-	rootCmd.AddCommand(mdcatCmd)
+	rootCmd.AddCommand(zfMdcatCmd)
+	zfCmd.AddCommand(zfMdcatCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
