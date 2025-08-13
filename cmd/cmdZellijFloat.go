@@ -20,50 +20,148 @@ package cmd
 
 import (
 	"fmt"
+	"sort"
 
-	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
+var zfCmd = &cobra.Command{}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zFloatCmd = &cobra.Command{
-	Use:   "float",
-	Short: `launch floating zellij window with ease`,
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+// 1) Define type to hold parameters
+type LayoutGeometry struct {
+	Width, Height, X, Y string
+}
 
-` +
-		`launch a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("float")) + ` with ease
-`,
-
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("float")),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Run: func(cmd *cobra.Command, args []string) {
-		cmdFloat := fmt.Sprintf(`
-		zellij run --name canvas --close-on-exit --floating \
-		--height %s \
-		--width %s \
-		--x %s \
-		--y %s \
-		-- `, floatHeight, floatWidth, floatX, floatY)
-		cmdFloat += `zsh`
-		domovoi.ExecCmd("bash", "-c", cmdFloat)
+// 2) Declare a map from layout name → geometry
+var layoutPresets = map[string]LayoutGeometry{
+	"full": {
+		Width:  "100%",
+		Height: "100%",
+		X:      "0",
+		Y:      "0",
 	},
+	"half-left": {
+		Width:  "50%",
+		Height: "100%",
+		X:      "0",
+		Y:      "0",
+	},
+	"half-right": {
+		Width:  "50%",
+		Height: "100%",
+		X:      "50%",
+		Y:      "0",
+	},
+	"top-left": {
+		Width:  "45%",
+		Height: "45%",
+		X:      "0",
+		Y:      "0",
+	},
+	"bottom-left": {
+		Width:  "45%",
+		Height: "45%",
+		X:      "0",
+		Y:      "60%",
+	},
+	"top-right": {
+		Width:  "45%",
+		Height: "45%",
+		X:      "60%",
+		Y:      "0",
+	},
+	"bottom-right": {
+		Width:  "45%",
+		Height: "45%",
+		X:      "60%",
+		Y:      "60%",
+	},
+}
+
+// 3) Derive validLayouts slice from map keys
+var validLayouts = func() []string {
+
+	keys := make([]string, 0, len(layoutPresets))
+	for name := range layoutPresets {
+		keys = append(keys, name)
+	}
+	sort.Strings(keys)
+	return keys
+}()
+
+var layoutFlag string
+
+// flags for zellij floats
+var (
+	floatHeight string
+	floatWidth  string
+	floatX      string
+	floatY      string
+)
+
+// mirror the defaults you passed into StringVarP
+var (
+	defaultHeight = "100%"
+	defaultWidth  = "95%"
+	defaultX      = "10"
+	defaultY      = "0"
+)
+
+func init() {
+	rootCmd.AddCommand(zfCmd)
+
+	zfCmd.PersistentFlags().StringVarP(&floatHeight, "height", "H", defaultHeight, "pane height as percentage")
+	zfCmd.PersistentFlags().StringVarP(&floatWidth, "width", "W", defaultWidth, "pane width as percentage")
+	zfCmd.PersistentFlags().StringVarP(&floatX, "x", "X", defaultX, "horizontal offset as percentage")
+	zfCmd.PersistentFlags().StringVarP(&floatY, "y", "Y", defaultY, "vertical offset as percentage")
+
+	layoutPresets["default"] = LayoutGeometry{
+		Width:  floatWidth,
+		Height: floatHeight,
+		X:      floatX,
+		Y:      floatY,
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	rootCmd.AddCommand(zFloatCmd)
-	zellijCmd.AddCommand(zFloatCmd)
+// pickValue applies bottom -> top override:
+//  1. start with defaultVal
+//  2. if presetVal is non-empty, use
+//  3. if flagVal differs from defaultVal, use
+func pickValue(defaultVal, presetVal, flagVal string) string {
+	result := defaultVal
+	if presetVal != "" {
+		result = presetVal
+	}
+	if flagVal != defaultVal {
+		result = flagVal
+	}
+	return result
+}
+
+// look up named preset, apply overrides from flags, and return final LayoutGeometry
+func resolveLayoutGeometry(layoutName string) (LayoutGeometry, error) {
+
+	geom, ok := layoutPresets[layoutName]
+	if !ok {
+		return LayoutGeometry{}, fmt.Errorf(
+			"unknown layout %q (must be one of %v)",
+			layoutName, validLayouts,
+		)
+	}
+
+	// override
+	geom.Width = pickValue(defaultWidth, geom.Width, floatWidth)
+	geom.Height = pickValue(defaultHeight, geom.Height, floatHeight)
+	geom.X = pickValue(defaultX, geom.X, floatX)
+	geom.Y = pickValue(defaultY, geom.Y, floatY)
+
+	return geom, nil
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
