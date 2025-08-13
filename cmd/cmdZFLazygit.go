@@ -32,7 +32,7 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zLazygitCmd = &cobra.Command{
+var zfLazygitCmd = &cobra.Command{
 	Use:     "lazygit",
 	Aliases: []string{"lg"},
 	Short:   `lazygit in a floating zellij window`,
@@ -48,13 +48,21 @@ var zLazygitCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
+
+		layoutName := "default"
+		if len(args) == 1 {
+			layoutName = args[0]
+		}
+
+		geom, _ := resolveLayoutGeometry(layoutName)
+
 		cmdLazygit := fmt.Sprintf(`
 		zellij run --name canvas --close-on-exit --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \
 		--y %s \
-		-- `, floatHeight, floatWidth, floatX, floatY)
+		-- `, geom.Height, geom.Width, geom.X, geom.Y)
 		cmdLazygit += `lazygit`
 		domovoi.ExecCmd("bash", "-c", cmdLazygit)
 	},
@@ -63,7 +71,8 @@ var zLazygitCmd = &cobra.Command{
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
-	rootCmd.AddCommand(zLazygitCmd)
+	rootCmd.AddCommand(zfLazygitCmd)
+	zfCmd.AddCommand(zfLazygitCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
