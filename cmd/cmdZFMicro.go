@@ -32,7 +32,7 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zMicroCmd = &cobra.Command{
+var zfMicroCmd = &cobra.Command{
 	Use:     "micro " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 	Aliases: []string{"mc"},
 	Short:   `view data in a floating zellij window using micro`,
@@ -48,19 +48,21 @@ var zMicroCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
+		layoutName := layoutFlag
+		geom, _ := resolveLayoutGeometry(layoutName)
 		cmdMicro := fmt.Sprintf(`
 		zellij run --name canvas --close-on-exit --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \
 		--y %s \
-		-- `, floatHeight, floatWidth, floatX, floatY)
+		-- `, geom.Height, geom.Width, geom.X, geom.Y)
 		cmdMicro += `micro`
 
 		// validate input
 		if len(args) > 0 {
-			arg := args[0]
-			cmdMicro += " " + arg
+			file := args[0]
+			cmdMicro += " " + file
 		}
 
 		domovoi.ExecCmd("bash", "-c", cmdMicro)
@@ -69,9 +71,11 @@ var zMicroCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
-	rootCmd.AddCommand(zMicroCmd)
+	rootCmd.AddCommand(zfMicroCmd)
+	zfCmd.AddCommand(zfMicroCmd)
+
+	zfMicroCmd.Flags().StringVarP(&layoutFlag, "layout", "", "default", "")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
