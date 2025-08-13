@@ -33,7 +33,7 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zBatCmd = &cobra.Command{
+var zfBatCmd = &cobra.Command{
 	Use:   "bat " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 	Short: `view data in a floating zellij window using bat`,
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
@@ -59,13 +59,17 @@ var zBatCmd = &cobra.Command{
 		}
 		file := args[0]
 
+		layoutName := layoutFlag
+
+		geom, _ := resolveLayoutGeometry(layoutName)
+
 		cmdBat := fmt.Sprintf(`
 		zellij run --name canvas --close-on-exit --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \
 		--y %s \
-		-- `, floatHeight, floatWidth, floatX, floatY)
+		-- `, geom.Height, geom.Width, geom.X, geom.Y)
 		cmdBat += `bat --paging always`
 		cmdBat += " " + file
 		domovoi.ExecCmd("bash", "-c", cmdBat)
@@ -76,7 +80,10 @@ var zBatCmd = &cobra.Command{
 
 // execute prior main
 func init() {
-	rootCmd.AddCommand(zBatCmd)
+	rootCmd.AddCommand(zfBatCmd)
+	zfCmd.AddCommand(zfBatCmd)
+
+	zfBatCmd.Flags().StringVarP(&layoutFlag, "layout", "", "default", "")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
