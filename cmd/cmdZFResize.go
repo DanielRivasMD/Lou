@@ -33,7 +33,7 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zResizeCmd = &cobra.Command{
+var zfResizeCmd = &cobra.Command{
 	Use:   "resize",
 	Short: `anchor and resize a random floating pane`,
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
@@ -59,39 +59,19 @@ var zResizeCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Args:      cobra.MaximumNArgs(1),
-	ValidArgs: []string{"full", "half-left", "half-right", "top-left", "bottom-left", "top-right", "bottom-right"},
+	ValidArgs: validLayouts,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
+
+		layoutName := "default"
 		if len(args) == 1 {
-			switch args[0] {
-			case "full":
-				floatHeight, floatWidth, floatX, floatY = "100%", "100%", "0", "0"
-			case "half-left":
-				floatHeight, floatWidth, floatX, floatY = "100%", "50%", "0", "0"
-			case "half-right":
-				floatHeight, floatWidth, floatX, floatY = "100%", "50%", "50%", "0"
-			case "top-left":
-				floatHeight, floatWidth, floatX, floatY = "45%", "45%", "0", "0"
-			case "bottom-left":
-				floatHeight, floatWidth, floatX, floatY = "45%", "45%", "0", "60%"
-			case "top-right":
-				floatHeight, floatWidth, floatX, floatY = "45%", "45%", "60%", "0"
-			case "bottom-right":
-				floatHeight, floatWidth, floatX, floatY = "45%", "45%", "60%", "60%"
-			default:
-				herr := horus.NewCategorizedHerror(
-					"resize",
-					"validation",
-					"invalid preset: expected one of [full, half-left, half-right]",
-					nil,
-					map[string]any{"got": args[0]},
-				)
-				horus.CheckErr(herr)
-				return
-			}
+			layoutName = args[0]
 		}
+
+		geom, err := resolveLayoutGeometry(layoutName)
+		horus.CheckErr(err)
 
 		cmdResize := fmt.Sprintf(`
 		zellij action rename-pane canvas
@@ -100,7 +80,7 @@ var zResizeCmd = &cobra.Command{
 		--width %s \
 		--x %s \
 		--y %s
-	`, floatHeight, floatWidth, floatX, floatY)
+	`, geom.Height, geom.Width, geom.X, geom.Y)
 		domovoi.ExecCmd("bash", "-c", cmdResize)
 	},
 }
@@ -108,7 +88,8 @@ var zResizeCmd = &cobra.Command{
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
-	rootCmd.AddCommand(zResizeCmd)
+	rootCmd.AddCommand(zfResizeCmd)
+	zfCmd.AddCommand(zfResizeCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
