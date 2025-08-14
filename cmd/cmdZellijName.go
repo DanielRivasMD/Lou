@@ -30,8 +30,8 @@ var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zRenameCmd = &cobra.Command{
-	Use:   "rename",
+var zNameCmd = &cobra.Command{
+	Use:   "name",
 	Short: `rename current tab with working directory`,
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
@@ -52,9 +52,8 @@ var zRenameCmd = &cobra.Command{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
-	rootCmd.AddCommand(zRenameCmd)
+	rootCmd.AddCommand(zNameCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
