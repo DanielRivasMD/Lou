@@ -19,54 +19,20 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
-	"fmt"
-
-	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 var zfMicroCmd = &cobra.Command{
 	Use:     "micro " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 	Aliases: []string{"mc"},
-	Short:   `view data in a floating zellij window using micro`,
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Short:   helpEditorShort("micro"),
+	Long:    helpEditorLong("micro"),
+	Example: helpEditorExample("micro"),
 
-` +
-		`view data in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("micro")) + `
-`,
-
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("micro")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Run: func(cmd *cobra.Command, args []string) {
-		layoutName := layoutFlag
-		geom, _ := resolveLayoutGeometry(layoutName)
-		cmdMicro := fmt.Sprintf(`
-		zellij run --name canvas --close-on-exit --floating --pinned true \
-		--height %s \
-		--width %s \
-		--x %s \
-		--y %s \
-		-- `, geom.Height, geom.Width, geom.X, geom.Y)
-		cmdMicro += `micro`
-
-		// validate input
-		if len(args) > 0 {
-			file := args[0]
-			cmdMicro += " " + file
-		}
-
-		domovoi.ExecCmd("bash", "-c", cmdMicro)
-	},
+	Run: runEditor("micro"),
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
