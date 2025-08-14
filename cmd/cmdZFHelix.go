@@ -25,19 +25,12 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 var zfHelixCmd = &cobra.Command{
 	Use:     "helix " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
 	Aliases: []string{"hx"},
-	Short:   helpShort("helix"),
-	Long:    helpLong("helix"),
-	Example: helpExample("helix"),
-	Args:    cobra.MaximumNArgs(1),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	Short:   helpEditorShort("helix"),
+	Long:    helpEditorLong("helix"),
+	Example: helpEditorExample("helix"),
 
 	Run: runEditor("hx"),
 }
