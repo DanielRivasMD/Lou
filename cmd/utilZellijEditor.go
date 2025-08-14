@@ -28,13 +28,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// helpShort returns the one‐line Short description.
-func helpShort(editor string) string {
+// helpEditorShort returns the one‐line Short description.
+func helpEditorShort(editor string) string {
 	return fmt.Sprintf("view data in a floating zellij window using %s", editor)
 }
 
-// helpLong returns the multi‐line Long description.
-func helpLong(editor string) string {
+// helpEditorLong returns the multi‐line Long description.
+func helpEditorLong(editor string) string {
 	header := chalk.Green.Color(
 		chalk.Bold.TextStyle("Daniel Rivas "),
 	) +
@@ -52,8 +52,8 @@ func helpLong(editor string) string {
 	return header + chalk.Dim.TextStyle(body)
 }
 
-// helpExample returns the example usage snippet.
-func helpExample(editor string) string {
+// helpEditorExample returns the example usage snippet.
+func helpEditorExample(editor string) string {
 	return chalk.White.Color("lou") + " " +
 		chalk.White.Color(chalk.Bold.TextStyle(editor)) + " " +
 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>"))
@@ -81,8 +81,6 @@ func runEditor(editor string) func(cmd *cobra.Command, args []string) {
 			file := args[0]
 			cmdEditor += " " + file
 		}
-
-		fmt.Println(cmdEditor)
 
 		domovoi.ExecCmd("bash", "-c", cmdEditor)
 	}
