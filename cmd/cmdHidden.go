@@ -20,21 +20,18 @@ import (
 	"fmt"
 
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
-var ()
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// osFinderCmd
-var osFinderCmd = &cobra.Command{
-	Use:   "finder [off|on]",
+var hiddenCmd = &cobra.Command{
+	Use:   "hidden " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("[off|on]")),
 	Short: "Toggle Finder visibility of hidden files",
+
+	// TODO: update by using functions
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 
 ` + chalk.Green.Color("Lou") + ` control the visibility of hidden files in Finder on macOS
@@ -49,39 +46,41 @@ Toggle between showing and hiding hidden files using the appropriate argument
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ValidArgs: []string{"off", "on"},
-	Args: cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
+	Args:      cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Run: func(κ *cobra.Command, args []string) {
-
-		// base command
-		cmdFinder := ""
-
-		// validate input
-		arg := args[0]
-
-		switch arg {
-		case "off":
-			cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles false && killall Finder`
-		case "on":
-			cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles true && killall Finder`
-		default:
-			fmt.Printf("Invalid argument: %s\n", arg)
-		}
-
-		// execute command
-		domovoi.ExecCmd("bash", "-c", cmdFinder)
-	},
+	Run: runHidden,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
 func init() {
-	rootCmd.AddCommand(osFinderCmd)
+	rootCmd.AddCommand(hiddenCmd)
+}
 
-	// flags
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func runHidden(cmd *cobra.Command, args []string) {
+	const op = "lou.hidden"
+	var cmdFinder string
+	arg := args[0]
+
+	switch arg {
+	case "off":
+		cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles false && killall Finder`
+	case "on":
+		cmdFinder = `defaults write com.apple.Finder AppleShowAllFiles true && killall Finder`
+	default:
+		fmt.Printf("Invalid argument: %s\n", arg)
+	}
+
+	horus.CheckErr(
+		domovoi.ExecCmd("bash", "-c", cmdFinder),
+		horus.WithOp(op),
+		horus.WithMessage("Unable to toogle hidden files in Finder"),
+		horus.WithCategory("run_error"),
+	)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
