@@ -32,7 +32,7 @@ var ()
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var roadmapCmd = &cobra.Command{
-	Use:   "roadmap",
+	Use:   "map",
 	Short: "" + chalk.Yellow.Color("") + ".",
 	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
 `,
