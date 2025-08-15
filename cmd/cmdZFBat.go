@@ -64,7 +64,7 @@ var zfBatCmd = &cobra.Command{
 		geom, _ := resolveLayoutGeometry(layoutName)
 
 		cmdBat := fmt.Sprintf(`
-		zellij run --name canvas --close-on-exit --floating --pinned true \
+		zellij run --name bat --close-on-exit --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \

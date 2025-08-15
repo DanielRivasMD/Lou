@@ -74,7 +74,7 @@ var zfResizeCmd = &cobra.Command{
 		horus.CheckErr(err)
 
 		cmdResize := fmt.Sprintf(`
-		zellij action rename-pane canvas
+		zellij action rename-pane float
 		zellij action change-floating-pane-coordinates --pane-id $ZELLIJ_PANE_ID \
 		--height %s \
 		--width %s \

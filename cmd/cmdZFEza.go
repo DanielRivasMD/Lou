@@ -52,7 +52,7 @@ var zfEzaCmd = &cobra.Command{
 		geom, _ := resolveLayoutGeometry(layoutName)
 
 		cmdEza := fmt.Sprintf(`
-		zellij run --name canvas --floating --pinned true \
+		zellij run --name eza --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \

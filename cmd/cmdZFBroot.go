@@ -57,7 +57,7 @@ var zfBrootCmd = &cobra.Command{
 		geom, _ := resolveLayoutGeometry(layoutName)
 
 		cmdBroot := fmt.Sprintf(`
-		zellij run --name canvas --close-on-exit --floating --pinned true \
+		zellij run --name broot --close-on-exit --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \

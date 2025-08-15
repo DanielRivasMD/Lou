@@ -50,7 +50,7 @@ var zWatchCmd = &cobra.Command{
 		// TODO: test whether `just watch` exists
 		// TODO: can persistent flags be overwritten?
 		cmdFloat := fmt.Sprintf(`
-		zellij run --name canvas --close-on-exit --floating --pinned true \
+		zellij run --name watch --close-on-exit --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \

@@ -57,7 +57,7 @@ var zfLazygitCmd = &cobra.Command{
 		geom, _ := resolveLayoutGeometry(layoutName)
 
 		cmdLazygit := fmt.Sprintf(`
-		zellij run --name canvas --close-on-exit --floating --pinned true \
+		zellij run --name lazygit --close-on-exit --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \
