@@ -63,23 +63,39 @@ func helpEditorExample(editor string) string {
 // 1) resolves geometry via resolveLayoutGeometry(layoutFlag)
 // 2) builds the zellij command
 // 3) execs it via domovoi.ExecCmd
-func runEditor(editor string) func(cmd *cobra.Command, args []string) {
+// runEditor returns the cobra‐Run function for your floating editor.
+//   - call is the program you actually exec (e.g. "micro", "helix")
+//   - editorOverride, if supplied, becomes the --name for the zellij window
+func runEditor(call string, editorOverride ...string) func(cmd *cobra.Command, args []string) {
+	// determine the name used in `--name`
+	editor := call
+	if len(editorOverride) > 0 {
+		editor = editorOverride[0]
+	}
+
 	return func(cmd *cobra.Command, args []string) {
-		layoutName := layoutFlag
-		geom, _ := resolveLayoutGeometry(layoutName)
+		geom, err := resolveLayoutGeometry(layoutFlag)
+		if err != nil {
+			// handle error
+		}
 
-		cmdEditor := fmt.Sprintf(`
-		zellij run --name canvas --close-on-exit --floating --pinned true \
-		--height %s \
-		--width %s \
-		--x %s \
-		--y %s \
-		-- `, geom.Height, geom.Width, geom.X, geom.Y)
-		cmdEditor += editor
+		// build the zellij invocation
+		cmdEditor := fmt.Sprintf(
+			`zellij run --name %s --close-on-exit --floating --pinned true \
+--height %s \
+--width  %s \
+--x      %s \
+--y      %s \
+-- `,
+			editor,
+			geom.Height, geom.Width, geom.X, geom.Y,
+		)
+		// append the actual binary you want to run
+		cmdEditor += call
 
+		// if the user passed a file (or any single positional), tack it on
 		if len(args) > 0 {
-			file := args[0]
-			cmdEditor += " " + file
+			cmdEditor += " " + args[0]
 		}
 
 		domovoi.ExecCmd("bash", "-c", cmdEditor)
