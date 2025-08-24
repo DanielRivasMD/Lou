@@ -43,7 +43,7 @@ var zfMdcatCmd = &cobra.Command{
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: func(cmd *cobra.Command, args []string) {
-
+		// TODO: add one line error message
 		if len(args) < 1 {
 			horus.CheckErr(
 				horus.NewHerrorErrorf(
@@ -65,7 +65,7 @@ var zfMdcatCmd = &cobra.Command{
 		--x %s \
 		--y %s \
 		-- `, geom.Height, geom.Width, geom.X, geom.Y)
-		cmdMdcat += `mdcat --paging always`
+		cmdMdcat += `mdcat --paginate`
 		cmdMdcat += " " + file
 		domovoi.ExecCmd("bash", "-c", cmdMdcat)
 	},
