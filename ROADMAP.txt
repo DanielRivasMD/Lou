@@ -7,6 +7,15 @@
 - rework cmd hierachy to place persistent flags better => zellij & git
 
 ==================================================
-cmd/cmdZellijWatch.go
-  line 46     TODO   test whether `just watch` exists
+cmd/cmdHidden.go
+  line 34     TODO   update by using functions
+cmd/cmdZFMdcat.go
+  line 46     TODO   add one line error message
+cmd/cmdZFWatch.go
+  line 50     TODO   test whether `just watch` exists
+  line 51     TODO   can persistent flags be overwritten?
+cmd/cmdZellijTab.go
+  line 44     TODO   write readme documentation on customizing tab layouts
+cmd/root.go
+  line 47     WIP    add cobra.OnInitialize to declare paths
 ==================================================

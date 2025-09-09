@@ -41,6 +41,7 @@ var (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// TODO: write readme documentation on customizing tab layouts
 var tabCmd = &cobra.Command{
 	Use:   "tab [path]",
 	Short: "Launch a new Zellij tab",
