@@ -23,49 +23,18 @@ import (
 
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var zfLazygitCmd = &cobra.Command{
 	Use:     "lazygit",
 	Aliases: []string{"lg"},
-	Short:   `lazygit in a floating zellij window`,
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Short:   "lazygit in a floating zellij window",
+	Long:    helpZFLazygit,
+	Example: exampleZFLazygit,
 
-` +
-		`lazygit in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("lazygit")) + `
-`,
-
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("lazygit")),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Run: func(cmd *cobra.Command, args []string) {
-
-		layoutName := "default"
-		if len(args) == 1 {
-			layoutName = args[0]
-		}
-
-		geom, _ := resolveLayoutGeometry(layoutName)
-
-		cmdLazygit := fmt.Sprintf(`
-		zellij run --name lazygit --close-on-exit --floating --pinned true \
-		--height %s \
-		--width %s \
-		--x %s \
-		--y %s \
-		-- `, geom.Height, geom.Width, geom.X, geom.Y)
-		cmdLazygit += `lazygit`
-		domovoi.ExecCmd("bash", "-c", cmdLazygit)
-	},
+	Run: runLazygit,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,6 +42,28 @@ var zfLazygitCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(zfLazygitCmd)
 	zfCmd.AddCommand(zfLazygitCmd)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func runLazygit(cmd *cobra.Command, args []string) {
+
+	layoutName := "default"
+	if len(args) == 1 {
+		layoutName = args[0]
+	}
+
+	geom, _ := resolveLayoutGeometry(layoutName)
+
+	cmdLazygit := fmt.Sprintf(`
+		zellij run --name lazygit --close-on-exit --floating --pinned true \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s \
+		-- `, geom.Height, geom.Width, geom.X, geom.Y)
+	cmdLazygit += `lazygit`
+	domovoi.ExecCmd("bash", "-c", cmdLazygit)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
