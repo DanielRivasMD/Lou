@@ -35,7 +35,7 @@ var zellijFloatCmd = &cobra.Command{}
 
 var batCmd = &cobra.Command{
 	Use:     "bat " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
-	Short:   "View data in a floating zellij window using bat",
+	Short:   "View data in a floating zellij pane using bat",
 	Long:    helpBat,
 	Example: exampleBat,
 
@@ -45,14 +45,14 @@ var batCmd = &cobra.Command{
 var brootCmd = &cobra.Command{
 	Use:     "broot",
 	Aliases: []string{"br"},
-	Short:   "browse files in a floating zellij window using broot",
+	Short:   "Browse files in a floating zellij pane using broot",
 
 	Run: runBroot,
 }
 
 var ezaCmd = &cobra.Command{
 	Use:     "eza " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<path>")),
-	Short:   "View data in a floating zellij window using eza",
+	Short:   "View data in a floating zellij pane using eza",
 	Long:    helpEza,
 	Example: exampleEza,
 
@@ -61,7 +61,7 @@ var ezaCmd = &cobra.Command{
 
 var floatCmd = &cobra.Command{
 	Use:     "float",
-	Short:   "launch floating zellij window with ease",
+	Short:   "Launch floating zellij pane with ease",
 	Long:    helpFloat,
 	Example: exampleFloat,
 
@@ -84,7 +84,7 @@ var helixCmd = &cobra.Command{
 var lazygitCmd = &cobra.Command{
 	Use:     "lazygit",
 	Aliases: []string{"lg"},
-	Short:   "lazygit in a floating zellij window",
+	Short:   "Launch lazygit in a floating zellij pane",
 	Long:    helpZFLazygit,
 	Example: exampleZFLazygit,
 
@@ -93,7 +93,7 @@ var lazygitCmd = &cobra.Command{
 
 var mdcatCmd = &cobra.Command{
 	Use:   "mdcat",
-	Short: "",
+	Short: "Render file with mdcat in a floating zellij pane",
 
 	Run: runMDcat,
 }
@@ -110,7 +110,7 @@ var microCmd = &cobra.Command{
 
 var resizeCmd = &cobra.Command{
 	Use:     "resize",
-	Short:   "anchor and resize a random floating pane",
+	Short:   "Anchor & resize a zellij floating pane",
 	Long:    helpZFResize,
 	Example: exampleZFResize,
 
@@ -122,7 +122,7 @@ var resizeCmd = &cobra.Command{
 
 var watchCmd = &cobra.Command{
 	Use:     "watch",
-	Short:   "launch watcher on a floating zellij window with ease",
+	Short:   "Launch watcher on a floating zellij pane with ease",
 	Long:    helpZFWatch,
 	Example: exampleZFWatch,
 
@@ -141,7 +141,7 @@ type zellijFloat struct {
 	layout      string
 	command     string
 	args        []string
-	customGeom  layoutGeometry
+	customGeom  *Geometry
 }
 
 func newZellijFloat(opts ...zellijOpt) zellijFloat {
@@ -199,19 +199,19 @@ func withCloseOnExit(v bool) zellijOpt {
 	}
 }
 
-func withGeometry(g layoutGeometry) zellijOpt {
+func withGeometry(g Geometry) zellijOpt {
 	return func(z *zellijFloat) {
 		z.layout = "__custom__"
-		z.customGeom = g
+		z.customGeom = &g
 	}
 }
 
 func (zl zellijFloat) Cmd() string {
-	var geom layoutGeometry
-	if zl.layout == "__custom__" {
-		geom = zl.customGeom
+	var geom Geometry
+	if zl.layout == "__custom__" && zl.customGeom != nil {
+		geom = *zl.customGeom
 	} else {
-		geom, _ = resolveLayoutGeometry(zl.layout)
+		geom, _ = resolveLayoutGeometry(zl.layout, flags)
 	}
 
 	flags := []string{"--name " + zl.name}
@@ -241,62 +241,44 @@ func (zl zellijFloat) Cmd() string {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var (
-	dLayout = newFloatCoor()
-	flags   zellijFlags
-)
-
-type zellijFlags struct {
-	layout floatCoor
-}
-
-type floatCoor struct {
+type Geometry struct {
 	height string
 	width  string
 	x      string
 	y      string
 }
 
-func newFloatCoor() floatCoor {
-	return floatCoor{
-		height: "100%",
-		width:  "95%",
-		x:      "10",
-		y:      "0",
+func (g Geometry) OverrideWith(flags Geometry) Geometry {
+	return Geometry{
+		height: override(g.height, flags.height, "100%"),
+		width:  override(g.width, flags.width, "95%"),
+		x:      override(g.x, flags.x, "10"),
+		y:      override(g.y, flags.y, "0"),
 	}
 }
 
-func (fc floatCoor) String() string {
-	return fmt.Sprintf(
-		`--height %s \
---width %s \
---x %s \
---y %s \`,
-		fc.height,
-		fc.width,
-		fc.x,
-		fc.y,
-	)
+func geometryFromFlags() Geometry {
+	return Geometry{
+		height: flags.height,
+		width:  flags.width,
+		x:      flags.x,
+		y:      flags.y,
+	}
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+var flags Geometry
 
 func init() {
 	rootCmd.AddCommand(zellijFloatCmd)
 	rootCmd.AddCommand(batCmd, brootCmd, ezaCmd, floatCmd, helixCmd, lazygitCmd, mdcatCmd, microCmd, resizeCmd, watchCmd)
 	zellijFloatCmd.AddCommand(batCmd, brootCmd, ezaCmd, floatCmd, helixCmd, lazygitCmd, mdcatCmd, microCmd, resizeCmd, watchCmd)
 
-	zellijFloatCmd.PersistentFlags().StringVarP(&flags.layout.height, "height", "H", dLayout.height, "pane height as percentage")
-	zellijFloatCmd.PersistentFlags().StringVarP(&flags.layout.width, "width", "W", dLayout.width, "pane width as percentage")
-	zellijFloatCmd.PersistentFlags().StringVarP(&flags.layout.x, "x", "X", dLayout.x, "horizontal offset as percentage")
-	zellijFloatCmd.PersistentFlags().StringVarP(&flags.layout.y, "y", "Y", dLayout.y, "vertical offset as percentage")
-
-	layoutPresets["default"] = layoutGeometry{
-		width:  dLayout.width,
-		height: dLayout.height,
-		x:      dLayout.x,
-		y:      dLayout.y,
-	}
+	rootCmd.PersistentFlags().StringVarP(&flags.height, "height", "H", "100%", "pane height")
+	rootCmd.PersistentFlags().StringVarP(&flags.width, "width", "W", "95%", "pane width")
+	rootCmd.PersistentFlags().StringVarP(&flags.x, "x", "X", "10", "horizontal offset")
+	rootCmd.PersistentFlags().StringVarP(&flags.y, "y", "Y", "0", "vertical offset")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -304,23 +286,18 @@ func init() {
 func runBat(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.bat"
 
-	opts := []zellijOpt{
-		withName("bat"),
-		withGeometry(layoutGeometry{
-			height: flags.layout.height,
-			width:  flags.layout.width,
-			x:      flags.layout.x,
-			y:      flags.layout.y,
-		}),
-		withCommand("bat"),
-		withArgs("--paging=always"),
-		withCloseOnExit(true),
-	}
+	batArgs := []string{"--paging=always"}
 	if len(args) > 0 {
-		opts = append(opts, withArgs("--paging=always", args[0]))
+		batArgs = append(batArgs, args[0])
 	}
 
-	zl := newZellijFloat(opts...)
+	zl := newZellijFloat(
+		withName("bat"),
+		withGeometry(geometryFromFlags()),
+		withCommand("bat"),
+		withArgs(batArgs...),
+		withCloseOnExit(true),
+	)
 
 	horus.CheckErr(
 		domovoi.ExecSh(zl.Cmd()),
@@ -338,12 +315,7 @@ func runBroot(cmd *cobra.Command, args []string) {
 
 	zl := newZellijFloat(
 		withName("broot"),
-		withGeometry(layoutGeometry{
-			height: flags.layout.height,
-			width:  flags.layout.width,
-			x:      flags.layout.x,
-			y:      flags.layout.y,
-		}),
+		withGeometry(geometryFromFlags()),
 		withCommand("broot"),
 		withArgs("--dates", "--sizes", "--permissions", "--hidden", "--git-ignored", "--show-git-info", "--sort-by-type-dirs-first"),
 		withCloseOnExit(true),
@@ -369,12 +341,7 @@ func runEditor(call string, editorOverride ...string) func(cmd *cobra.Command, a
 
 		opts := []zellijOpt{
 			withName(editor),
-			withGeometry(layoutGeometry{
-				height: flags.layout.height,
-				width:  flags.layout.width,
-				x:      flags.layout.x,
-				y:      flags.layout.y,
-			}),
+			withGeometry(geometryFromFlags()),
 			withCommand(call),
 			withCloseOnExit(true),
 		}
@@ -397,19 +364,16 @@ func runEditor(call string, editorOverride ...string) func(cmd *cobra.Command, a
 func runEza(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.eza"
 
+	ezaArgs := []string{"--header", "--long", "--icons", "--classify", "--git", "--group", "--color=always"}
+	if len(args) > 0 {
+		ezaArgs = append(ezaArgs, args[0])
+	}
+
 	opts := []zellijOpt{
 		withName("eza"),
-		withGeometry(layoutGeometry{
-			height: flags.layout.height,
-			width:  flags.layout.width,
-			x:      flags.layout.x,
-			y:      flags.layout.y,
-		}),
+		withGeometry(geometryFromFlags()),
 		withCommand("eza"),
-		withArgs("--header", "--long", "--icons", "--classify", "--git", "--group", "--color=always"),
-	}
-	if len(args) > 0 {
-		opts = append(opts, withArgs("--header", "--long", "--icons", "--classify", "--git", "--group", "--color=always", args[0]))
+		withArgs(ezaArgs...),
 	}
 
 	zl := newZellijFloat(opts...)
@@ -426,12 +390,12 @@ func runEza(cmd *cobra.Command, args []string) {
 func runFloat(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.float"
 
-	layout := "default"
+	floatLayout := "default"
 	if len(args) == 1 {
-		layout = args[0]
+		floatLayout = args[0]
 	}
 
-	geom, err := resolveLayoutGeometry(layout)
+	geom, err := resolveWithFlags(floatLayout)
 	horus.CheckErr(err)
 
 	zl := newZellijFloat(
@@ -455,14 +419,10 @@ func runLazygit(cmd *cobra.Command, args []string) {
 
 	zl := newZellijFloat(
 		withName("lazygit"),
-		withGeometry(layoutGeometry{
-			height: flags.layout.height,
-			width:  flags.layout.width,
-			x:      flags.layout.x,
-			y:      flags.layout.y,
-		}),
+		withGeometry(geometryFromFlags()),
 		withCommand("lazygit"),
 		withCloseOnExit(true),
+		withPinned(true),
 	)
 
 	horus.CheckErr(
@@ -477,6 +437,7 @@ func runLazygit(cmd *cobra.Command, args []string) {
 func runMDcat(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.mdcat"
 
+	// TODO: add one-liner error
 	if len(args) < 1 {
 		horus.CheckErr(
 			horus.NewHerrorErrorf(op, "mdcat command requires a file argument"),
@@ -486,12 +447,7 @@ func runMDcat(cmd *cobra.Command, args []string) {
 
 	zl := newZellijFloat(
 		withName("canvas"),
-		withGeometry(layoutGeometry{
-			height: flags.layout.height,
-			width:  flags.layout.width,
-			x:      flags.layout.x,
-			y:      flags.layout.y,
-		}),
+		withGeometry(geometryFromFlags()),
 		withCommand("mdcat"),
 		withArgs("--paginate", file),
 		withCloseOnExit(true),
@@ -508,11 +464,13 @@ func runMDcat(cmd *cobra.Command, args []string) {
 
 func runResize(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.resize"
-	layout := "default"
+
+	resizeLayout := "full"
 	if len(args) == 1 {
-		layout = args[0]
+		resizeLayout = args[0]
 	}
-	geom, err := resolveLayoutGeometry(layout)
+
+	geom, err := resolveWithFlags(resizeLayout)
 	horus.CheckErr(err)
 
 	cmdResize := fmt.Sprintf(`
@@ -536,18 +494,14 @@ zellij action change-floating-pane-coordinates --pane-id $ZELLIJ_PANE_ID \
 func runWatch(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.watch"
 
+	// TODO: check if `just watch` exist
 	zl := newZellijFloat(
 		withName("watch"),
-		withGeometry(layoutGeometry{
-			height: flags.layout.height,
-			width:  flags.layout.width,
-			x:      flags.layout.x,
-			y:      flags.layout.y,
-		}),
+		withGeometry(geometryFromFlags()),
 		withCommand("just"),
 		withArgs("watch"),
 		withCloseOnExit(true),
-		withFloating(true),
+		// withFloating(true),
 		withPinned(true),
 	)
 
@@ -562,101 +516,46 @@ func runWatch(cmd *cobra.Command, args []string) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// define type to hold parameters
-type layoutGeometry struct {
-	width, height, x, y string
+func override(preset, flag, fallback string) string {
+	if preset != "" {
+		return preset
+	}
+	if flag != fallback {
+		return flag
+	}
+	return fallback
 }
 
-// declare a map from layout name → geometry
-var layoutPresets = map[string]layoutGeometry{
-	"full": {
-		width:  "100%",
-		height: "100%",
-		x:      "0",
-		y:      "0",
-	},
-	"half-left": {
-		width:  "50%",
-		height: "100%",
-		x:      "0",
-		y:      "0",
-	},
-	"half-right": {
-		width:  "50%",
-		height: "100%",
-		x:      "50%",
-		y:      "0",
-	},
-	"top-left": {
-		width:  "45%",
-		height: "45%",
-		x:      "0",
-		y:      "0",
-	},
-	"bottom-left": {
-		width:  "45%",
-		height: "45%",
-		x:      "0",
-		y:      "60%",
-	},
-	"top-right": {
-		width:  "45%",
-		height: "45%",
-		x:      "60%",
-		y:      "0",
-	},
-	"bottom-right": {
-		width:  "45%",
-		height: "45%",
-		x:      "60%",
-		y:      "60%",
-	},
+var layoutPresets = map[string]Geometry{
+	"full":         {"100%", "100%", "0", "0"},
+	"half-left":    {"100%", "50%", "0", "0"},
+	"half-right":   {"100%", "50%", "50%", "0"},
+	"top-left":     {"45%", "45%", "0", "0"},
+	"bottom-left":  {"45%", "45%", "0", "60%"},
+	"top-right":    {"45%", "45%", "60%", "0"},
+	"bottom-right": {"45%", "45%", "60%", "60%"},
+	"default":      {"100%", "95%", "10", "0"},
 }
 
-// derive validLayouts slice from map keys
 var validLayouts = func() []string {
 	keys := make([]string, 0, len(layoutPresets))
-	for name := range layoutPresets {
-		keys = append(keys, name)
+	for k := range layoutPresets {
+		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	return keys
 }()
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// pickValue applies bottom -> top override:
-//   - start with defaultVal
-//   - if presetVal is non-empty, use
-//   - if flagVal differs from defaultVal, use
-func pickValue(defaultVal, presetVal, flagVal string) string {
-	result := defaultVal
-	if presetVal != "" {
-		result = presetVal
+func resolveLayoutGeometry(name string, flags Geometry) (Geometry, error) {
+	preset, ok := layoutPresets[name]
+	if !ok {
+		return Geometry{}, fmt.Errorf("unknown layout %q (must be one of %v)", name, validLayouts)
 	}
-	if flagVal != defaultVal {
-		result = flagVal
-	}
-	return result
+	return preset.OverrideWith(flags), nil
 }
 
-// look up named preset, apply overrides from flags, and return final LayoutGeometry
-func resolveLayoutGeometry(layoutName string) (layoutGeometry, error) {
-	geom, ok := layoutPresets[layoutName]
-	if !ok {
-		return layoutGeometry{}, fmt.Errorf(
-			"unknown layout %q (must be one of %v)",
-			layoutName, validLayouts,
-		)
-	}
-
-	// override using coorFlags
-	geom.width = pickValue("95%", geom.width, flags.layout.width)
-	geom.height = pickValue("100%", geom.height, flags.layout.height)
-	geom.x = pickValue("10", geom.x, flags.layout.x)
-	geom.y = pickValue("0", geom.y, flags.layout.y)
-
-	return geom, nil
+func resolveWithFlags(name string) (Geometry, error) {
+	return resolveLayoutGeometry(name, flags)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
