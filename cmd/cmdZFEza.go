@@ -28,46 +28,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 var zfEzaCmd = &cobra.Command{
-	Use:   "eza " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<path>")),
-	Short: `view data in a floating zellij window using eza`,
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Use:     "eza " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<path>")),
+	Short:   "view data in a floating zellij window using eza",
+	Long:    helpZFEza,
+	Example: exampleZFEza,
 
-` +
-		`view data in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("eza")) + `
-`,
-
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("eza")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<path>")),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Run: func(cmd *cobra.Command, args []string) {
-		layoutName := layoutFlag
-
-		geom, _ := resolveLayoutGeometry(layoutName)
-
-		cmdEza := fmt.Sprintf(`
-		zellij run --name eza --floating --pinned true \
-		--height %s \
-		--width %s \
-		--x %s \
-		--y %s \
-		-- `, geom.Height, geom.Width, geom.X, geom.Y)
-		cmdEza += `eza --header --long --icons --classify --git --group --color=always`
-
-		// validate input
-		if len(args) > 0 {
-			path := args[0]
-			cmdEza += " " + path
-		}
-
-		domovoi.ExecCmd("bash", "-c", cmdEza)
-	},
+	Run: runEza,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +44,31 @@ func init() {
 	zfCmd.AddCommand(zfEzaCmd)
 
 	zfEzaCmd.Flags().StringVarP(&layoutFlag, "layout", "", "default", "")
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func runEza(cmd *cobra.Command, args []string) {
+	layoutName := layoutFlag
+
+	geom, _ := resolveLayoutGeometry(layoutName)
+
+	cmdEza := fmt.Sprintf(`
+		zellij run --name eza --floating --pinned true \
+		--height %s \
+		--width %s \
+		--x %s \
+		--y %s \
+		-- `, geom.Height, geom.Width, geom.X, geom.Y)
+	cmdEza += `eza --header --long --icons --classify --git --group --color=always`
+
+	// validate input
+	if len(args) > 0 {
+		path := args[0]
+		cmdEza += " " + path
+	}
+
+	domovoi.ExecCmd("bash", "-c", cmdEza)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
