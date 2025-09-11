@@ -20,7 +20,7 @@ var exampleInit = domovoi.FormatExample(
 	[]string{"init"},
 )
 
-var exampleZFFloat = domovoi.FormatExample(
+var exampleFloat = domovoi.FormatExample(
 	"lou",
 	[]string{"float"},
 )
@@ -30,12 +30,12 @@ var exampleZFLazygit = domovoi.FormatExample(
 	[]string{"lazygit"},
 )
 
-var exampleZFBat = domovoi.FormatExample(
+var exampleBat = domovoi.FormatExample(
 	"lou",
 	[]string{"bat", "<file>"},
 )
 
-var exampleZFEza = domovoi.FormatExample(
+var exampleEza = domovoi.FormatExample(
 	"lou",
 	[]string{"eza", "<path>"},
 )
@@ -53,5 +53,15 @@ var exampleZFWatch = domovoi.FormatExample(
 	"lou",
 	[]string{"watch"},
 )
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// TODO: update editor example
+// // helpEditorExample returns the example usage snippet.
+// func helpEditorExample(editor string) string {
+// 	return chalk.White.Color("lou") + " " +
+// 		chalk.White.Color(chalk.Bold.TextStyle(editor)) + " " +
+// 		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>"))
+// }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
