@@ -19,9 +19,11 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
+	"path/filepath"
+
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,20 +42,35 @@ func Execute() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
+var (
+	dirs configDirs
+)
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// WIP: add cobra.OnInitialize to declare paths
-func init() {
+type configDirs struct {
+	home   string
+	lou    string
+	layout string
+	sh     string
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var helpRoot = chalk.Bold.TextStyle(chalk.Green.Color("Daniel Rivas ")) +
-	chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) +
-	chalk.Dim.TextStyle(chalk.Cyan.Color("\n\npersonal assistant at your service"))
+var verbose bool
 
-var exampleRoot = chalk.White.Color("lou") + " " + chalk.Bold.TextStyle(chalk.White.Color("help"))
+func init() {
+	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose diagnostics")
+	cobra.OnInitialize(initConfigDirs)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func initConfigDirs() {
+	var err error
+	dirs.home, err = domovoi.FindHome(verbose)
+	horus.CheckErr(err, horus.WithCategory("init_error"), horus.WithMessage("getting home directory"))
+	dirs.lou = filepath.Join(dirs.home, ".lou")
+	dirs.layout = filepath.Join(dirs.lou, "layout")
+	dirs.sh = filepath.Join(dirs.lou, "sh")
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
