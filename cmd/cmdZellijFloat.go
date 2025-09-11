@@ -31,7 +31,6 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// BUG: double check running errors
 var zellijFloatCmd = &cobra.Command{}
 
 var batCmd = &cobra.Command{
@@ -142,6 +141,7 @@ type zellijFloat struct {
 	layout      string
 	command     string
 	args        []string
+	customGeom  layoutGeometry
 }
 
 func newZellijFloat(opts ...zellijOpt) zellijFloat {
@@ -199,8 +199,20 @@ func withCloseOnExit(v bool) zellijOpt {
 	}
 }
 
+func withGeometry(g layoutGeometry) zellijOpt {
+	return func(z *zellijFloat) {
+		z.layout = "__custom__"
+		z.customGeom = g
+	}
+}
+
 func (zl zellijFloat) Cmd() string {
-	geom, _ := resolveLayoutGeometry(zl.layout)
+	var geom layoutGeometry
+	if zl.layout == "__custom__" {
+		geom = zl.customGeom
+	} else {
+		geom, _ = resolveLayoutGeometry(zl.layout)
+	}
 
 	flags := []string{"--name " + zl.name}
 	if zl.floating {
@@ -279,7 +291,7 @@ func init() {
 	zellijFloatCmd.PersistentFlags().StringVarP(&flags.layout.x, "x", "X", dLayout.x, "horizontal offset as percentage")
 	zellijFloatCmd.PersistentFlags().StringVarP(&flags.layout.y, "y", "Y", dLayout.y, "vertical offset as percentage")
 
-	layoutPresets["default"] = LayoutGeometry{
+	layoutPresets["default"] = layoutGeometry{
 		width:  dLayout.width,
 		height: dLayout.height,
 		x:      dLayout.x,
@@ -291,22 +303,30 @@ func init() {
 
 func runBat(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.bat"
-	zl := newZellijFloat(
-		withName("bat"),
-		withLayout(flags.layout.String()),
-		withCommand("eza"),
-		withArgs("--paging=always"),
-	)
 
-	if len(args) > 0 {
-		zl.args = append(zl.args, args[0])
+	opts := []zellijOpt{
+		withName("bat"),
+		withGeometry(layoutGeometry{
+			height: flags.layout.height,
+			width:  flags.layout.width,
+			x:      flags.layout.x,
+			y:      flags.layout.y,
+		}),
+		withCommand("bat"),
+		withArgs("--paging=always"),
+		withCloseOnExit(true),
 	}
+	if len(args) > 0 {
+		opts = append(opts, withArgs("--paging=always", args[0]))
+	}
+
+	zl := newZellijFloat(opts...)
 
 	horus.CheckErr(
 		domovoi.ExecSh(zl.Cmd()),
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
-		horus.WithMessage("Failed to execute mbombo forge command"),
+		horus.WithMessage("Failed to launch bat"),
 		horus.WithDetails(map[string]any{
 			"command": zl.Cmd(),
 		}),
@@ -318,7 +338,12 @@ func runBroot(cmd *cobra.Command, args []string) {
 
 	zl := newZellijFloat(
 		withName("broot"),
-		withLayout("default"),
+		withGeometry(layoutGeometry{
+			height: flags.layout.height,
+			width:  flags.layout.width,
+			x:      flags.layout.x,
+			y:      flags.layout.y,
+		}),
 		withCommand("broot"),
 		withArgs("--dates", "--sizes", "--permissions", "--hidden", "--git-ignored", "--show-git-info", "--sort-by-type-dirs-first"),
 		withCloseOnExit(true),
@@ -344,7 +369,12 @@ func runEditor(call string, editorOverride ...string) func(cmd *cobra.Command, a
 
 		opts := []zellijOpt{
 			withName(editor),
-			withLayout(flags.layout.String()),
+			withGeometry(layoutGeometry{
+				height: flags.layout.height,
+				width:  flags.layout.width,
+				x:      flags.layout.x,
+				y:      flags.layout.y,
+			}),
 			withCommand(call),
 			withCloseOnExit(true),
 		}
@@ -366,25 +396,30 @@ func runEditor(call string, editorOverride ...string) func(cmd *cobra.Command, a
 
 func runEza(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.eza"
-	zl := newZellijFloat(
+
+	opts := []zellijOpt{
 		withName("eza"),
-		withLayout(flags.layout.String()),
+		withGeometry(layoutGeometry{
+			height: flags.layout.height,
+			width:  flags.layout.width,
+			x:      flags.layout.x,
+			y:      flags.layout.y,
+		}),
 		withCommand("eza"),
 		withArgs("--header", "--long", "--icons", "--classify", "--git", "--group", "--color=always"),
-	)
-
-	if len(args) > 0 {
-		zl.args = append(zl.args, args[0])
 	}
+	if len(args) > 0 {
+		opts = append(opts, withArgs("--header", "--long", "--icons", "--classify", "--git", "--group", "--color=always", args[0]))
+	}
+
+	zl := newZellijFloat(opts...)
 
 	horus.CheckErr(
 		domovoi.ExecSh(zl.Cmd()),
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
-		horus.WithMessage("Failed to execute mbombo forge command"),
-		horus.WithDetails(map[string]any{
-			"command": zl.Cmd(),
-		}),
+		horus.WithMessage("Failed to launch eza"),
+		horus.WithDetails(map[string]any{"command": zl.Cmd()}),
 	)
 }
 
@@ -396,9 +431,12 @@ func runFloat(cmd *cobra.Command, args []string) {
 		layout = args[0]
 	}
 
+	geom, err := resolveLayoutGeometry(layout)
+	horus.CheckErr(err)
+
 	zl := newZellijFloat(
 		withName("canvas"),
-		withLayout(layout),
+		withGeometry(geom),
 		withCommand("zsh"),
 		withCloseOnExit(true),
 	)
@@ -414,27 +452,31 @@ func runFloat(cmd *cobra.Command, args []string) {
 
 func runLazygit(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.lazygit"
+
 	zl := newZellijFloat(
 		withName("lazygit"),
-		withLayout(flags.layout.String()),
+		withGeometry(layoutGeometry{
+			height: flags.layout.height,
+			width:  flags.layout.width,
+			x:      flags.layout.x,
+			y:      flags.layout.y,
+		}),
 		withCommand("lazygit"),
+		withCloseOnExit(true),
 	)
 
 	horus.CheckErr(
 		domovoi.ExecSh(zl.Cmd()),
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
-		horus.WithMessage("Failed to execute mbombo forge command"),
-		horus.WithDetails(map[string]any{
-			"command": zl.Cmd(),
-		}),
+		horus.WithMessage("Failed to launch lazygit"),
+		horus.WithDetails(map[string]any{"command": zl.Cmd()}),
 	)
 }
 
 func runMDcat(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.mdcat"
 
-	// TODO: add one line error message
 	if len(args) < 1 {
 		horus.CheckErr(
 			horus.NewHerrorErrorf(op, "mdcat command requires a file argument"),
@@ -444,7 +486,12 @@ func runMDcat(cmd *cobra.Command, args []string) {
 
 	zl := newZellijFloat(
 		withName("canvas"),
-		withLayout(flags.layout.String()),
+		withGeometry(layoutGeometry{
+			height: flags.layout.height,
+			width:  flags.layout.width,
+			x:      flags.layout.x,
+			y:      flags.layout.y,
+		}),
 		withCommand("mdcat"),
 		withArgs("--paginate", file),
 		withCloseOnExit(true),
@@ -461,12 +508,10 @@ func runMDcat(cmd *cobra.Command, args []string) {
 
 func runResize(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.resize"
-
 	layout := "default"
 	if len(args) == 1 {
 		layout = args[0]
 	}
-
 	geom, err := resolveLayoutGeometry(layout)
 	horus.CheckErr(err)
 
@@ -483,17 +528,22 @@ zellij action change-floating-pane-coordinates --pane-id $ZELLIJ_PANE_ID \
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to resize floating pane"),
-		horus.WithDetails(map[string]any{"command": cmdResize}),
-	)
+		horus.WithDetails(map[string]any{
+			"command": cmdResize,
+		}))
 }
 
-// TODO: test whether `just watch` exists
 func runWatch(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.watch"
 
 	zl := newZellijFloat(
 		withName("watch"),
-		withLayout(flags.layout.String()),
+		withGeometry(layoutGeometry{
+			height: flags.layout.height,
+			width:  flags.layout.width,
+			x:      flags.layout.x,
+			y:      flags.layout.y,
+		}),
 		withCommand("just"),
 		withArgs("watch"),
 		withCloseOnExit(true),
@@ -506,21 +556,19 @@ func runWatch(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch watch command"),
-		horus.WithDetails(map[string]any{
-			"command": zl.Cmd(),
-		}),
+		horus.WithDetails(map[string]any{"command": zl.Cmd()}),
 	)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // define type to hold parameters
-type LayoutGeometry struct {
+type layoutGeometry struct {
 	width, height, x, y string
 }
 
 // declare a map from layout name → geometry
-var layoutPresets = map[string]LayoutGeometry{
+var layoutPresets = map[string]layoutGeometry{
 	"full": {
 		width:  "100%",
 		height: "100%",
@@ -593,10 +641,10 @@ func pickValue(defaultVal, presetVal, flagVal string) string {
 }
 
 // look up named preset, apply overrides from flags, and return final LayoutGeometry
-func resolveLayoutGeometry(layoutName string) (LayoutGeometry, error) {
+func resolveLayoutGeometry(layoutName string) (layoutGeometry, error) {
 	geom, ok := layoutPresets[layoutName]
 	if !ok {
-		return LayoutGeometry{}, fmt.Errorf(
+		return layoutGeometry{}, fmt.Errorf(
 			"unknown layout %q (must be one of %v)",
 			layoutName, validLayouts,
 		)
