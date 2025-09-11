@@ -29,61 +29,53 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
+var zfBatCmd = &cobra.Command{
+	Use:     "bat " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
+	Short:   "View data in a floating zellij window using bat",
+	Long:    helpZFBat,
+	Example: exampleZFBat,
+
+	Run: runBat,
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zfBatCmd = &cobra.Command{
-	Use:   "bat " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
-	Short: `view data in a floating zellij window using bat`,
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+func init() {
+	rootCmd.AddCommand(zfBatCmd)
+	zfCmd.AddCommand(zfBatCmd)
 
-` +
-		`view data in a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("bat")) + ` for a specified file
-`,
+	zfBatCmd.Flags().StringVarP(&layoutFlag, "layout", "", "default", "")
+}
 
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("bat")) + ` ` + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+func runBat(cmd *cobra.Command, args []string) {
+	op := "lou.bat"
+	if len(args) < 1 {
+		horus.CheckErr(
+			horus.NewHerrorErrorf(
+				op,
+				"bat command requires a file argument",
+			),
+		)
+	}
+	file := args[0]
 
-	Run: func(cmd *cobra.Command, args []string) {
-		// validate input
-		if len(args) < 1 {
-			horus.CheckErr(
-				horus.NewHerrorErrorf(
-					"bat",
-					"bat command requires a file argument",
-				),
-			)
-		}
-		file := args[0]
+	layoutName := layoutFlag
 
-		layoutName := layoutFlag
+	geom, _ := resolveLayoutGeometry(layoutName)
 
-		geom, _ := resolveLayoutGeometry(layoutName)
-
-		cmdBat := fmt.Sprintf(`
+	cmdBat := fmt.Sprintf(`
 		zellij run --name bat --close-on-exit --floating --pinned true \
 		--height %s \
 		--width %s \
 		--x %s \
 		--y %s \
 		-- `, geom.Height, geom.Width, geom.X, geom.Y)
-		cmdBat += `bat --paging always`
-		cmdBat += " " + file
-		domovoi.ExecCmd("bash", "-c", cmdBat)
-	},
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// execute prior main
-func init() {
-	rootCmd.AddCommand(zfBatCmd)
-	zfCmd.AddCommand(zfBatCmd)
-
-	zfBatCmd.Flags().StringVarP(&layoutFlag, "layout", "", "default", "")
+	cmdBat += `bat --paging always`
+	cmdBat += " " + file
+	// cmdBat += "; tput setaf 5 bold; read -p 'Press any key to continue'"
+	domovoi.ExecCmd("bash", "-c", cmdBat)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
