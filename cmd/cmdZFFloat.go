@@ -23,28 +23,15 @@ import (
 
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 var zfFloatCmd = &cobra.Command{
-	Use:   "float",
-	Short: `launch floating zellij window with ease`,
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-
-` +
-		`launch a floating ` + chalk.Cyan.Color(chalk.Italic.TextStyle("zellij")) + ` window using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("float")) + ` with ease
-`,
-
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("float")),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	Use:     "float",
+	Short:   "launch floating zellij window with ease",
+	Long:    helpZFFloat,
+	Example: exampleZFFloat,
 
 	Args:      cobra.MaximumNArgs(1),
 	ValidArgs: validLayouts,
