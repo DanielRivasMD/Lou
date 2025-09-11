@@ -1,3 +1,4 @@
+- consolidate zellij commands
 - add helper functions to parse the help & examples
 - add color & update help on commands
 - deprecate useless commands
@@ -9,13 +10,14 @@
 ==================================================
 cmd/cmdHidden.go
   line 34     TODO   update by using functions
-cmd/cmdZFMdcat.go
-  line 46     TODO   add one line error message
-cmd/cmdZFWatch.go
-  line 50     TODO   test whether `just watch` exists
-  line 51     TODO   can persistent flags be overwritten?
+cmd/cmdZellijFloat.go
+  line 34     BUG    double check running errors
+  line 437    TODO   add one line error message
+  line 490    TODO   test whether `just watch` exists
 cmd/cmdZellijTab.go
   line 44     TODO   write readme documentation on customizing tab layouts
-cmd/root.go
-  line 47     WIP    add cobra.OnInitialize to declare paths
+cmd/utilExample.go
+  line 59     TODO   update editor example
+cmd/utilHelp.go
+  line 66     TODO   update edirot helps
 ==================================================
