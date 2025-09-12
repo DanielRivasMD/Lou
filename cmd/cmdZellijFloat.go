@@ -133,11 +133,9 @@ var watchCmd = &cobra.Command{
 
 type zellijOpt func(*zellijFloat)
 
-// TODO: deprecate floating
 type zellijFloat struct {
 	name        string
 	closeOnExit bool
-	floating    bool
 	pinned      bool
 	layout      string
 	command     string
@@ -147,7 +145,6 @@ type zellijFloat struct {
 
 func newZellijFloat(opts ...zellijOpt) zellijFloat {
 	zf := zellijFloat{
-		floating:    true,
 		pinned:      true,
 		closeOnExit: false,
 		layout:      "default",
@@ -182,12 +179,6 @@ func withArgs(args ...string) zellijOpt {
 	}
 }
 
-func withFloating(v bool) zellijOpt {
-	return func(z *zellijFloat) {
-		z.floating = v
-	}
-}
-
 func withPinned(v bool) zellijOpt {
 	return func(z *zellijFloat) {
 		z.pinned = v
@@ -216,9 +207,6 @@ func (zl zellijFloat) Cmd() string {
 	}
 
 	flags := []string{"--name " + zl.name}
-	if zl.floating {
-		flags = append(flags, "--floating")
-	}
 	if zl.pinned {
 		flags = append(flags, "--pinned true")
 	}
