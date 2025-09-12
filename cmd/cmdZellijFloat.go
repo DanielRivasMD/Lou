@@ -133,6 +133,7 @@ var watchCmd = &cobra.Command{
 
 type zellijOpt func(*zellijFloat)
 
+// TODO: deprecate floating
 type zellijFloat struct {
 	name        string
 	closeOnExit bool
@@ -417,9 +418,17 @@ func runFloat(cmd *cobra.Command, args []string) {
 func runLazygit(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.lazygit"
 
+	floatLayout := "full"
+	if len(args) == 1 {
+		floatLayout = args[0]
+	}
+
+	geom, err := resolveWithFlags(floatLayout)
+	horus.CheckErr(err)
+
 	zl := newZellijFloat(
 		withName("lazygit"),
-		withGeometry(geometryFromFlags()),
+		withGeometry(geom),
 		withCommand("lazygit"),
 		withCloseOnExit(true),
 		withPinned(true),
@@ -465,7 +474,7 @@ func runMDcat(cmd *cobra.Command, args []string) {
 func runResize(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.resize"
 
-	resizeLayout := "full"
+	resizeLayout := "default"
 	if len(args) == 1 {
 		resizeLayout = args[0]
 	}
