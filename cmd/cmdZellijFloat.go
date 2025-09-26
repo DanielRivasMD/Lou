@@ -85,8 +85,8 @@ var lazygitCmd = &cobra.Command{
 	Use:     "lazygit",
 	Aliases: []string{"lg"},
 	Short:   "Launch lazygit in a floating zellij pane",
-	Long:    helpZFLazygit,
-	Example: exampleZFLazygit,
+	Long:    helpLazygit,
+	Example: exampleLazygit,
 
 	Run: runLazygit,
 }
@@ -111,8 +111,8 @@ var microCmd = &cobra.Command{
 var resizeCmd = &cobra.Command{
 	Use:     "resize",
 	Short:   "Anchor & resize a zellij floating pane",
-	Long:    helpZFResize,
-	Example: exampleZFResize,
+	Long:    helpResize,
+	Example: exampleResize,
 
 	Args:      cobra.MaximumNArgs(1),
 	ValidArgs: validLayouts,
@@ -123,7 +123,7 @@ var resizeCmd = &cobra.Command{
 var watchCmd = &cobra.Command{
 	Use:     "watch",
 	Short:   "Launch watcher on a floating zellij pane with ease",
-	Long:    helpZFWatch,
+	Long:    helpWatch,
 	Example: exampleZFWatch,
 
 	Run: runWatch,
@@ -145,8 +145,8 @@ type zellijFloat struct {
 
 func newZellijFloat(opts ...zellijOpt) zellijFloat {
 	zf := zellijFloat{
-		pinned:      true,
 		closeOnExit: false,
+		pinned:      false,
 		layout:      "default",
 	}
 	for _, opt := range opts {
@@ -203,7 +203,7 @@ func (zl zellijFloat) Cmd() string {
 	if zl.layout == "__custom__" && zl.customGeom != nil {
 		geom = *zl.customGeom
 	} else {
-		geom, _ = resolveLayoutGeometry(zl.layout, flags)
+		geom, _ = resolveLayoutGeometry(zl.layout, flagG)
 	}
 
 	flags := []string{"--name " + zl.name}
@@ -221,7 +221,7 @@ func (zl zellijFloat) Cmd() string {
 		"--y "+geom.y,
 	)
 
-	cmd := fmt.Sprintf("zellij run %s -- %s", strings.Join(flags, " "), zl.command)
+	cmd := fmt.Sprintf("zellij run --floating %s -- %s", strings.Join(flags, " "), zl.command)
 	if len(zl.args) > 0 {
 		cmd += " " + strings.Join(zl.args, " ")
 	}
@@ -230,13 +230,16 @@ func (zl zellijFloat) Cmd() string {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+var flagG Geometry
+
 type Geometry struct {
-	height string
 	width  string
+	height string
 	x      string
 	y      string
 }
 
+// TODO: redundant defaults?
 func (g Geometry) OverrideWith(flags Geometry) Geometry {
 	return Geometry{
 		height: override(g.height, flags.height, "100%"),
@@ -248,26 +251,24 @@ func (g Geometry) OverrideWith(flags Geometry) Geometry {
 
 func geometryFromFlags() Geometry {
 	return Geometry{
-		height: flags.height,
-		width:  flags.width,
-		x:      flags.x,
-		y:      flags.y,
+		height: flagG.height,
+		width:  flagG.width,
+		x:      flagG.x,
+		y:      flagG.y,
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-var flags Geometry
 
 func init() {
 	rootCmd.AddCommand(zellijFloatCmd)
 	rootCmd.AddCommand(batCmd, brootCmd, ezaCmd, floatCmd, helixCmd, lazygitCmd, mdcatCmd, microCmd, resizeCmd, watchCmd)
 	zellijFloatCmd.AddCommand(batCmd, brootCmd, ezaCmd, floatCmd, helixCmd, lazygitCmd, mdcatCmd, microCmd, resizeCmd, watchCmd)
 
-	rootCmd.PersistentFlags().StringVarP(&flags.height, "height", "H", "100%", "pane height")
-	rootCmd.PersistentFlags().StringVarP(&flags.width, "width", "W", "95%", "pane width")
-	rootCmd.PersistentFlags().StringVarP(&flags.x, "x", "X", "10", "horizontal offset")
-	rootCmd.PersistentFlags().StringVarP(&flags.y, "y", "Y", "0", "vertical offset")
+	rootCmd.PersistentFlags().StringVarP(&flagG.height, "height", "H", "100%", "pane height")
+	rootCmd.PersistentFlags().StringVarP(&flagG.width, "width", "W", "95%", "pane width")
+	rootCmd.PersistentFlags().StringVarP(&flagG.x, "x", "X", "10", "horizontal offset")
+	rootCmd.PersistentFlags().StringVarP(&flagG.y, "y", "Y", "0", "vertical offset")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -525,13 +526,13 @@ func override(preset, flag, fallback string) string {
 
 var layoutPresets = map[string]Geometry{
 	"full":         {"100%", "100%", "0", "0"},
-	"half-left":    {"100%", "50%", "0", "0"},
-	"half-right":   {"100%", "50%", "50%", "0"},
-	"top-left":     {"45%", "45%", "0", "0"},
-	"bottom-left":  {"45%", "45%", "0", "60%"},
-	"top-right":    {"45%", "45%", "60%", "0"},
-	"bottom-right": {"45%", "45%", "60%", "60%"},
-	"default":      {"100%", "95%", "10", "0"},
+	"half-left":    {"50%", "100%", "0", "0"},
+	"half-right":   {"50%", "100%", "50%", "0"},
+	"top-left":     {"50%", "50%", "0", "0"},
+	"bottom-left":  {"50%", "53%", "0", "52%"},
+	"top-right":    {"50%", "50%", "50%", "0"},
+	"bottom-right": {"50%", "53%", "50%", "52%"},
+	"default":      {"95%", "100%", "10", "0"},
 }
 
 var validLayouts = func() []string {
@@ -552,7 +553,7 @@ func resolveLayoutGeometry(name string, flags Geometry) (Geometry, error) {
 }
 
 func resolveWithFlags(name string) (Geometry, error) {
-	return resolveLayoutGeometry(name, flags)
+	return resolveLayoutGeometry(name, flagG)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
