@@ -25,7 +25,7 @@ var exampleFloat = domovoi.FormatExample(
 	[]string{"float"},
 )
 
-var exampleZFLazygit = domovoi.FormatExample(
+var exampleLazygit = domovoi.FormatExample(
 	"lou",
 	[]string{"lazygit"},
 )
@@ -40,7 +40,12 @@ var exampleEza = domovoi.FormatExample(
 	[]string{"eza", "<path>"},
 )
 
-var exampleZFResize = domovoi.FormatExample(
+var exampleTab = domovoi.FormatExample(
+	"lou",
+	[]string{" tab", "~/src/helix", "--layout", "explore"},
+)
+
+var exampleResize = domovoi.FormatExample(
 	"lou",
 	[]string{"resize"},
 	[]string{"resize", "--height", "<100%>", "--width", "<95%>", "--x", "<10>", "--y", "<0>"},
