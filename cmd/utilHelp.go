@@ -43,19 +43,31 @@ var helpFloat = domovoi.FormatHelp(
 	"Launch a floating "+chalk.Cyan.Color(chalk.Italic.TextStyle("zellij"))+" window using "+chalk.Cyan.Color(chalk.Italic.TextStyle("float"))+" with ease",
 )
 
-var helpZFLazygit = domovoi.FormatHelp(
+var helpLazygit = domovoi.FormatHelp(
 	"Daniel Rivas",
 	"<danielrivasmd@gmail.com>",
 	"lazygit in a floating "+chalk.Cyan.Color(chalk.Italic.TextStyle("zellij"))+" window using "+chalk.Cyan.Color(chalk.Italic.TextStyle("lazygit")),
 )
 
-var helpZFResize = domovoi.FormatHelp(
+var helpResize = domovoi.FormatHelp(
 	"Daniel Rivas",
 	"<danielrivasmd@gmail.com>",
 	"Resize one random floating pane to a percentage of screen size and move it to an anchor point",
 )
 
-var helpZFWatch = domovoi.FormatHelp(
+var helpTab = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"Launch a new Zellij session in the specified directory using one of the available layouts",
+)
+
+// Layouts:
+// tab      - ` + validTabLayouts["tab"] + `
+// explore  - ` + validTabLayouts["explore"] + `
+// repl     - ` + validTabLayouts["repl"] + `
+// Specify --layout to choose a layout (defaults to "tab").`"
+
+var helpWatch = domovoi.FormatHelp(
 	"Daniel Rivas",
 	"<danielrivasmd@gmail.com>",
 	"launch a "+chalk.Cyan.Color(chalk.Italic.TextStyle("watcher"))+" on a floating "+chalk.Cyan.Color(chalk.Italic.TextStyle("zellij"))+" window with ease",
