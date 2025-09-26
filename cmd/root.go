@@ -43,7 +43,8 @@ func Execute() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var (
-	dirs configDirs
+	dirs  configDirs
+	flags louFlags
 )
 
 type configDirs struct {
@@ -53,12 +54,23 @@ type configDirs struct {
 	sh     string
 }
 
+type louFlags struct {
+	verbose bool
+
+	tabLayout string
+	tabTarget string
+}
+
+var validTabLayouts = map[string]string{
+	"tab":     "Default tab layout",
+	"explore": "Explore layout",
+	"repl":    "REPL layout",
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var verbose bool
-
 func init() {
-	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose diagnostics")
+	rootCmd.PersistentFlags().BoolVarP(&flags.verbose, "verbose", "v", false, "Enable verbose diagnostics")
 	cobra.OnInitialize(initConfigDirs)
 }
 
@@ -66,7 +78,7 @@ func init() {
 
 func initConfigDirs() {
 	var err error
-	dirs.home, err = domovoi.FindHome(verbose)
+	dirs.home, err = domovoi.FindHome(flags.verbose)
 	horus.CheckErr(err, horus.WithCategory("init_error"), horus.WithMessage("getting home directory"))
 	dirs.lou = filepath.Join(dirs.home, ".lou")
 	dirs.layout = filepath.Join(dirs.lou, "layout")

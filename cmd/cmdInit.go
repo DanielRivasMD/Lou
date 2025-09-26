@@ -59,7 +59,7 @@ func runInit(cmd *cobra.Command, args []string) {
 
 	for _, dir := range toCreate {
 		horus.CheckErr(
-			domovoi.CreateDir(dir.path, verbose),
+			domovoi.CreateDir(dir.path, flags.verbose),
 			horus.WithOp(op),
 			horus.WithCategory("io_error"),
 			horus.WithMessage(fmt.Sprintf("creating %s directory", dir.label)),
