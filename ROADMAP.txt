@@ -10,14 +10,15 @@
 ==================================================
 cmd/cmdHidden.go
   line 34     TODO   update by using functions
+cmd/cmdZellij.go
+  line 33     TODO   write readme documentation on customizing tab layouts
+  line 72     TODO   define tab layout
 cmd/cmdZellijFloat.go
-  line 34     BUG    double check running errors
-  line 437    TODO   add one line error message
-  line 490    TODO   test whether `just watch` exists
-cmd/cmdZellijTab.go
-  line 44     TODO   write readme documentation on customizing tab layouts
+  line 242    TODO   redundant defaults?
+  line 438    TODO   add one-liner error
+  line 495    TODO   check if `just watch` exist
 cmd/utilExample.go
-  line 59     TODO   update editor example
+  line 64     TODO   update editor example
 cmd/utilHelp.go
-  line 66     TODO   update edirot helps
+  line 78     TODO   update edirot helps
 ==================================================
