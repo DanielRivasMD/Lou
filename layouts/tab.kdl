@@ -11,7 +11,9 @@ layout {
 
     tab {
         pane stacked=true split_direction="horizontal" {
-            pane name="editor" command="hx" focus=true
+            pane name="editor" focus=true command="zsh" {
+                args "-i" "-c" "hx"
+            }
             pane name="canvas"
         }
     }
