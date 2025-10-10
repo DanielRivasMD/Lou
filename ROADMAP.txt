@@ -12,6 +12,8 @@ cmd/cmdHidden.go
   line 34     TODO   update by using functions
 cmd/cmdZellij.go
   line 33     TODO   write readme documentation on customizing tab layouts
+  line 67     TODO   pass a flag to define number of stacked panes
+  line 68     TODO   pass a flag to define whether it should be repl panel
   line 72     TODO   define tab layout
 cmd/cmdZellijFloat.go
   line 242    TODO   redundant defaults?
