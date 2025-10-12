@@ -6,6 +6,7 @@
 - lou manipulation functions as potential zellij plugins?
 - lou roadmap is a good idea, but we must keep the order & format of the file
 - rework cmd hierachy to place persistent flags better => zellij & git
+- integrate juliaup on updata cmd
 
 ==================================================
 cmd/cmdHidden.go
