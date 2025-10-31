@@ -9,6 +9,6 @@ rustup check
 rustup update
 
 # upgrade binaries
-cargo-install-update install-update --all
+cargo install-update --all
 
 ####################################################################################################
