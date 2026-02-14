@@ -20,39 +20,31 @@ import (
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 var diffCmd = &cobra.Command{
-	Use:   "diff",
-	Short: `compare differences in the repository`,
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Use:     "diff",
+	Short:   "Compare version control differences",
+	Long:    helpDiff,
+	Example: exampleDiff,
 
-` +
-		`compare & display differences in the repository using ` + chalk.Cyan.Color(chalk.Italic.TextStyle("git diff")) + `
-`,
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color(chalk.Bold.TextStyle("diff")),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Run: func(cmd *cobra.Command, args []string) {
-		cmdDiff := "git diff --name-only --relative --diff-filter=d | xargs bat --diff"
-		err := domovoi.ExecCmd("bash", "-c", cmdDiff)
-		horus.CheckErr(err)
-	},
+	Run: runDiff,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
 	rootCmd.AddCommand(diffCmd)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func runDiff(cmd *cobra.Command, args []string) {
+	cmdDiff := "git diff --name-only --relative --diff-filter=d | xargs bat --diff"
+	err := domovoi.ExecCmd("bash", "-c", cmdDiff)
+	horus.CheckErr(err)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
