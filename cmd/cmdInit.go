@@ -30,7 +30,7 @@ import (
 
 var initCmd = &cobra.Command{
 	Use:     "init",
-	Short:   "",
+	Short:   "Initialize configuration directories",
 	Long:    helpInit,
 	Example: exampleInit,
 
@@ -48,7 +48,6 @@ func init() {
 func runInit(cmd *cobra.Command, args []string) {
 	const op = "lou.init"
 
-	// name each for nicer error messages
 	toCreate := []struct {
 		label, path string
 	}{
