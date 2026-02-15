@@ -16,6 +16,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"fmt"
 
@@ -28,27 +30,13 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var hiddenCmd = &cobra.Command{
-	Use:   "hidden " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("[off|on]")),
-	Short: "Toggle Finder visibility of hidden files",
-
-	// TODO: update by using functions
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-
-` + chalk.Green.Color("Lou") + ` control the visibility of hidden files in Finder on macOS
-Toggle between showing and hiding hidden files using the appropriate argument
-`,
-
-	Example: `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("finder") + ` off` + `
-` + chalk.Cyan.Color("lou") + ` ` + chalk.Yellow.Color("finder") + ` on` + `
-`,
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	Use:     "hidden " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("[off|on]")),
+	Short:   "Toggle Finder visibility of hidden files",
+	Long:    helpHidden,
+	Example: exampleHidden,
 
 	ValidArgs: []string{"off", "on"},
 	Args:      cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Run: runHidden,
 }
