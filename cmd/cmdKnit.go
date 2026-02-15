@@ -30,33 +30,29 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var knitCmd = &cobra.Command{
-	Use:   "knit " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
-	Short: "compile a Markdown file using R",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-
-` + `leverage ` + chalk.Cyan.Color(chalk.Italic.TextStyle("R")) + ` to render a Markdown file into a polished output
-`,
-	Example: chalk.White.Color("lou") + " " + chalk.Bold.TextStyle(chalk.White.Color("knit")) + " " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	Use:     "knit " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
+	Short:   "compile a Markdown file using R",
+	Long:    helpKnit,
+	Example: exampleKnit,
 
 	Args: cobra.ExactArgs(1),
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Run: func(cmd *cobra.Command, args []string) {
-		inputFile := args[0]
-		cmdKnit := fmt.Sprintf(`R --slave -e "rmarkdown::render('%s')" > /dev/null`, inputFile)
-		err := domovoi.ExecCmd("bash", "-c", cmdKnit)
-		horus.CheckErr(err)
-	},
+	Run: runKnit,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
 	rootCmd.AddCommand(knitCmd)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func runKnit(cmd *cobra.Command, args []string) {
+	inputFile := args[0]
+	cmdKnit := fmt.Sprintf(`R --slave -e "rmarkdown::render('%s')" > /dev/null`, inputFile)
+	err := domovoi.ExecCmd("bash", "-c", cmdKnit)
+	horus.CheckErr(err)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
