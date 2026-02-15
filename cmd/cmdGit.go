@@ -16,6 +16,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"fmt"
 	"os"
@@ -29,67 +31,61 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var gitCmd = &cobra.Command{
-	Use:   "git",
-	Short: "Effortlessly interact with Git repositories",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) +
-		chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
+	Use:     "git",
+	Short:   "Effortlessly interact with Git repositories",
+	Long:    helpGit,
+	Example: exampleGit,
 
-` +
-		`simplify interactions with ` + chalk.Cyan.Color(chalk.Italic.TextStyle("git")) + ` by providing streamlined commands:
-  - status   Show current repo status
-  - log      Display commit history
-  - branch   List and switch branches
-`,
-	Example: chalk.White.Color("lou") + " " + chalk.Bold.TextStyle(chalk.White.Color("git")),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Run: func(cmd *cobra.Command, args []string) {
-		const op = "cmd.git"
-
-		// inside git repo
-		if _, _, err := domovoi.CaptureExecCmd("git", "rev-parse", "--is-inside-work-tree"); err != nil {
-			fmt.Println(chalk.Blue.Color("Not a git repository"))
-			return
-		}
-
-		// git status
-		domovoi.PrintCentered("Status")
-		if err := domovoi.ExecCmd("git", "status", "--short"); err != nil {
-			msg := horus.FormatPanic(op, "failed to run git status")
-			fmt.Fprintln(cmd.ErrOrStderr(), msg)
-			os.Exit(1)
-		}
-
-		// git stash list (capture output)
-		domovoi.PrintCentered("Stash List")
-		if err := domovoi.ExecCmd("git", "stash", "list"); err != nil {
-			msg := horus.FormatPanic(op, "failed to list stashes")
-			fmt.Fprintln(cmd.ErrOrStderr(), msg)
-			os.Exit(1)
-		}
-
-		// git log
-		domovoi.PrintCentered("Recent Commits")
-		if err := domovoi.ExecCmd(
-			"git", "log", "--graph", "--topo-order", "--abbrev-commit",
-			"--date=relative", "--decorate", "--all", "--boundary",
-			"--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset",
-			"-10",
-		); err != nil {
-			msg := horus.FormatPanic(op, "failed to show git log")
-			fmt.Fprintln(cmd.ErrOrStderr(), msg)
-			os.Exit(1)
-		}
-
-		domovoi.LineBreaks(true)
-	},
+	Run: runGit,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
 	rootCmd.AddCommand(gitCmd)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func runGit(cmd *cobra.Command, args []string) {
+	const op = "cmd.git"
+
+	// inside git repo
+	if _, _, err := domovoi.CaptureExecCmd("git", "rev-parse", "--is-inside-work-tree"); err != nil {
+		fmt.Println(chalk.Blue.Color("Not a git repository"))
+		return
+	}
+
+	// git status
+	domovoi.PrintCentered("Status")
+	if err := domovoi.ExecCmd("git", "status", "--short"); err != nil {
+		msg := horus.FormatPanic(op, "failed to run git status")
+		fmt.Fprintln(cmd.ErrOrStderr(), msg)
+		os.Exit(1)
+	}
+
+	// git stash list (capture output)
+	domovoi.PrintCentered("Stash List")
+	if err := domovoi.ExecCmd("git", "stash", "list"); err != nil {
+		msg := horus.FormatPanic(op, "failed to list stashes")
+		fmt.Fprintln(cmd.ErrOrStderr(), msg)
+		os.Exit(1)
+	}
+
+	// git log
+	domovoi.PrintCentered("Recent Commits")
+	if err := domovoi.ExecCmd(
+		"git", "log", "--graph", "--topo-order", "--abbrev-commit",
+		"--date=relative", "--decorate", "--all", "--boundary",
+		"--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset",
+		"-10",
+	); err != nil {
+		msg := horus.FormatPanic(op, "failed to show git log")
+		fmt.Fprintln(cmd.ErrOrStderr(), msg)
+		os.Exit(1)
+	}
+
+	domovoi.LineBreaks(true)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
