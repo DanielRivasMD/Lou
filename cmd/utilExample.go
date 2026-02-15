@@ -20,6 +20,56 @@ var exampleInit = domovoi.FormatExample(
 	[]string{"init"},
 )
 
+var exampleGit = domovoi.FormatExample(
+	"lou",
+	[]string{"git"},
+)
+
+var exampleKnit = domovoi.FormatExample(
+	"lou",
+	[]string{"knit"},
+)
+
+var exampleMap = domovoi.FormatExample(
+	"lou",
+	[]string{"map"},
+)
+
+var exampleShow = domovoi.FormatExample(
+	"lou",
+	[]string{"show"},
+)
+
+var exampleCount = domovoi.FormatExample(
+	"lou",
+	[]string{"diff"},
+)
+
+var exampleDiff = domovoi.FormatExample(
+	"lou",
+	[]string{"diff"},
+)
+
+var exampleDoctor = domovoi.FormatExample(
+	"lou",
+	[]string{"doctor"},
+)
+
+var exampleHelper = domovoi.FormatExample(
+	"lou",
+	[]string{"helper"},
+)
+
+var exampleHidden = domovoi.FormatExample(
+	"lou",
+	[]string{"hidden"},
+)
+
+var examplePath = domovoi.FormatExample(
+	"lou",
+	[]string{"path"},
+)
+
 var exampleFloat = domovoi.FormatExample(
 	"lou",
 	[]string{"float"},
