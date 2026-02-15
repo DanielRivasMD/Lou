@@ -16,35 +16,35 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
-var ()
+var doctorCmd = &cobra.Command{
+	Use:     "doctor",
+	Short:   "Run shell diagnostics",
+	Long:    helpDoctor,
+	Example: exampleDoctor,
+
+	Run: runDoctor,
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// doctorCmd
-var doctorCmd = &cobra.Command{
-	Use:   "doctor",
-	Short: ".",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-`,
+func init() {
+	rootCmd.AddCommand(doctorCmd)
+}
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("shelldoctor"),
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+func runDoctor(cmd *cobra.Command, args []string) {
 
-	Run: func(cmd *cobra.Command, args []string) {
-
-		// base command
-		cmddoctor := `
+	cmddoctor := `
 #────────────────────────────────────────────────────────────
 # Terminal doctor on demand
 #────────────────────────────────────────────────────────────
@@ -66,20 +66,9 @@ env | grep -E 'ARCHIVE|EX_SITU|IN_SITU|IN_SILICO|ZSH_COMPLETION|BARTIB_FILE|VISU
 echo "───────────────────────────────"
 `
 
-		// execute command
-		domovoi.LineBreaks(true)
-		domovoi.ExecCmd("zsh", "-c", cmddoctor)
-		domovoi.LineBreaks(true)
-	},
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// execute prior main
-func init() {
-	rootCmd.AddCommand(doctorCmd)
-
-	// flags
+	domovoi.LineBreaks(true)
+	domovoi.ExecCmd("zsh", "-c", cmddoctor)
+	domovoi.LineBreaks(true)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
