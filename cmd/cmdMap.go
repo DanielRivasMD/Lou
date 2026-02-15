@@ -16,73 +16,71 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/spf13/cobra"
+	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var ()
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 var roadmapCmd = &cobra.Command{
-	Use:   "map",
-	Short: "" + chalk.Yellow.Color("") + ".",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-`,
+	Use:     "map",
+	Short:   "" + chalk.Yellow.Color("") + ".",
+	Long:    helpMap,
+	Example: exampleMap,
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("roadmap"),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Run: func(cmd *cobra.Command, args []string) {
-
-		path := args[0]
-		data, err := os.ReadFile(path)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error reading file %s: %v\n", path, err)
-			os.Exit(1)
-		}
-
-		text := string(data)
-
-		// split on lines containing only '=' characters
-		re := regexp.MustCompile(`(?m)^[=]+\s*$`)
-		rawBlocks := re.Split(text, -1)
-
-		seen := make(map[string]struct{})
-		var unique []string
-		sepLine := "=================================================="
-
-		for _, blk := range rawBlocks {
-			blk = strings.TrimSpace(blk)
-			if blk == "" {
-				continue
-			}
-			if _, exists := seen[blk]; !exists {
-				seen[blk] = struct{}{}
-				unique = append(unique, blk)
-			}
-		}
-
-		// reassemble with separator lines
-		result := strings.Join(unique, "\n"+sepLine+"\n")
-		fmt.Println(result)
-
-	},
+	Run: runMap,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
 	rootCmd.AddCommand(roadmapCmd)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func runMap(cmd *cobra.Command, args []string) {
+
+	path := args[0]
+	data, err := os.ReadFile(path)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading file %s: %v\n", path, err)
+		os.Exit(1)
+	}
+
+	text := string(data)
+
+	// split on lines containing only '=' characters
+	re := regexp.MustCompile(`(?m)^[=]+\s*$`)
+	rawBlocks := re.Split(text, -1)
+
+	seen := make(map[string]struct{})
+	var unique []string
+	sepLine := "=================================================="
+
+	for _, blk := range rawBlocks {
+		blk = strings.TrimSpace(blk)
+		if blk == "" {
+			continue
+		}
+		if _, exists := seen[blk]; !exists {
+			seen[blk] = struct{}{}
+			unique = append(unique, blk)
+		}
+	}
+
+	// reassemble with separator lines
+	result := strings.Join(unique, "\n"+sepLine+"\n")
+	fmt.Println(result)
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
