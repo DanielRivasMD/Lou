@@ -16,6 +16,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/spf13/cobra"
@@ -24,30 +26,28 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
-var ()
+var helperCmd = &cobra.Command{
+	Use:     "helper",
+	Short:   "" + chalk.Yellow.Color("") + ".",
+	Long:    helpHelper,
+	Example: exampleHelper,
+
+	Run: runHelper,
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// helperCmd
-var helperCmd = &cobra.Command{
-	Use:   "helper",
-	Short: "" + chalk.Yellow.Color("") + ".",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-`,
+func init() {
+	rootCmd.AddCommand(helperCmd)
+}
 
-	Example: `
-` + chalk.Cyan.Color("") + ` help ` + chalk.Yellow.Color("") + chalk.Yellow.Color("helper"),
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+func runHelper(cmd *cobra.Command, args []string) {
 
-	Run: func(cmd *cobra.Command, args []string) {
+	arg := args[0]
 
-		// validate input
-		arg := args[0]
-
-		// base command
-		cmdHelper := `
+	cmdHelper := `
 # grab the list under “Available Commands:”
 cmds=( $(
   ` + arg + ` help | 
@@ -64,21 +64,10 @@ for sub in "${cmds[@]}"; do
 done
 `
 
-		// execute command
-		domovoi.LineBreaks(true)
-		domovoi.ExecCmd("zsh", "-c", cmdHelper)
-		domovoi.LineBreaks(true)
+	domovoi.LineBreaks(true)
+	domovoi.ExecCmd("zsh", "-c", cmdHelper)
+	domovoi.LineBreaks(true)
 
-	},
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// execute prior main
-func init() {
-	rootCmd.AddCommand(helperCmd)
-
-	// flags
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
