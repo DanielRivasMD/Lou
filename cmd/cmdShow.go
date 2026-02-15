@@ -28,12 +28,21 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// declarations
+var listShCmd = &cobra.Command{
+	Use:     "show" + ` ` + chalk.Dim.TextStyle(chalk.Blue.Color("--file")) + ` ` + chalk.Dim.TextStyle("<file>"),
+	Short:   "List shell functions from a specified file",
+	Long:    helpShow,
+	Example: exampleShow,
+
+	Run: runShow,
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 var (
 	listFile string
 )
 
-// Function represents a parsed shell function
 type Function struct {
 	Shell       string
 	Name        string
@@ -43,41 +52,23 @@ type Function struct {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// listShCmd
-var listShCmd = &cobra.Command{
-	Use:   "show" + ` ` + chalk.Dim.TextStyle(chalk.Blue.Color("--file")) + ` ` + chalk.Dim.TextStyle("<file>"),
-	Short: "List shell functions from a specified file",
-	Long: chalk.Green.Color(chalk.Bold.TextStyle("Daniel Rivas ")) + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<danielrivasmd@gmail.com>")) + `
-
-` + chalk.White.Color("Lou") + ` extract and list shell function details, including descriptions and arguments, from a specified file
-`,
-
-	Example: chalk.White.Color("lou") + ` ` + chalk.White.Color("show") + ` ` + chalk.Dim.TextStyle(chalk.Blue.Color("--file")) + ` ` + chalk.Dim.TextStyle("<file>"),
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Run: func(κ *cobra.Command, args []string) {
-
-		// collect documentation
-		functions, ε := parseFile(listFile)
-		horus.CheckErr(ε)
-
-		// generate & print Markdown
-		markdown := generateMD(functions)
-		fmt.Println(markdown)
-	},
+func init() {
+	rootCmd.AddCommand(listShCmd)
+	listShCmd.Flags().StringVarP(&listFile, "file", "f", "", "File to review")
+	listShCmd.MarkFlagRequired("file")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// execute prior main
-func init() {
-	rootCmd.AddCommand(listShCmd)
+func runShow(cmd *cobra.Command, args []string) {
 
-	// flags
-	listShCmd.Flags().StringVarP(&listFile, "file", "f", "", "File to review")
+	// collect documentation
+	functions, err := parseFile(listFile)
+	horus.CheckErr(err)
 
-	listShCmd.MarkFlagRequired("file")
+	// generate & print Markdown
+	markdown := generateMD(functions)
+	fmt.Println(markdown)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
