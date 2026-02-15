@@ -16,6 +16,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import (
 	"fmt"
 	"os"
@@ -30,7 +32,6 @@ import (
 var completionCmd = &cobra.Command{
 	Use:    "completion " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("[bash|zsh|fish|powershell]")),
 	Hidden: true,
-	Short:  "Generate completion script for various shells.",
 	Long:   helpCompletion,
 
 	DisableFlagsInUseLine: true,
@@ -91,7 +92,6 @@ PowerShell:
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runCompletion(cmd *cobra.Command, args []string) {
-	// Generate the appropriate shell completion script based on the provided argument.
 	switch args[0] {
 	case "bash":
 		horus.CheckErr(cmd.Root().GenBashCompletion(os.Stdout))
