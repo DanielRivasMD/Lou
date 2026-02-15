@@ -25,6 +25,66 @@ var helpInit = domovoi.FormatHelp(
 	"",
 )
 
+var helpGit = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
+var helpKnit = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
+var helpMap = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
+var helpHelper = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
+var helpHidden = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
+var helpCount = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
+var helpShow = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
+var helpDiff = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
+var helpDoctor = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
+var helpPath = domovoi.FormatHelp(
+	"Daniel Rivas",
+	"<danielrivasmd@gmail.com>",
+	"",
+)
+
 var helpBat = domovoi.FormatHelp(
 	"Daniel Rivas",
 	"<danielrivasmd@gmail.com>",
