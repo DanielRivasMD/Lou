@@ -22,18 +22,29 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zellijCmd = &cobra.Command{}
+var validTabTypes = map[string]string{
+	"devel":    "Default development layout",
+	"tab":      "Single vanilla pane",
+	"tabs2":    "Two stacked vanilla panes",
+	"tabs3":    "Three stacked vanilla panes",
+	"tabs4":    "Four stacked vanilla panes",
+	"tabs5":    "Five stacked vanilla panes",
+	"explore":  "Two stacked panes: top runs `y`, bottom vanilla",
+	"repl":     "Editor + canvas + right-side repl pane",
+}
 
-// TODO: write readme documentation on customizing tab layouts
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 var tabCmd = &cobra.Command{
 	Use:     "tab [path]",
-	Short:   "Launch a new Zellij tab",
+	Short:   "Launch a new Zellij workspace",
 	Long:    helpTab,
 	Example: exampleTab,
 
@@ -47,12 +58,20 @@ var tabCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(tabCmd)
 
-	tabCmd.Flags().StringVarP(&flags.tabLayout, "layout", "l", flags.tabLayout, "Layout to use [tab, explore, repl]")
+	// Replace --layout with --type
+	tabCmd.Flags().StringVarP(
+		&flags.tabLayout,
+		"type",
+		"t",
+		"devel",
+		"Workspace type: devel, tab, tabs2, tabs3, tabs4, tabs5, explore, repl",
+	)
 
-	tabCmd.RegisterFlagCompletionFunc("layout",
+	// Shell completion
+	tabCmd.RegisterFlagCompletionFunc("type",
 		func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			var out []string
-			for name := range validTabLayouts {
+			for name := range validTabTypes {
 				if toComplete == "" || strings.HasPrefix(name, toComplete) {
 					out = append(out, name)
 				}
@@ -64,15 +83,9 @@ func init() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// TODO: pass a flag to define number of stacked panes
-// TODO: pass a flag to define whether it should be repl panel
 func runTab(cmd *cobra.Command, args []string) {
 	const op = "tab.cmd"
 
-	// TODO: define tab layout
-	flags.tabLayout = "tab"
-
-	// Validate positional arguments (at most one path)
 	switch len(args) {
 	case 0:
 		flags.tabTarget = ""
@@ -87,6 +100,45 @@ func runTab(cmd *cobra.Command, args []string) {
 	}
 
 	createTab(flags.tabLayout, flags.tabTarget)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func createTab(tabType, tabTarget string) {
+	const op = "tab.create"
+
+	if _, ok := validTabTypes[tabType]; !ok {
+		horus.CheckErr(
+			fmt.Errorf("invalid workspace type %q", tabType),
+			horus.WithOp(op),
+			horus.WithMessage("must be one of: tab, devel, stacked2, stacked3, stacked4, stacked5, explore, repl"),
+		)
+	}
+
+	cmdStr := fmt.Sprintf(
+		`zellij action new-tab --layout $HOME/.lou/layouts/%s.kdl --name $( [ "$PWD" = "$HOME" ] && echo "~" || basename "$PWD" )`,
+		tabType,
+	)
+
+	if tabTarget != "" {
+		orig, err := domovoi.RecallDir()
+		if err != nil {
+			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to recall working directory"))
+		}
+		if err := domovoi.ChangeDir(tabTarget); err != nil {
+			domovoi.ChangeDir(orig)
+			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to change to target directory"))
+		}
+		if err := domovoi.ExecSh(cmdStr); err != nil {
+			domovoi.ChangeDir(orig)
+			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch tab"))
+		}
+		return
+	}
+
+	if err := domovoi.ExecSh(cmdStr); err != nil {
+		horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch tab"))
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
