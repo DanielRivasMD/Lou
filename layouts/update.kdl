@@ -22,6 +22,9 @@ layout {
         pane command="bash" {
             args "/Users/drivas/.lou/sh/update_go.sh"
         }
+        pane command="bash" {
+            args "/Users/drivas/.lou/sh/update_julia.sh"
+        }
     }
 }
 
