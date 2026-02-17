@@ -10,14 +10,11 @@ layout {
 
    tab {
         pane stacked=true split_direction="horizontal" {
+            pane name="explore" command="yazi" focus=true
+            pane name="canvas"
             pane name="nu" command="nu"
-            pane name="canvas" focus=true
-            pane name="tree" command="broot" {
-                args "--dates" "--sizes" "--permissions" "--hidden" "--git-ignored" "--show-git-info" "--sort-by-type-dirs-first"
-            }
         }
     }
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
