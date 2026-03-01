@@ -29,21 +29,6 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var countCmd = &cobra.Command{
-	Use:     "count [dir|file]",
-	Short:   "Count directories or files in the current location",
-	Long:    helpCount,
-	Example: exampleCount,
-
-	ValidArgs: []string{"dir", "file"},
-	// allow 0 or 1 args, handle zero case manually
-	Args: cobra.MaximumNArgs(1),
-
-	Run: runCount,
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 var (
 	hidden   bool
 	noIgnore bool
@@ -52,9 +37,14 @@ var (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
+	countCmd := MakeCmd("count", runCount,
+		WithArgs(cobra.MaximumNArgs(1)),
+		WithValidArgs([]string{"dir", "file"}),
+	)
 	rootCmd.AddCommand(countCmd)
-	countCmd.Flags().BoolVarP(&hidden, "hidden", "H", false, "include hidden files and dirs")
-	countCmd.Flags().BoolVarP(&noIgnore, "no-ignore", "I", false, "do not respect ignore config")
+
+	countCmd.Flags().BoolVarP(&hidden, "hidden", "", false, "include hidden files and dirs")
+	countCmd.Flags().BoolVarP(&noIgnore, "no-ignore", "", false, "do not respect ignore config")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +105,12 @@ func runCount(cmd *cobra.Command, args []string) {
 			"SYS_CMD",
 			"failed to execute count command",
 			err,
-			nil,
+			map[string]any{
+				"target":    target,
+				"hidden":    hidden,
+				"no_ignore": noIgnore,
+				"command":   fdCmd,
+			},
 		)
 		horus.CheckErr(
 			herr,
