@@ -24,35 +24,30 @@ import (
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var knitCmd = &cobra.Command{
-	Use:     "knit " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
-	Short:   "compile a Markdown file using R",
-	Long:    helpKnit,
-	Example: exampleKnit,
-
-	Args: cobra.ExactArgs(1),
-
-	Run: runKnit,
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func init() {
+	knitCmd := MakeCmd("knit", runKnit,
+		WithArgs(cobra.ExactArgs(1)),
+	)
 	rootCmd.AddCommand(knitCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runKnit(cmd *cobra.Command, args []string) {
+	const op = "lou.knit"
 	inputFile := args[0]
 	cmdKnit := fmt.Sprintf(`R --slave -e "rmarkdown::render('%s')" > /dev/null`, inputFile)
-	err := domovoi.ExecCmd("bash", "-c", cmdKnit)
-	horus.CheckErr(err)
+
+	horus.CheckErr(
+		domovoi.ExecCmd("bash", "-c", cmdKnit),
+		horus.WithOp(op),
+		horus.WithMessage("Unable to knit Markdown file"),
+		horus.WithCategory("run_error"),
+	)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
