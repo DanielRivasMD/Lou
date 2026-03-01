@@ -28,16 +28,42 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const APP = "lou"
+const VERSION = "v0.1.0"
+const NAME = "Daniel Rivas"
+const EMAIL = "<danielrivasmd@gmail.com>"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 var rootCmd = &cobra.Command{
-	Use:     "lou",
-	Long:    helpRoot,
-	Example: exampleRoot,
+	Use:     GetUse("root"),
+	Long:    formatLongHelp(GetHelp("root")),
+	Example: GetExample("root"),
+	Version: VERSION,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func Execute() {
 	horus.CheckErr(rootCmd.Execute())
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func init() {
+	rootCmd.PersistentFlags().BoolVarP(&flags.verbose, "verbose", "v", false, "Enable verbose diagnostics")
+	cobra.OnInitialize(initConfigDirs)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func initConfigDirs() {
+	var err error
+	dirs.home, err = domovoi.FindHome(flags.verbose)
+	horus.CheckErr(err, horus.WithCategory("init_error"), horus.WithMessage("getting home directory"))
+	dirs.lou = filepath.Join(dirs.home, ".lou")
+	dirs.layout = filepath.Join(dirs.lou, "layout")
+	dirs.sh = filepath.Join(dirs.lou, "sh")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,24 +91,6 @@ var validTabLayouts = map[string]string{
 	"tab":     "Default tab layout",
 	"explore": "Explore layout",
 	"repl":    "REPL layout",
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-func init() {
-	rootCmd.PersistentFlags().BoolVarP(&flags.verbose, "verbose", "v", false, "Enable verbose diagnostics")
-	cobra.OnInitialize(initConfigDirs)
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-func initConfigDirs() {
-	var err error
-	dirs.home, err = domovoi.FindHome(flags.verbose)
-	horus.CheckErr(err, horus.WithCategory("init_error"), horus.WithMessage("getting home directory"))
-	dirs.lou = filepath.Join(dirs.home, ".lou")
-	dirs.layout = filepath.Join(dirs.lou, "layout")
-	dirs.sh = filepath.Join(dirs.lou, "sh")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
