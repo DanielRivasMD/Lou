@@ -20,8 +20,6 @@ package cmd
 
 import (
 	"fmt"
-	"sort"
-	"strings"
 
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
@@ -30,183 +28,73 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zellijFloatCmd = &cobra.Command{
-	Use:   "zellij",
-	Short: "Zellij floating pane management",
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-type zellijOpt func(*zellijFloat)
-
-type zellijFloat struct {
-	name        string
-	closeOnExit bool
-	pinned      bool
-	layout      string
-	command     string
-	args        []string
-	customGeom  *Geometry
-}
-
-func newZellijFloat(opts ...zellijOpt) zellijFloat {
-	zf := zellijFloat{
-		closeOnExit: false,
-		pinned:      false,
-		layout:      "default",
-	}
-	for _, opt := range opts {
-		opt(&zf)
-	}
-	return zf
-}
-
-func withName(name string) zellijOpt {
-	return func(z *zellijFloat) {
-		z.name = name
-	}
-}
-
-func withLayout(layout string) zellijOpt {
-	return func(z *zellijFloat) {
-		z.layout = layout
-	}
-}
-
-func withCommand(cmd string) zellijOpt {
-	return func(z *zellijFloat) {
-		z.command = cmd
-	}
-}
-
-func withArgs(args ...string) zellijOpt {
-	return func(z *zellijFloat) {
-		z.args = args
-	}
-}
-
-func withPinned(v bool) zellijOpt {
-	return func(z *zellijFloat) {
-		z.pinned = v
-	}
-}
-
-func withCloseOnExit(v bool) zellijOpt {
-	return func(z *zellijFloat) {
-		z.closeOnExit = v
-	}
-}
-
-func withGeometry(g Geometry) zellijOpt {
-	return func(z *zellijFloat) {
-		z.layout = "__custom__"
-		z.customGeom = &g
-	}
-}
-
-func (zl zellijFloat) Cmd() string {
-	var geom Geometry
-	if zl.layout == "__custom__" && zl.customGeom != nil {
-		geom = *zl.customGeom
-	} else {
-		geom, _ = resolveLayoutGeometry(zl.layout, flagG)
-	}
-
-	flags := []string{"--name " + zl.name}
-	if zl.pinned {
-		flags = append(flags, "--pinned true")
-	}
-	if zl.closeOnExit {
-		flags = append(flags, "--close-on-exit")
-	}
-
-	flags = append(flags,
-		"--height "+geom.height,
-		"--width "+geom.width,
-		"--x "+geom.x,
-		"--y "+geom.y,
+func init() {
+	zellijFloatCmd := MakeCmd("zellij-float", runFloat,
+		WithArgs(cobra.MaximumNArgs(1)),
+		WithValidArgs(validLayouts),
 	)
 
-	cmd := fmt.Sprintf("zellij run --floating %s -- %s", strings.Join(flags, " "), zl.command)
-	if len(zl.args) > 0 {
-		cmd += " " + strings.Join(zl.args, " ")
-	}
-	return cmd
-}
+	zellijFloatCmd.PersistentFlags().StringVarP(&flagG.height, "height", "H", "100%", "pane height")
+	zellijFloatCmd.PersistentFlags().StringVarP(&flagG.width, "width", "W", "95%", "pane width")
+	zellijFloatCmd.PersistentFlags().StringVarP(&flagG.x, "x", "X", "10", "horizontal offset")
+	zellijFloatCmd.PersistentFlags().StringVarP(&flagG.y, "y", "Y", "0", "vertical offset")
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+	zellijFloatBatCmd, batCmd := createZellijCommand("bat", runBat, zellijFloatCmd)
+	zellijFloatEzaCmd, ezaCmd := createZellijCommand("eza", runEza, zellijFloatCmd)
+	zellijFloatHelixCmd, helixCmd := createZellijCommand("helix", runEditor("hx"), zellijFloatCmd, WithAliases([]string{"hx"}))
+	zellijFloatLazygitCmd, lazygitCmd := createZellijCommand("lazygit", runLazygit, zellijFloatCmd,
+		WithArgs(cobra.MaximumNArgs(1)),
+		WithValidArgs(validLayouts),
+		WithAliases([]string{"lg"}),
+	)
+	zellijFloatMDcatCmd, mdcatCmd := createZellijCommand("mdcat", runMDcat, zellijFloatCmd)
+	zellijFloatMicroCmd, microCmd := createZellijCommand("micro", runEditor("micro"), zellijFloatCmd, WithAliases([]string{"mc"}))
+	zellijFloatResizeCmd, resizeCmd := createZellijCommand("resize", runResize, zellijFloatCmd,
+		WithArgs(cobra.MaximumNArgs(1)),
+		WithValidArgs(validLayouts),
+	)
+	zellijFloatWatchCmd, watchCmd := createZellijCommand("watch", runWatch, zellijFloatCmd)
+	zellijFloatYaziCmd, yaziCmd := createZellijCommand("yazi", runYazi, zellijFloatCmd)
 
-var flagG Geometry
-
-type Geometry struct {
-	width  string
-	height string
-	x      string
-	y      string
-}
-
-// TODO: redundant defaults?
-func (g Geometry) OverrideWith(flags Geometry) Geometry {
-	return Geometry{
-		height: override(g.height, flags.height, "100%"),
-		width:  override(g.width, flags.width, "95%"),
-		x:      override(g.x, flags.x, "10"),
-		y:      override(g.y, flags.y, "0"),
-	}
-}
-
-func geometryFromFlags() Geometry {
-	return Geometry{
-		height: flagG.height,
-		width:  flagG.width,
-		x:      flagG.x,
-		y:      flagG.y,
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-func init() {
+	zellijCmd.AddCommand(zellijFloatCmd)
 	rootCmd.AddCommand(zellijFloatCmd)
 
-	// Create all commands using MakeCmd
-	batCmd := MakeCmd("zellij-bat", runBat)
-	brootCmd := MakeCmd("zellij-broot", runBroot)
-	ezaCmd := MakeCmd("zellij-eza", runEza)
-	floatCmd := MakeCmd("zellij-float", runFloat,
-		WithArgs(cobra.MaximumNArgs(1)),
-		WithValidArgs(validLayouts),
-	)
-	helixCmd := MakeCmd("zellij-helix", runEditor("hx"))
-	lazygitCmd := MakeCmd("zellij-lazygit", runLazygit,
-		WithArgs(cobra.MaximumNArgs(1)),
-		WithValidArgs(validLayouts),
-	)
-	mdcatCmd := MakeCmd("zellij-mdcat", runMDcat)
-	microCmd := MakeCmd("zellij-micro", runEditor("micro"))
-	resizeCmd := MakeCmd("zellij-resize", runResize,
-		WithArgs(cobra.MaximumNArgs(1)),
-		WithValidArgs(validLayouts),
-	)
-	watchCmd := MakeCmd("zellij-watch", runWatch)
-
-	// Add aliases
-	helixCmd.Aliases = []string{"hx"}
-	lazygitCmd.Aliases = []string{"lg"}
-	microCmd.Aliases = []string{"mc"}
-	brootCmd.Aliases = []string{"br"}
-
-	// Add all commands to both root and zellijFloatCmd
-	zellijFloatCmd.AddCommand(batCmd, brootCmd, ezaCmd, floatCmd, helixCmd, lazygitCmd, mdcatCmd, microCmd, resizeCmd, watchCmd)
-
-	// Set persistent flags for geometry
-	rootCmd.PersistentFlags().StringVarP(&flagG.height, "height", "H", "100%", "pane height")
-	rootCmd.PersistentFlags().StringVarP(&flagG.width, "width", "W", "95%", "pane width")
-	rootCmd.PersistentFlags().StringVarP(&flagG.x, "x", "X", "10", "horizontal offset")
-	rootCmd.PersistentFlags().StringVarP(&flagG.y, "y", "Y", "0", "vertical offset")
+	rootCmd.AddCommand(batCmd, ezaCmd, helixCmd, lazygitCmd, mdcatCmd, microCmd, resizeCmd, watchCmd, yaziCmd)
+	zellijFloatCmd.AddCommand(zellijFloatBatCmd, zellijFloatEzaCmd, zellijFloatHelixCmd, zellijFloatLazygitCmd, zellijFloatMDcatCmd, zellijFloatMicroCmd, zellijFloatResizeCmd, zellijFloatWatchCmd, zellijFloatYaziCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func runFloat(cmd *cobra.Command, args []string) {
+	op := "lou.zellij.float"
+
+	floatLayout := "default"
+	if len(args) == 1 {
+		floatLayout = args[0]
+	}
+
+	geom, err := resolveWithFlags(floatLayout)
+	horus.CheckErr(
+		err,
+		horus.WithOp(op),
+		horus.WithCategory("VALIDATION_ERROR"),
+		horus.WithMessage("Failed to resolve layout geometry"),
+	)
+
+	zl := newZellijFloat(
+		withName("canvas"),
+		withGeometry(geom),
+		withCommand("zsh"),
+		withCloseOnExit(true),
+	)
+
+	horus.CheckErr(
+		domovoi.ExecSh(zl.Cmd()),
+		horus.WithOp(op),
+		horus.WithCategory("shell_command"),
+		horus.WithMessage("Failed to launch floating shell"),
+	)
+}
 
 func runBat(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.bat"
@@ -229,25 +117,6 @@ func runBat(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch bat"),
-	)
-}
-
-func runBroot(cmd *cobra.Command, args []string) {
-	op := "lou.zellij.broot"
-
-	zl := newZellijFloat(
-		withName("broot"),
-		withGeometry(geometryFromFlags()),
-		withCommand("broot"),
-		withArgs("--dates", "--sizes", "--permissions", "--hidden", "--git-ignored", "--show-git-info", "--sort-by-type-dirs-first"),
-		withCloseOnExit(true),
-	)
-
-	horus.CheckErr(
-		domovoi.ExecSh(zl.Cmd()),
-		horus.WithOp(op),
-		horus.WithCategory("shell_command"),
-		horus.WithMessage("Failed to launch broot"),
 	)
 }
 
@@ -303,37 +172,6 @@ func runEza(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch eza"),
-	)
-}
-
-func runFloat(cmd *cobra.Command, args []string) {
-	op := "lou.zellij.float"
-
-	floatLayout := "default"
-	if len(args) == 1 {
-		floatLayout = args[0]
-	}
-
-	geom, err := resolveWithFlags(floatLayout)
-	horus.CheckErr(
-		err,
-		horus.WithOp(op),
-		horus.WithCategory("VALIDATION_ERROR"),
-		horus.WithMessage("Failed to resolve layout geometry"),
-	)
-
-	zl := newZellijFloat(
-		withName("canvas"),
-		withGeometry(geom),
-		withCommand("zsh"),
-		withCloseOnExit(true),
-	)
-
-	horus.CheckErr(
-		domovoi.ExecSh(zl.Cmd()),
-		horus.WithOp(op),
-		horus.WithCategory("shell_command"),
-		horus.WithMessage("Failed to launch floating shell"),
 	)
 }
 
@@ -452,48 +290,22 @@ func runWatch(cmd *cobra.Command, args []string) {
 	)
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+func runYazi(cmd *cobra.Command, args []string) {
+	op := "lou.zellij.yazi"
 
-func override(preset, flag, fallback string) string {
-	if preset != "" {
-		return preset
-	}
-	if flag != fallback {
-		return flag
-	}
-	return fallback
-}
+	zl := newZellijFloat(
+		withName("yazi"),
+		withGeometry(geometryFromFlags()),
+		withCommand("yazi"),
+		withCloseOnExit(true),
+	)
 
-var layoutPresets = map[string]Geometry{
-	"full":         {"100%", "100%", "0", "0"},
-	"half-left":    {"50%", "100%", "0", "0"},
-	"half-right":   {"50%", "100%", "50%", "0"},
-	"top-left":     {"50%", "50%", "0", "0"},
-	"bottom-left":  {"50%", "53%", "0", "52%"},
-	"top-right":    {"50%", "50%", "50%", "0"},
-	"bottom-right": {"50%", "53%", "50%", "52%"},
-	"default":      {"95%", "100%", "10", "0"},
-}
-
-var validLayouts = func() []string {
-	keys := make([]string, 0, len(layoutPresets))
-	for k := range layoutPresets {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	return keys
-}()
-
-func resolveLayoutGeometry(name string, flags Geometry) (Geometry, error) {
-	preset, ok := layoutPresets[name]
-	if !ok {
-		return Geometry{}, fmt.Errorf("unknown layout %q (must be one of %v)", name, validLayouts)
-	}
-	return preset.OverrideWith(flags), nil
-}
-
-func resolveWithFlags(name string) (Geometry, error) {
-	return resolveLayoutGeometry(name, flagG)
+	horus.CheckErr(
+		domovoi.ExecSh(zl.Cmd()),
+		horus.WithOp(op),
+		horus.WithCategory("shell_command"),
+		horus.WithMessage("Failed to launch yazi"),
+	)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
