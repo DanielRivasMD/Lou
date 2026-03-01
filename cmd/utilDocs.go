@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Daniel Rivas <danielrivasmd@gmail.com>
+Copyright © 2026 Daniel Rivas <danielrivasmd@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -62,6 +62,7 @@ type Docs struct {
 	help    map[string]string
 	short   map[string]string
 	use     map[string]string
+	hidden  map[string]bool
 	loadErr error
 }
 
@@ -140,6 +141,7 @@ func (d *Docs) load() {
 	d.help = make(map[string]string)
 	d.short = make(map[string]string)
 	d.use = make(map[string]string)
+	d.hidden = make(map[string]bool)
 
 	data, err := docsFS.ReadFile("docs.json")
 	if err != nil {
@@ -155,6 +157,7 @@ func (d *Docs) load() {
 	for key, entry := range d.entries {
 		d.use[key] = entry.Use
 		d.short[key] = entry.Short
+		d.hidden[key] = entry.Hidden
 
 		formattedHelp := formatHelp(entry.Long, APP)
 		d.help[key] = styleLongHelp(formattedHelp)
@@ -190,6 +193,11 @@ func (d *Docs) GetExample(key string) string {
 func (d *Docs) GetHelp(key string) string {
 	d.ensureLoaded()
 	return d.help[key]
+}
+
+func (d *Docs) GetHidden(key string) bool {
+	d.ensureLoaded()
+	return d.hidden[key]
 }
 
 func (d *Docs) GetShort(key string) string {
@@ -245,6 +253,10 @@ func GetHelp(key string) string {
 	return getGlobalDocs().GetHelp(key)
 }
 
+func GetHidden(key string) bool {
+	return getGlobalDocs().GetHidden(key)
+}
+
 func GetShort(key string) string {
 	return getGlobalDocs().GetShort(key)
 }
@@ -274,7 +286,7 @@ func MakeCmd(key string, run func(*cobra.Command, []string), opts ...CommandOpt)
 		Long:    formatLongHelp(d.GetHelp(key)),
 		Example: d.GetExample(key),
 		Aliases: entry.Aliases,
-		Hidden:  entry.Hidden,
+		Hidden:  d.GetHidden(key),
 		Run:     run,
 	}
 
@@ -344,4 +356,3 @@ func WithSilenceUsage(silence bool) CommandOpt {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
