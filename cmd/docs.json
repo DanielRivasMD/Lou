@@ -1,18 +1,547 @@
 {
   "identity": {
     "use": "identity",
-    "aliases": ["id"],
+    "aliases": [
+      "id"
+    ],
     "hidden": true
   },
   "completion": {
     "use": "completion [bash|zsh|fish|powershell]",
     "hidden": true,
     "long": "To load completions:\n\nBash:\n\n  $ source <(%[1]s completion bash)\n\n  # To load completions for each session, execute once:\n  # Linux:\n  $ %[1]s completion bash > /etc/bash_completion.d/%[1]s\n  # macOS:\n  $ %[1]s completion bash > $(brew --prefix)/etc/bash_completion.d/%[1]s\n\nZsh:\n\n  # If shell completion is not already enabled in your environment,\n  # you will need to enable it. You can execute the following once:\n\n  $ echo \"autoload -U compinit; compinit\" >> ~/.zshrc\n\n  # To load completions for each session, execute once:\n  $ %[1]s completion zsh > \"${fpath[1]}/_%[1]s\"\n\n  # You will need to start a new shell for this setup to take effect.\n\nfish:\n\n  $ %[1]s completion fish | source\n\n  # To load completions for each session, execute once:\n  $ %[1]s completion fish > ~/.config/fish/completions/%[1]s.fish\n\nPowerShell:\n\n  PS> %[1]s completion powershell | Out-String | Invoke-Expression\n\n  # To load completions for every new session, run:\n  PS> %[1]s completion powershell > %[1]s.ps1\n  # and source this file from your PowerShell profile.",
-    "valid_args": ["bash", "zsh", "fish", "powershell"]
+    "valid_args": [
+      "bash",
+      "zsh",
+      "fish",
+      "powershell"
+    ]
   },
   "root": {
     "use": "lou",
     "long": "Personal assisstant",
-    "example_usages": [["help"]]
+    "example_usages": [
+      [
+        "help"
+      ]
+    ]
+  },
+  "hidden": {
+    "use": "hidden [off|on]",
+    "short": "Toggle Finder visibility of hidden files",
+    "long": "Toggle the visibility of hidden files in macOS Finder.\n\nThis command controls the AppleShowAllFiles setting in Finder to show or hide dotfiles and other hidden system files. After changing the setting, Finder is automatically restarted to apply the changes.",
+    "example_usages": [
+      [
+        "hidden",
+        "off"
+      ],
+      [
+        "hidden",
+        "on"
+      ]
+    ],
+    "valid_args": [
+      "off",
+      "on"
+    ],
+    "disable_flags_in_use_line": true
+  },
+  "helper": {
+    "use": "helper <command>",
+    "short": "Display help for all subcommands of a command",
+    "long": "Display detailed help information for every subcommand of a given command.\n\nThis utility parses the help output of a command, extracts all available subcommands, and then displays the full help for each one sequentially. Useful for exploring CLI tools and understanding all available functionality.",
+    "example_usages": [
+      [
+        "helper",
+        "git"
+      ],
+      [
+        "helper",
+        "kubectl"
+      ],
+      [
+        "helper",
+        "docker"
+      ],
+      [
+        "helper",
+        "mbombo"
+      ]
+    ],
+    "valid_args": [
+      "<command>"
+    ],
+    "disable_flags_in_use_line": true
+  },
+  "knit": {
+    "use": "knit <file>",
+    "short": "Compile a Markdown file using R",
+    "long": "Compile an R Markdown file to its output format using rmarkdown::render().\n\nThis command runs R in slave mode to render the specified R Markdown file (.Rmd) to HTML, PDF, or other formats as defined in the document's YAML frontmatter. Output is suppressed to keep the console clean.",
+    "example_usages": [
+      [
+        "knit",
+        "report.Rmd"
+      ],
+      [
+        "knit",
+        "analysis.Rmd"
+      ],
+      [
+        "knit",
+        "docs/paper.Rmd"
+      ]
+    ],
+    "valid_args": [
+      "<file>"
+    ],
+    "disable_flags_in_use_line": true
+  },
+  "init": {
+    "use": "init",
+    "short": "Initialize configuration directories",
+    "long": "Create the necessary directory structure for lou configuration.\n\nThis command creates the following directories:\n- Lou root directory: main configuration directory\n- Layout directory: for storing layout templates\n- Shell directory: for shell-specific configurations\n\nIf directories already exist, no error is reported (idempotent operation).",
+    "example_usages": [
+      [
+        "init"
+      ]
+    ],
+    "disable_flags_in_use_line": true
+  },
+  "count": {
+    "use": "count [dir|file]",
+    "short": "Count directories or files in the current location",
+    "long": "Count the number of directories or files in the current directory using the fd utility.\n\nThis command provides a quick way to count items in the current directory with options to include hidden files and control whether to respect ignore files (.gitignore, .fdignore, etc.).",
+    "example_usages": [
+      [
+        "count",
+        "dir"
+      ],
+      [
+        "count",
+        "file"
+      ],
+      [
+        "count",
+        "dir",
+        "--hidden"
+      ],
+      [
+        "count",
+        "file",
+        "--no-ignore"
+      ],
+      [
+        "count",
+        "dir",
+        "-H",
+        "-I"
+      ]
+    ],
+    "valid_args": [
+      "dir",
+      "file"
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "path": {
+    "use": "path [which]",
+    "short": "Print entries of PATH, FPATH, or GOPATH",
+    "long": "Display the directory entries of common shell path variables in a readable format.\n\nEach directory in the path is printed on its own line for easy reading. If no argument is provided, defaults to printing PATH. Supports PATH (command lookup path), FPATH (function path for zsh), and GOPATH (Go workspace path).",
+    "example_usages": [
+      [
+        "path"
+      ],
+      [
+        "path",
+        "path"
+      ],
+      [
+        "path",
+        "fpath"
+      ],
+      [
+        "path",
+        "gopath"
+      ]
+    ],
+    "valid_args": [
+      "path",
+      "fpath",
+      "gopath"
+    ],
+    "disable_flags_in_use_line": true
+  },
+  "show": {
+    "use": "show --file <file>",
+    "short": "List shell functions from a specified file",
+    "long": "Parse a shell script file and display documented functions in Markdown format.\n\nThis command extracts function definitions along with their descriptions and arguments from shell scripts that follow a specific documentation format. The output is formatted as Markdown for easy integration into documentation sites or README files.",
+    "example_usages": [
+      [
+        "show",
+        "--file",
+        "~/.zshrc"
+      ],
+      [
+        "show",
+        "--file",
+        "functions.sh"
+      ],
+      [
+        "show",
+        "-f",
+        "scripts/utils.sh"
+      ]
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "doctor": {
+    "use": "doctor",
+    "short": "Run shell diagnostics",
+    "long": "Run comprehensive diagnostics on your shell environment.\n\nThis command checks:\n- ZSH version and availability\n- Presence of profile files\n- Status of common shell tools (Sheldon, Starship, Atuin, Zoxide, fzf)\n- Key environment variables related to your workflow\n\nUseful for troubleshooting shell configuration issues or verifying your setup.",
+    "example_usages": [
+      [
+        "doctor"
+      ]
+    ],
+    "disable_flags_in_use_line": true
+  },
+  "diff": {
+    "use": "diff",
+    "short": "Compare version control differences",
+    "long": "Display git changes with syntax highlighting using bat.\n\nThis command shows all modified files in the current git repository (excluding deleted files) and pipes them through bat with the --diff flag for beautiful, syntax-highlighted diffs. It's a more readable alternative to plain git diff.",
+    "example_usages": [
+      [
+        "diff"
+      ]
+    ],
+    "disable_flags_in_use_line": true
+  },
+  "map": {
+    "use": "map <file>",
+    "short": "Deduplicate sections separated by ===== lines",
+    "long": "Read a file and remove duplicate sections separated by lines of equals signs (=).\n\nThis command splits the input file on lines containing only '=' characters, removes duplicate blocks while preserving order of first occurrence, and reassembles them with the same separator lines. Useful for cleaning up configuration files, notes, or any text file with repeated sections.",
+    "example_usages": [
+      [
+        "map",
+        "notes.txt"
+      ],
+      [
+        "map",
+        "config.ini"
+      ],
+      [
+        "map",
+        "roadmap.md"
+      ]
+    ],
+    "valid_args": [
+      "<file>"
+    ],
+    "disable_flags_in_use_line": true
+  },
+  "tab": {
+    "use": "tab [path]",
+    "short": "Launch a new Zellij workspace",
+    "long": "Launch a new Zellij tab with a predefined layout configuration.\n\nThis command creates a new Zellij tab using layout files stored in ~/.lou/layouts/. The tab is automatically named based on the current directory (or '~' for home). An optional path argument can be provided to launch the tab in a different directory.\n\nAvailable layout types:\n- devel: Default development layout\n- tab: Single vanilla pane\n- tabs2: Two stacked vanilla panes\n- tabs3: Three stacked vanilla panes\n- tabs4: Four stacked vanilla panes\n- tabs5: Five stacked vanilla panes\n- explore: Two stacked panes: top runs `y`, bottom vanilla\n- repl: Editor + canvas + right-side repl pane",
+    "example_usages": [
+      [
+        "tab"
+      ],
+      [
+        "tab",
+        "~/projects"
+      ],
+      [
+        "tab",
+        "--type",
+        "repl"
+      ],
+      [
+        "tab",
+        "~/code",
+        "-t",
+        "explore"
+      ],
+      [
+        "tab",
+        "-t",
+        "tabs3",
+        "."
+      ]
+    ],
+    "valid_args": [
+      "<path>"
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-bat": {
+    "use": "bat [file]",
+    "short": "View data in a floating zellij pane using bat",
+    "long": "Launch bat with paging enabled in a floating Zellij pane for viewing files with syntax highlighting.",
+    "example_usages": [
+      [
+        "zellij",
+        "bat",
+        "main.go"
+      ],
+      [
+        "zellij",
+        "bat",
+        "README.md"
+      ],
+      [
+        "bat",
+        "config.json"
+      ]
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-broot": {
+    "use": "broot",
+    "short": "Browse files in a floating zellij pane using broot",
+    "long": "Launch broot file browser in a floating Zellij pane with enhanced display options including dates, sizes, permissions, and git information.",
+    "example_usages": [
+      [
+        "zellij",
+        "broot"
+      ],
+      [
+        "broot"
+      ],
+      [
+        "br"
+      ]
+    ],
+    "aliases": [
+      "br"
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-eza": {
+    "use": "eza [path]",
+    "short": "View data in a floating zellij pane using eza",
+    "long": "Launch eza (modern ls replacement) in a floating Zellij pane with detailed view including git status, icons, and color highlighting.",
+    "example_usages": [
+      [
+        "zellij",
+        "eza"
+      ],
+      [
+        "zellij",
+        "eza",
+        "src/"
+      ],
+      [
+        "eza",
+        "~/.config"
+      ]
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-float": {
+    "use": "float [layout]",
+    "short": "Launch floating zellij pane with ease",
+    "long": "Launch a floating Zellij shell pane with customizable geometry. Optional layout parameter can be one of: full, half-left, half-right, top-left, bottom-left, top-right, bottom-right, default.",
+    "example_usages": [
+      [
+        "zellij",
+        "float"
+      ],
+      [
+        "zellij",
+        "float",
+        "full"
+      ],
+      [
+        "float",
+        "half-right"
+      ],
+      [
+        "float",
+        "top-left",
+        "--height",
+        "75%",
+        "--width",
+        "75%"
+      ]
+    ],
+    "valid_args": [
+      "full",
+      "half-left",
+      "half-right",
+      "top-left",
+      "bottom-left",
+      "top-right",
+      "bottom-right",
+      "default"
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-helix": {
+    "use": "helix [file]",
+    "short": "Edit files with Helix editor in a floating pane",
+    "long": "Launch Helix editor in a floating Zellij pane for editing files. The editor pane closes automatically when you exit.",
+    "example_usages": [
+      [
+        "zellij",
+        "helix"
+      ],
+      [
+        "zellij",
+        "helix",
+        "main.go"
+      ],
+      [
+        "helix",
+        "README.md"
+      ],
+      [
+        "hx",
+        "config.toml"
+      ]
+    ],
+    "aliases": [
+      "hx"
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-lazygit": {
+    "use": "lazygit [layout]",
+    "short": "Launch lazygit in a floating zellij pane",
+    "long": "Launch lazygit git interface in a floating Zellij pane. Optional layout parameter controls the pane size and position.",
+    "example_usages": [
+      [
+        "zellij",
+        "lazygit"
+      ],
+      [
+        "zellij",
+        "lazygit",
+        "full"
+      ],
+      [
+        "lazygit"
+      ],
+      [
+        "lg",
+        "half-left"
+      ]
+    ],
+    "aliases": [
+      "lg"
+    ],
+    "valid_args": [
+      "full",
+      "half-left",
+      "half-right",
+      "top-left",
+      "bottom-left",
+      "top-right",
+      "bottom-right",
+      "default"
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-mdcat": {
+    "use": "mdcat <file>",
+    "short": "Render file with mdcat in a floating zellij pane",
+    "long": "Render a Markdown file with syntax highlighting and formatting in a floating Zellij pane using mdcat.",
+    "example_usages": [
+      [
+        "zellij",
+        "mdcat",
+        "README.md"
+      ],
+      [
+        "mdcat",
+        "docs/guide.md"
+      ]
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-micro": {
+    "use": "micro [file]",
+    "short": "Edit files with Micro editor in a floating pane",
+    "long": "Launch Micro editor in a floating Zellij pane for editing files. The editor pane closes automatically when you exit.",
+    "example_usages": [
+      [
+        "zellij",
+        "micro"
+      ],
+      [
+        "zellij",
+        "micro",
+        "notes.txt"
+      ],
+      [
+        "micro",
+        "config.json"
+      ],
+      [
+        "mc",
+        "script.sh"
+      ]
+    ],
+    "aliases": [
+      "mc"
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-resize": {
+    "use": "resize [layout]",
+    "short": "Anchor & resize a zellij floating pane",
+    "long": "Resize and reposition the current floating Zellij pane based on a named layout or custom dimensions.",
+    "example_usages": [
+      [
+        "zellij",
+        "resize"
+      ],
+      [
+        "zellij",
+        "resize",
+        "full"
+      ],
+      [
+        "resize",
+        "bottom-right"
+      ],
+      [
+        "resize",
+        "--height",
+        "80%",
+        "--width",
+        "80%",
+        "--x",
+        "10%",
+        "--y",
+        "10%"
+      ]
+    ],
+    "valid_args": [
+      "full",
+      "half-left",
+      "half-right",
+      "top-left",
+      "bottom-left",
+      "top-right",
+      "bottom-right",
+      "default"
+    ],
+    "disable_flags_in_use_line": false
+  },
+  "zellij-watch": {
+    "use": "watch",
+    "short": "Launch watcher on a floating zellij pane with ease",
+    "long": "Launch a 'just watch' command in a pinned floating Zellij pane for monitoring file changes and running tasks.",
+    "example_usages": [
+      [
+        "zellij",
+        "watch"
+      ],
+      [
+        "watch"
+      ]
+    ],
+    "disable_flags_in_use_line": false
   }
 }
