@@ -87,10 +87,4 @@ type louFlags struct {
 	tabTarget string
 }
 
-var validTabLayouts = map[string]string{
-	"tab":     "Default tab layout",
-	"explore": "Explore layout",
-	"repl":    "REPL layout",
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
