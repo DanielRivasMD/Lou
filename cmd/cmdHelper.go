@@ -20,31 +20,23 @@ package cmd
 
 import (
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var helperCmd = &cobra.Command{
-	Use:     "helper",
-	Short:   "" + chalk.Yellow.Color("") + ".",
-	Long:    helpHelper,
-	Example: exampleHelper,
-
-	Run: runHelper,
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func init() {
+	helperCmd := MakeCmd("helper", runHelper,
+		WithArgs(cobra.ExactArgs(1)),
+	)
 	rootCmd.AddCommand(helperCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runHelper(cmd *cobra.Command, args []string) {
-
+	const op = "lou.helper"
 	arg := args[0]
 
 	cmdHelper := `
@@ -65,9 +57,13 @@ done
 `
 
 	domovoi.LineBreaks(true)
-	domovoi.ExecCmd("zsh", "-c", cmdHelper)
+	horus.CheckErr(
+		domovoi.ExecCmd("zsh", "-c", cmdHelper),
+		horus.WithOp(op),
+		horus.WithMessage("Unable to execute helper command"),
+		horus.WithCategory("run_error"),
+	)
 	domovoi.LineBreaks(true)
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
