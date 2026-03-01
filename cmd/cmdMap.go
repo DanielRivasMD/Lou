@@ -24,36 +24,34 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var roadmapCmd = &cobra.Command{
-	Use:     "map",
-	Short:   "" + chalk.Yellow.Color("") + ".",
-	Long:    helpMap,
-	Example: exampleMap,
-
-	Run: runMap,
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func init() {
-	rootCmd.AddCommand(roadmapCmd)
+	mapCmd := MakeCmd("map", runMap,
+		WithArgs(cobra.ExactArgs(1)),
+	)
+	rootCmd.AddCommand(mapCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runMap(cmd *cobra.Command, args []string) {
+	const op = "lou.map"
 
 	path := args[0]
 	data, err := os.ReadFile(path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading file %s: %v\n", path, err)
-		os.Exit(1)
+		horus.CheckErr(
+			err,
+			horus.WithOp(op),
+			horus.WithCategory("IO_ERROR"),
+			horus.WithMessage(fmt.Sprintf("failed to read file: %s", path)),
+			horus.WithExitCode(1),
+		)
 	}
 
 	text := string(data)
@@ -80,7 +78,6 @@ func runMap(cmd *cobra.Command, args []string) {
 	// reassemble with separator lines
 	result := strings.Join(unique, "\n"+sepLine+"\n")
 	fmt.Println(result)
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
