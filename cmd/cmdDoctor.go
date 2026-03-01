@@ -20,29 +20,21 @@ package cmd
 
 import (
 	"github.com/DanielRivasMD/domovoi"
+	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var doctorCmd = &cobra.Command{
-	Use:     "doctor",
-	Short:   "Run shell diagnostics",
-	Long:    helpDoctor,
-	Example: exampleDoctor,
-
-	Run: runDoctor,
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func init() {
+	doctorCmd := MakeCmd("doctor", runDoctor)
 	rootCmd.AddCommand(doctorCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runDoctor(cmd *cobra.Command, args []string) {
+	const op = "lou.doctor"
 
 	cmddoctor := `
 #────────────────────────────────────────────────────────────
@@ -51,7 +43,7 @@ func runDoctor(cmd *cobra.Command, args []string) {
 echo -e "[ ZSH SESSION DIAGNOSTICS ]"
 echo "───────────────────────────────"
 
-echo -n "ZSH Version: "; zsh --version
+echo -n "ZSH Version: "; zsh --version 2>/dev/null || echo "not found"
 
 echo -n "Loaded Profile: "; [[ -f "$HOME/.profile" ]] && echo "✓" || echo "⚠ Not Found"
 echo -n "Sheldon Plugin Manager: "; command -v sheldon >/dev/null && echo "✓" || echo "⚠ Missing"
@@ -67,7 +59,12 @@ echo "────────────────────────�
 `
 
 	domovoi.LineBreaks(true)
-	domovoi.ExecCmd("zsh", "-c", cmddoctor)
+	horus.CheckErr(
+		domovoi.ExecCmd("zsh", "-c", cmddoctor),
+		horus.WithOp(op),
+		horus.WithMessage("failed to run shell diagnostics"),
+		horus.WithCategory("DIAGNOSTICS_ERROR"),
+	)
 	domovoi.LineBreaks(true)
 }
 
