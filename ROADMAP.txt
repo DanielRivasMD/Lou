@@ -1,27 +1,11 @@
-- consolidate zellij commands
-- add helper functions to parse the help & examples
 - add color & update help on commands
 - deprecate useless commands
 - add command `stack` to launch a new tab with stack panes or to stack panes in current tab?
 - lou manipulation functions as potential zellij plugins?
-- lou roadmap is a good idea, but we must keep the order & format of the file
-- rework cmd hierachy to place persistent flags better => zellij & git
-- integrate juliaup on updata cmd
 
 ==================================================
-cmd/cmdHidden.go
-  line 34     TODO   update by using functions
-cmd/cmdZellij.go
-  line 33     TODO   write readme documentation on customizing tab layouts
-  line 67     TODO   pass a flag to define number of stacked panes
-  line 68     TODO   pass a flag to define whether it should be repl panel
-  line 72     TODO   define tab layout
 cmd/cmdZellijFloat.go
-  line 242    TODO   redundant defaults?
-  line 438    TODO   add one-liner error
-  line 495    TODO   check if `just watch` exist
-cmd/utilExample.go
-  line 64     TODO   update editor example
-cmd/utilHelp.go
-  line 78     TODO   update edirot helps
+  line 275    TODO   check if `just watch` exist
+cmd/utilZellijFloat.go
+  line 27     TODO   redundant defaults?
 ==================================================
