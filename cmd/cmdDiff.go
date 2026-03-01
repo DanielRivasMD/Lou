@@ -26,27 +26,24 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var diffCmd = &cobra.Command{
-	Use:     "diff",
-	Short:   "Compare version control differences",
-	Long:    helpDiff,
-	Example: exampleDiff,
-
-	Run: runDiff,
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func init() {
+	diffCmd := MakeCmd("diff", runDiff)
 	rootCmd.AddCommand(diffCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runDiff(cmd *cobra.Command, args []string) {
+	const op = "lou.diff"
+
 	cmdDiff := "git diff --name-only --relative --diff-filter=d | xargs bat --diff"
-	err := domovoi.ExecCmd("bash", "-c", cmdDiff)
-	horus.CheckErr(err)
+
+	horus.CheckErr(
+		domovoi.ExecCmd("bash", "-c", cmdDiff),
+		horus.WithOp(op),
+		horus.WithMessage("failed to show git diffs with bat"),
+		horus.WithCategory("GIT_ERROR"),
+	)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
