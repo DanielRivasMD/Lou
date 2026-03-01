@@ -30,11 +30,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+var c = "git"
+
 var gitCmd = &cobra.Command{
-	Use:     "git",
-	Short:   "Effortlessly interact with Git repositories",
-	Long:    helpGit,
-	Example: exampleGit,
+	Use:     use[c],
+	Short:   short[c],
+	Long:    help[c],
+	Example: example[c],
 
 	Run: runGit,
 }
