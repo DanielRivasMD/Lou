@@ -26,107 +26,13 @@ import (
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var zellijFloatCmd = &cobra.Command{}
-
-var batCmd = &cobra.Command{
-	Use:     "bat " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
-	Short:   "View data in a floating zellij pane using bat",
-	Long:    helpBat,
-	Example: exampleBat,
-
-	Run: runBat,
-}
-
-var brootCmd = &cobra.Command{
-	Use:     "broot",
-	Aliases: []string{"br"},
-	Short:   "Browse files in a floating zellij pane using broot",
-
-	Run: runBroot,
-}
-
-var ezaCmd = &cobra.Command{
-	Use:     "eza " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<path>")),
-	Short:   "View data in a floating zellij pane using eza",
-	Long:    helpEza,
-	Example: exampleEza,
-
-	Run: runEza,
-}
-
-var floatCmd = &cobra.Command{
-	Use:     "float",
-	Short:   "Launch floating zellij pane with ease",
-	Long:    helpFloat,
-	Example: exampleFloat,
-
-	Args:      cobra.MaximumNArgs(1),
-	ValidArgs: validLayouts,
-
-	Run: runFloat,
-}
-
-var helixCmd = &cobra.Command{
-	Use:     "helix " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
-	Aliases: []string{"hx"},
-	Short:   helpEditorShort("helix"),
-	Long:    helpEditorLong("helix"),
-	// Example: helpEditorExample("helix"),
-
-	Run: runEditor("hx"),
-}
-
-var lazygitCmd = &cobra.Command{
-	Use:     "lazygit",
-	Aliases: []string{"lg"},
-	Short:   "Launch lazygit in a floating zellij pane",
-	Long:    helpLazygit,
-	Example: exampleLazygit,
-
-	Run: runLazygit,
-}
-
-var mdcatCmd = &cobra.Command{
-	Use:   "mdcat",
-	Short: "Render file with mdcat in a floating zellij pane",
-
-	Run: runMDcat,
-}
-
-var microCmd = &cobra.Command{
-	Use:     "micro " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("<file>")),
-	Aliases: []string{"mc"},
-	Short:   helpEditorShort("micro"),
-	Long:    helpEditorLong("micro"),
-	// Example: helpEditorExample("micro"),
-
-	Run: runEditor("micro"),
-}
-
-var resizeCmd = &cobra.Command{
-	Use:     "resize",
-	Short:   "Anchor & resize a zellij floating pane",
-	Long:    helpResize,
-	Example: exampleResize,
-
-	Args:      cobra.MaximumNArgs(1),
-	ValidArgs: validLayouts,
-
-	Run: runResize,
-}
-
-var watchCmd = &cobra.Command{
-	Use:     "watch",
-	Short:   "Launch watcher on a floating zellij pane with ease",
-	Long:    helpWatch,
-	Example: exampleZFWatch,
-
-	Run: runWatch,
+var zellijFloatCmd = &cobra.Command{
+	Use:   "zellij",
+	Short: "Zellij floating pane management",
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,9 +168,38 @@ func geometryFromFlags() Geometry {
 
 func init() {
 	rootCmd.AddCommand(zellijFloatCmd)
-	rootCmd.AddCommand(batCmd, brootCmd, ezaCmd, floatCmd, helixCmd, lazygitCmd, mdcatCmd, microCmd, resizeCmd, watchCmd)
+
+	// Create all commands using MakeCmd
+	batCmd := MakeCmd("zellij-bat", runBat)
+	brootCmd := MakeCmd("zellij-broot", runBroot)
+	ezaCmd := MakeCmd("zellij-eza", runEza)
+	floatCmd := MakeCmd("zellij-float", runFloat,
+		WithArgs(cobra.MaximumNArgs(1)),
+		WithValidArgs(validLayouts),
+	)
+	helixCmd := MakeCmd("zellij-helix", runEditor("hx"))
+	lazygitCmd := MakeCmd("zellij-lazygit", runLazygit,
+		WithArgs(cobra.MaximumNArgs(1)),
+		WithValidArgs(validLayouts),
+	)
+	mdcatCmd := MakeCmd("zellij-mdcat", runMDcat)
+	microCmd := MakeCmd("zellij-micro", runEditor("micro"))
+	resizeCmd := MakeCmd("zellij-resize", runResize,
+		WithArgs(cobra.MaximumNArgs(1)),
+		WithValidArgs(validLayouts),
+	)
+	watchCmd := MakeCmd("zellij-watch", runWatch)
+
+	// Add aliases
+	helixCmd.Aliases = []string{"hx"}
+	lazygitCmd.Aliases = []string{"lg"}
+	microCmd.Aliases = []string{"mc"}
+	brootCmd.Aliases = []string{"br"}
+
+	// Add all commands to both root and zellijFloatCmd
 	zellijFloatCmd.AddCommand(batCmd, brootCmd, ezaCmd, floatCmd, helixCmd, lazygitCmd, mdcatCmd, microCmd, resizeCmd, watchCmd)
 
+	// Set persistent flags for geometry
 	rootCmd.PersistentFlags().StringVarP(&flagG.height, "height", "H", "100%", "pane height")
 	rootCmd.PersistentFlags().StringVarP(&flagG.width, "width", "W", "95%", "pane width")
 	rootCmd.PersistentFlags().StringVarP(&flagG.x, "x", "X", "10", "horizontal offset")
@@ -294,9 +229,6 @@ func runBat(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch bat"),
-		horus.WithDetails(map[string]any{
-			"command": zl.Cmd(),
-		}),
 	)
 }
 
@@ -316,7 +248,6 @@ func runBroot(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch broot"),
-		horus.WithDetails(map[string]any{"command": zl.Cmd()}),
 	)
 }
 
@@ -345,8 +276,7 @@ func runEditor(call string, editorOverride ...string) func(cmd *cobra.Command, a
 			domovoi.ExecSh(zl.Cmd()),
 			horus.WithOp(op),
 			horus.WithCategory("shell_command"),
-			horus.WithMessage("Failed to launch editor"),
-			horus.WithDetails(map[string]any{"command": zl.Cmd()}),
+			horus.WithMessage(fmt.Sprintf("Failed to launch %s editor", editor)),
 		)
 	}
 }
@@ -373,7 +303,6 @@ func runEza(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch eza"),
-		horus.WithDetails(map[string]any{"command": zl.Cmd()}),
 	)
 }
 
@@ -386,7 +315,12 @@ func runFloat(cmd *cobra.Command, args []string) {
 	}
 
 	geom, err := resolveWithFlags(floatLayout)
-	horus.CheckErr(err)
+	horus.CheckErr(
+		err,
+		horus.WithOp(op),
+		horus.WithCategory("VALIDATION_ERROR"),
+		horus.WithMessage("Failed to resolve layout geometry"),
+	)
 
 	zl := newZellijFloat(
 		withName("canvas"),
@@ -400,7 +334,6 @@ func runFloat(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch floating shell"),
-		horus.WithDetails(map[string]any{"command": zl.Cmd()}),
 	)
 }
 
@@ -413,7 +346,12 @@ func runLazygit(cmd *cobra.Command, args []string) {
 	}
 
 	geom, err := resolveWithFlags(floatLayout)
-	horus.CheckErr(err)
+	horus.CheckErr(
+		err,
+		horus.WithOp(op),
+		horus.WithCategory("VALIDATION_ERROR"),
+		horus.WithMessage("Failed to resolve layout geometry"),
+	)
 
 	zl := newZellijFloat(
 		withName("lazygit"),
@@ -428,17 +366,19 @@ func runLazygit(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch lazygit"),
-		horus.WithDetails(map[string]any{"command": zl.Cmd()}),
 	)
 }
 
 func runMDcat(cmd *cobra.Command, args []string) {
 	op := "lou.zellij.mdcat"
 
-	// TODO: add one-liner error
 	if len(args) < 1 {
 		horus.CheckErr(
-			horus.NewHerrorErrorf(op, "mdcat command requires a file argument"),
+			fmt.Errorf("mdcat command requires a file argument"),
+			horus.WithOp(op),
+			horus.WithCategory("USAGE_ERROR"),
+			horus.WithMessage("Missing file argument"),
+			horus.WithExitCode(1),
 		)
 	}
 	file := args[0]
@@ -456,7 +396,6 @@ func runMDcat(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch mdcat"),
-		horus.WithDetails(map[string]any{"command": zl.Cmd()}),
 	)
 }
 
@@ -469,7 +408,12 @@ func runResize(cmd *cobra.Command, args []string) {
 	}
 
 	geom, err := resolveWithFlags(resizeLayout)
-	horus.CheckErr(err)
+	horus.CheckErr(
+		err,
+		horus.WithOp(op),
+		horus.WithCategory("VALIDATION_ERROR"),
+		horus.WithMessage("Failed to resolve layout geometry"),
+	)
 
 	cmdResize := fmt.Sprintf(`
 zellij action rename-pane float
@@ -484,9 +428,7 @@ zellij action change-floating-pane-coordinates --pane-id $ZELLIJ_PANE_ID \
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to resize floating pane"),
-		horus.WithDetails(map[string]any{
-			"command": cmdResize,
-		}))
+	)
 }
 
 func runWatch(cmd *cobra.Command, args []string) {
@@ -499,7 +441,6 @@ func runWatch(cmd *cobra.Command, args []string) {
 		withCommand("just"),
 		withArgs("watch"),
 		withCloseOnExit(true),
-		// withFloating(true),
 		withPinned(true),
 	)
 
@@ -508,7 +449,6 @@ func runWatch(cmd *cobra.Command, args []string) {
 		horus.WithOp(op),
 		horus.WithCategory("shell_command"),
 		horus.WithMessage("Failed to launch watch command"),
-		horus.WithDetails(map[string]any{"command": zl.Cmd()}),
 	)
 }
 
