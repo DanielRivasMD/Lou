@@ -30,35 +30,24 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var validTabTypes = map[string]string{
-	"devel":    "Default development layout",
-	"tab":      "Single vanilla pane",
-	"tabs2":    "Two stacked vanilla panes",
-	"tabs3":    "Three stacked vanilla panes",
-	"tabs4":    "Four stacked vanilla panes",
-	"tabs5":    "Five stacked vanilla panes",
-	"explore":  "Two stacked panes: top runs `y`, bottom vanilla",
-	"repl":     "Editor + canvas + right-side repl pane",
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var tabCmd = &cobra.Command{
-	Use:     "tab [path]",
-	Short:   "Launch a new Zellij workspace",
-	Long:    helpTab,
-	Example: exampleTab,
-
-	Args: cobra.MaximumNArgs(1),
-
-	Run: runTab,
+	"devel":   "Default development layout",
+	"tab":     "Single vanilla pane",
+	"tabs2":   "Two stacked vanilla panes",
+	"tabs3":   "Three stacked vanilla panes",
+	"tabs4":   "Four stacked vanilla panes",
+	"tabs5":   "Five stacked vanilla panes",
+	"explore": "Two stacked panes: top runs `y`, bottom vanilla",
+	"repl":    "Editor + canvas + right-side repl pane",
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
+	tabCmd := MakeCmd("tab", runTab,
+		WithArgs(cobra.MaximumNArgs(1)),
+	)
 	rootCmd.AddCommand(tabCmd)
 
-	// Replace --layout with --type
 	tabCmd.Flags().StringVarP(
 		&flags.tabLayout,
 		"type",
@@ -84,7 +73,7 @@ func init() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runTab(cmd *cobra.Command, args []string) {
-	const op = "tab.cmd"
+	const op = "lou.tab"
 
 	switch len(args) {
 	case 0:
@@ -95,6 +84,7 @@ func runTab(cmd *cobra.Command, args []string) {
 		horus.CheckErr(
 			fmt.Errorf("too many arguments: %d", len(args)),
 			horus.WithOp(op),
+			horus.WithCategory("USAGE_ERROR"),
 			horus.WithMessage("tab takes at most one directory argument"),
 		)
 	}
@@ -105,13 +95,18 @@ func runTab(cmd *cobra.Command, args []string) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func createTab(tabType, tabTarget string) {
-	const op = "tab.create"
+	const op = "lou.tab.create"
 
 	if _, ok := validTabTypes[tabType]; !ok {
+		validTypes := make([]string, 0, len(validTabTypes))
+		for t := range validTabTypes {
+			validTypes = append(validTypes, t)
+		}
 		horus.CheckErr(
 			fmt.Errorf("invalid workspace type %q", tabType),
 			horus.WithOp(op),
-			horus.WithMessage("must be one of: tab, devel, stacked2, stacked3, stacked4, stacked5, explore, repl"),
+			horus.WithCategory("VALIDATION_ERROR"),
+			horus.WithMessage(fmt.Sprintf("must be one of: %s", strings.Join(validTypes, ", "))),
 		)
 	}
 
@@ -123,21 +118,41 @@ func createTab(tabType, tabTarget string) {
 	if tabTarget != "" {
 		orig, err := domovoi.RecallDir()
 		if err != nil {
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to recall working directory"))
+			horus.CheckErr(
+				err,
+				horus.WithOp(op),
+				horus.WithCategory("DIR_ERROR"),
+				horus.WithMessage("failed to recall working directory"),
+			)
 		}
 		if err := domovoi.ChangeDir(tabTarget); err != nil {
 			domovoi.ChangeDir(orig)
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to change to target directory"))
+			horus.CheckErr(
+				err,
+				horus.WithOp(op),
+				horus.WithCategory("DIR_ERROR"),
+				horus.WithMessage("failed to change to target directory"),
+			)
 		}
 		if err := domovoi.ExecSh(cmdStr); err != nil {
 			domovoi.ChangeDir(orig)
-			horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch tab"))
+			horus.CheckErr(
+				err,
+				horus.WithOp(op),
+				horus.WithCategory("ZELLIJ_ERROR"),
+				horus.WithMessage("failed to launch tab"),
+			)
 		}
 		return
 	}
 
 	if err := domovoi.ExecSh(cmdStr); err != nil {
-		horus.CheckErr(err, horus.WithOp(op), horus.WithMessage("failed to launch tab"))
+		horus.CheckErr(
+			err,
+			horus.WithOp(op),
+			horus.WithCategory("ZELLIJ_ERROR"),
+			horus.WithMessage("failed to launch tab"),
+		)
 	}
 }
 
