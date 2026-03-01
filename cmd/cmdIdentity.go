@@ -27,7 +27,7 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
-	identityCmd := MakeCmd("identity", runIdentity)
+	identityCmd := MakeCmd("identity", runIdentity, WithAliases([]string{"id"}))
 	rootCmd.AddCommand(identityCmd)
 }
 
