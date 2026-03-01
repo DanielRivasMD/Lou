@@ -24,26 +24,15 @@ import (
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var hiddenCmd = &cobra.Command{
-	Use:     "hidden " + chalk.Dim.TextStyle(chalk.Italic.TextStyle("[off|on]")),
-	Short:   "Toggle Finder visibility of hidden files",
-	Long:    helpHidden,
-	Example: exampleHidden,
-
-	ValidArgs: []string{"off", "on"},
-	Args:      cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
-
-	Run: runHidden,
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func init() {
+	hiddenCmd := MakeCmd("hidden", runHidden,
+		WithArgs(cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs)),
+		WithValidArgs([]string{"off", "on"}),
+	)
 	rootCmd.AddCommand(hiddenCmd)
 }
 
@@ -66,7 +55,7 @@ func runHidden(cmd *cobra.Command, args []string) {
 	horus.CheckErr(
 		domovoi.ExecCmd("bash", "-c", cmdFinder),
 		horus.WithOp(op),
-		horus.WithMessage("Unable to toogle hidden files in Finder"),
+		horus.WithMessage("Unable to toggle hidden files in Finder"),
 		horus.WithCategory("run_error"),
 	)
 }
