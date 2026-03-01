@@ -23,19 +23,7 @@ import (
 
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
-	"github.com/ttacon/chalk"
 )
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var listShCmd = &cobra.Command{
-	Use:     "show" + ` ` + chalk.Dim.TextStyle(chalk.Blue.Color("--file")) + ` ` + chalk.Dim.TextStyle("<file>"),
-	Short:   "List shell functions from a specified file",
-	Long:    helpShow,
-	Example: exampleShow,
-
-	Run: runShow,
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,18 +41,26 @@ type Function struct {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
-	rootCmd.AddCommand(listShCmd)
-	listShCmd.Flags().StringVarP(&listFile, "file", "f", "", "File to review")
-	listShCmd.MarkFlagRequired("file")
+	showCmd := MakeCmd("show", runShow)
+	rootCmd.AddCommand(showCmd)
+
+	showCmd.Flags().StringVarP(&listFile, "file", "f", "", "File to review")
+	horus.CheckErr(showCmd.MarkFlagRequired("file"))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runShow(cmd *cobra.Command, args []string) {
+	const op = "lou.show"
 
 	// collect documentation
 	functions, err := parseFile(listFile)
-	horus.CheckErr(err)
+	horus.CheckErr(
+		err,
+		horus.WithOp(op),
+		horus.WithCategory("PARSE_ERROR"),
+		horus.WithMessage("failed to parse shell functions"),
+	)
 
 	// generate & print Markdown
 	markdown := generateMD(functions)
