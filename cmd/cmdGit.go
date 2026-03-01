@@ -20,7 +20,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
@@ -30,27 +29,15 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var c = "git"
-
-var gitCmd = &cobra.Command{
-	Use:     use[c],
-	Short:   short[c],
-	Long:    help[c],
-	Example: example[c],
-
-	Run: runGit,
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func init() {
+	gitCmd := MakeCmd("git", runGit)
 	rootCmd.AddCommand(gitCmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runGit(cmd *cobra.Command, args []string) {
-	const op = "cmd.git"
+	const op = "lou.git"
 
 	// inside git repo
 	if _, _, err := domovoi.CaptureExecCmd("git", "rev-parse", "--is-inside-work-tree"); err != nil {
@@ -61,17 +48,25 @@ func runGit(cmd *cobra.Command, args []string) {
 	// git status
 	domovoi.PrintCentered("Status")
 	if err := domovoi.ExecCmd("git", "status", "--short"); err != nil {
-		msg := horus.FormatPanic(op, "failed to run git status")
-		fmt.Fprintln(cmd.ErrOrStderr(), msg)
-		os.Exit(1)
+		horus.CheckErr(
+			err,
+			horus.WithOp(op),
+			horus.WithCategory("GIT_ERROR"),
+			horus.WithMessage("failed to run git status"),
+			horus.WithExitCode(1),
+		)
 	}
 
-	// git stash list (capture output)
+	// git stash list
 	domovoi.PrintCentered("Stash List")
 	if err := domovoi.ExecCmd("git", "stash", "list"); err != nil {
-		msg := horus.FormatPanic(op, "failed to list stashes")
-		fmt.Fprintln(cmd.ErrOrStderr(), msg)
-		os.Exit(1)
+		horus.CheckErr(
+			err,
+			horus.WithOp(op),
+			horus.WithCategory("GIT_ERROR"),
+			horus.WithMessage("failed to list stashes"),
+			horus.WithExitCode(1),
+		)
 	}
 
 	// git log
@@ -82,9 +77,13 @@ func runGit(cmd *cobra.Command, args []string) {
 		"--pretty=format:%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %C(dim white)%cn%Creset",
 		"-10",
 	); err != nil {
-		msg := horus.FormatPanic(op, "failed to show git log")
-		fmt.Fprintln(cmd.ErrOrStderr(), msg)
-		os.Exit(1)
+		horus.CheckErr(
+			err,
+			horus.WithOp(op),
+			horus.WithCategory("GIT_ERROR"),
+			horus.WithMessage("failed to show git log"),
+			horus.WithExitCode(1),
+		)
 	}
 
 	domovoi.LineBreaks(true)

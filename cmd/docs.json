@@ -543,5 +543,16 @@
       ]
     ],
     "disable_flags_in_use_line": false
+  },
+  "git": {
+    "use": "git",
+    "short": "Display git repository overview",
+    "long": "Display a comprehensive overview of the current git repository.\n\nShows three sections:\n- Git status (short format)\n- Stash list (if any)\n- Recent commits with graph visualization\n\nIf not in a git repository, displays a simple message and exits gracefully.",
+    "example_usages": [
+      [
+        "git"
+      ]
+    ],
+    "disable_flags_in_use_line": true
   }
 }
