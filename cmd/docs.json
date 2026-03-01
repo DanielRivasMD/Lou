@@ -269,9 +269,6 @@
         "."
       ]
     ],
-    "valid_args": [
-      "<path>"
-    ],
     "disable_flags_in_use_line": false
   },
   "zellij-bat": {
