@@ -20,7 +20,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
@@ -38,7 +37,7 @@ var (
 
 func init() {
 	countCmd := MakeCmd("count", runCount,
-		WithArgs(cobra.MaximumNArgs(1)),
+		WithArgs(cobra.ExactArgs(1)), // enforce exactly one argument
 		WithValidArgs([]string{"dir", "file"}),
 	)
 	rootCmd.AddCommand(countCmd)
@@ -50,56 +49,34 @@ func init() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runCount(cmd *cobra.Command, args []string) {
-	const op = "cmd.count"
-
-	// 1) validate args
-	if len(args) != 1 {
-		herr := horus.NewCategorizedHerror(
-			op,
-			"USAGE_ERROR",
-			fmt.Sprintf("accepts 1 arg(s), received %d", len(args)),
-			nil,
-			nil,
-		)
-		he, _ := horus.AsHerror(herr)
-		fmt.Fprintln(cmd.ErrOrStderr(), horus.SimpleColoredFormatter(he))
-		_ = cmd.Usage()
-		os.Exit(1)
-	}
+	const op = "lou.count"
 
 	target := args[0]
 
-	// 2) build the fd invocation
-	fdCmd := "fd ."
+	// Build the fd call
+	cmdStr := "fd ."
 	if hidden {
-		fdCmd += " --hidden"
+		cmdStr += " --hidden"
 	}
 	if noIgnore {
-		fdCmd += " --no-ignore"
+		cmdStr += " --no-ignore"
 	}
 
 	switch target {
 	case "dir":
-		fdCmd += " --type=d --max-depth=1 | wc -l"
+		cmdStr += " --type=d --max-depth=1 | wc -l"
 	case "file":
-		fdCmd += " --type=f --max-depth=1 | wc -l"
+		cmdStr += " --type=f --max-depth=1 | wc -l"
 	default:
-		herr := horus.NewCategorizedHerror(
-			op,
-			"USAGE_ERROR",
-			fmt.Sprintf("unsupported mode %q; use \"dir\" or \"file\"", target),
-			nil,
-			nil,
+		horus.CheckErr(
+			fmt.Errorf("unsupported mode %q; use \"dir\" or \"file\"", target),
+			horus.WithOp(op),
+			horus.WithCategory("USAGE_ERROR"),
+			horus.WithExitCode(2),
 		)
-		he, _ := horus.AsHerror(herr)
-		fmt.Fprintln(cmd.ErrOrStderr(), horus.SimpleColoredFormatter(he))
-		_ = cmd.Usage()
-		os.Exit(1)
 	}
 
-	// 3) execute the command and fatal-exit on error
-	if err := domovoi.ExecSh(fdCmd); err != nil {
-		// wrap & add context
+	if err := domovoi.ExecSh(cmdStr); err != nil {
 		herr := horus.PropagateErr(
 			op,
 			"SYS_CMD",
@@ -109,13 +86,10 @@ func runCount(cmd *cobra.Command, args []string) {
 				"target":    target,
 				"hidden":    hidden,
 				"no_ignore": noIgnore,
-				"command":   fdCmd,
+				"command":   cmdStr,
 			},
 		)
-		horus.CheckErr(
-			herr,
-			horus.WithFormatter(horus.SimpleColoredFormatter),
-		)
+		horus.CheckErr(herr, horus.WithFormatter(horus.SimpleColoredFormatter))
 	}
 }
 
