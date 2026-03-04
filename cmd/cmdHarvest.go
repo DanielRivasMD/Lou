@@ -19,6 +19,8 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
+	"fmt"
+
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
@@ -27,7 +29,9 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func init() {
-	harvestCmd := MakeCmd("harvest", runHarvest)
+	harvestCmd := MakeCmd("harvest", runHarvest,
+		WithArgs(cobra.ExactArgs(1)), // enforce exactly one argument
+	)
 	rootCmd.AddCommand(harvestCmd)
 }
 
@@ -36,13 +40,19 @@ func init() {
 func runHarvest(cmd *cobra.Command, args []string) {
 	const op = "lou.harvest"
 
-	// Command to find all .sh files and display them with headers
-	cmdStr := `fd --extension sh | while read f; do echo "=== $f ==="; cat "$f"; echo; done`
+	// Determine extension (default "sh")
+	ext := "sh"
+	if len(args) == 1 {
+		ext = args[0]
+	}
+
+	// Build the command with the chosen extension
+	cmdStr := fmt.Sprintf(`fd --extension %s | while read f; do echo "=== $f ==="; cat "$f"; echo; done`, ext)
 
 	horus.CheckErr(
 		domovoi.ExecSh(cmdStr),
 		horus.WithOp(op),
-		horus.WithMessage("failed to harvest shell scripts"),
+		horus.WithMessage("failed to harvest files"),
 		horus.WithCategory("EXEC_ERROR"),
 	)
 }

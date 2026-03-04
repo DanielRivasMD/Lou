@@ -713,12 +713,24 @@
     "disable_flags_in_use_line": false
   },
   "harvest": {
-    "use": "harvest",
-    "short": "Display contents of all shell scripts",
-    "long": "Find all .sh files in the current directory and below, and print each file with a header showing its path.",
+    "use": "harvest [extension]",
+    "short": "Display contents of all files with given extension",
+    "long": "Find all files with the specified extension in the current directory and below, and print each file with a header showing its path",
     "example_usages": [
       [
         "harvest"
+      ],
+      [
+        "harvest",
+        "py"
+      ],
+      [
+        "harvest",
+        "go"
+      ],
+      [
+        "harvest",
+        "md"
       ]
     ],
     "disable_flags_in_use_line": true
