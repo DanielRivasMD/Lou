@@ -19,10 +19,6 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
-	"fmt"
-
-	"github.com/DanielRivasMD/domovoi"
-	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 )
 
@@ -36,27 +32,7 @@ func init() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func runInit(cmd *cobra.Command, args []string) {
-	const op = "lou.init"
-
-	toCreate := []struct {
-		label, path string
-	}{
-		{"lou root", dirs.lou},
-		{"layout", dirs.layout},
-		{"shell", dirs.sh},
-	}
-
-	for _, dir := range toCreate {
-		horus.CheckErr(
-			domovoi.CreateDir(dir.path, flags.verbose),
-			horus.WithOp(op),
-			horus.WithCategory("io_error"),
-			horus.WithMessage(fmt.Sprintf("creating %s directory", dir.label)),
-			horus.WithDetails(map[string]any{
-				"path": dir.path,
-			}),
-		)
-	}
+	createSubdirs(dirs, flags.verbose)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
