@@ -32,7 +32,6 @@ func init() {
 		WithArgs(cobra.ExactArgs(1)),
 		WithValidArgs([]string{"bash", "zsh", "fish", "powershell"}),
 	)
-	completionCmd.DisableFlagsInUseLine = true // Can't set via options yet
 	rootCmd.AddCommand(completionCmd)
 }
 
