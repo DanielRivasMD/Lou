@@ -48,7 +48,7 @@ func init() {
 	rootCmd.AddCommand(tabCmd)
 
 	tabCmd.Flags().StringVarP(
-		&flags.tabLayout,
+		&rootFlags.tabLayout,
 		"type",
 		"t",
 		"devel",
@@ -76,9 +76,9 @@ func runTab(cmd *cobra.Command, args []string) {
 
 	switch len(args) {
 	case 0:
-		flags.tabTarget = ""
+		rootFlags.tabTarget = ""
 	case 1:
-		flags.tabTarget = args[0]
+		rootFlags.tabTarget = args[0]
 	default:
 		horus.CheckErr(
 			fmt.Errorf("too many arguments: %d", len(args)),
@@ -88,7 +88,7 @@ func runTab(cmd *cobra.Command, args []string) {
 		)
 	}
 
-	createTab(flags.tabLayout, flags.tabTarget)
+	createTab(rootFlags.tabLayout, rootFlags.tabTarget)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
