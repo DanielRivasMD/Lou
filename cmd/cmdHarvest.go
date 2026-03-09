@@ -19,9 +19,10 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
+	"bytes"
 	"fmt"
+	"os/exec"
 
-	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 )
@@ -30,9 +31,12 @@ import (
 
 func init() {
 	harvestCmd := MakeCmd("harvest", runHarvest,
-		WithArgs(cobra.ExactArgs(1)), // enforce exactly one argument
+		WithArgs(cobra.MinimumNArgs(1)),
 	)
 	rootCmd.AddCommand(harvestCmd)
+
+	harvestCmd.Flags().BoolVarP(&hFlags.copy, "copy", "c", false, "copy output to clipboard (pbcopy)")
+	harvestCmd.Flags().BoolVarP(&hFlags.list, "list", "l", false, "list only file names")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,21 +44,73 @@ func init() {
 func runHarvest(cmd *cobra.Command, args []string) {
 	const op = "lou.harvest"
 
-	// Determine extension (default "sh")
-	ext := "sh"
-	if len(args) == 1 {
-		ext = args[0]
+	fdArgs := []string{}
+	for _, ext := range args {
+		fdArgs = append(fdArgs, "--extension", ext)
 	}
 
-	// Build the command with the chosen extension
-	cmdStr := fmt.Sprintf(`fd --extension %s | while read f; do echo "=== $f ==="; cat "$f"; echo; done`, ext)
+	var output []byte
+	var err error
 
-	horus.CheckErr(
-		domovoi.ExecSh(cmdStr),
-		horus.WithOp(op),
-		horus.WithMessage("failed to harvest files"),
-		horus.WithCategory("EXEC_ERROR"),
-	)
+	if hFlags.list {
+		output, err = exec.Command("fd", fdArgs...).Output()
+		if err != nil {
+			horus.CheckErr(err,
+				horus.WithOp(op),
+				horus.WithMessage("failed to list files"),
+				horus.WithCategory("EXEC_ERROR"),
+			)
+		}
+	} else {
+		fdCmdStr := "fd"
+		for _, ext := range args {
+			fdCmdStr += " --extension " + ext
+		}
+		fullCmd := fdCmdStr + ` | while read f; do echo "=== $f ==="; cat "$f"; echo; done`
+
+		output, err = exec.Command("bash", "-c", fullCmd).Output()
+		if err != nil {
+			if exitErr, ok := err.(*exec.ExitError); ok {
+				// Include stderr in the error message
+				horus.CheckErr(fmt.Errorf("%s: %s", err, exitErr.Stderr),
+					horus.WithOp(op),
+					horus.WithMessage("failed to harvest files"),
+					horus.WithCategory("EXEC_ERROR"),
+				)
+			} else {
+				horus.CheckErr(err,
+					horus.WithOp(op),
+					horus.WithMessage("failed to harvest files"),
+					horus.WithCategory("EXEC_ERROR"),
+				)
+			}
+		}
+	}
+
+	if hFlags.copy {
+		pbcopyCmd := exec.Command("pbcopy")
+		pbcopyCmd.Stdin = bytes.NewReader(output)
+		if err := pbcopyCmd.Run(); err != nil {
+			horus.CheckErr(err,
+				horus.WithOp(op),
+				horus.WithMessage("failed to copy to clipboard"),
+				horus.WithCategory("EXEC_ERROR"),
+			)
+		}
+	} else {
+		fmt.Print(string(output))
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var (
+	hFlags harvestFlags
+)
+
+type harvestFlags struct {
+	copy bool
+	list bool
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
