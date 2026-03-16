@@ -1,3 +1,5 @@
+- expand command tab to capture multiple args
+- implement copyq for ubuntu on lou harvest
 - add color & update help on commands
 - deprecate useless commands
 - add command `stack` to launch a new tab with stack panes or to stack panes in current tab?
