@@ -20,8 +20,10 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 )
@@ -43,7 +45,7 @@ var validTabTypes = map[string]string{
 
 func init() {
 	tabCmd := MakeCmd("tab", runTab,
-		WithArgs(cobra.MaximumNArgs(1)),
+		WithArgs(cobra.MinimumNArgs(0)),
 	)
 	rootCmd.AddCommand(tabCmd)
 
@@ -74,21 +76,32 @@ func init() {
 func runTab(cmd *cobra.Command, args []string) {
 	const op = "lou.tab"
 
-	switch len(args) {
-	case 0:
-		rootFlags.tabTarget = ""
-	case 1:
-		rootFlags.tabTarget = args[0]
-	default:
-		horus.CheckErr(
-			fmt.Errorf("too many arguments: %d", len(args)),
-			horus.WithOp(op),
-			horus.WithCategory("USAGE_ERROR"),
-			horus.WithMessage("tab takes at most one directory argument"),
-		)
+	tabType := rootFlags.tabLayout
+
+	if len(args) == 0 {
+		createTab(tabType, "")
+		return
 	}
 
-	createTab(rootFlags.tabLayout, rootFlags.tabTarget)
+	origTabID := os.Getenv("ZELLIJ_PANE_ID")
+
+	for _, target := range args {
+		createTab(tabType, target)
+	}
+
+	if origTabID != "" {
+		switchBackCmd := fmt.Sprintf("zellij action go-to-tab %s", origTabID)
+		if err := domovoi.ExecSh(switchBackCmd); err != nil {
+			// Non‑fatal warning; tabs were created.
+			horus.CheckErr(
+				err,
+				horus.WithOp(op),
+				horus.WithCategory("ZELLIJ_ERROR"),
+				horus.WithMessage("failed to return to original tab (tabs were created)"),
+				horus.WithExitCode(0),
+			)
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
