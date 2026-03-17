@@ -715,7 +715,7 @@
   "harvest": {
     "use": "harvest <extension> [extension...]",
     "short": "Display contents of files with given extensions",
-    "long": "Find all files with the specified extensions in the current directory and below, and print each file with a header showing its path.\n\nFlags:\n  -c, --copy    copy the output to the clipboard (pbcopy)\n  -l, --list    list only file names, not their contents",
+    "long": "Find all files with the specified extensions in the current directory and below, and print each file with a header showing its path.\n\nFlags:\n  -c, --copy    copy the output to the clipboard (pbcopy or copyq)\n  -l, --list    list only file names, not their contents",
     "example_usages": [
       [
         "harvest",
