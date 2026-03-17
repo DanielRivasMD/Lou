@@ -19,7 +19,6 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
-	"bytes"
 	"fmt"
 	"os/exec"
 
@@ -35,7 +34,7 @@ func init() {
 	)
 	rootCmd.AddCommand(harvestCmd)
 
-	harvestCmd.Flags().BoolVarP(&hFlags.copy, "copy", "c", false, "copy output to clipboard (pbcopy)")
+	harvestCmd.Flags().BoolVarP(&hFlags.copy, "copy", "c", false, "copy output to clipboard (pbcopy on macOS, xclip/xsel on Linux)")
 	harvestCmd.Flags().BoolVarP(&hFlags.list, "list", "l", false, "list only file names")
 }
 
@@ -71,7 +70,6 @@ func runHarvest(cmd *cobra.Command, args []string) {
 		output, err = exec.Command("bash", "-c", fullCmd).Output()
 		if err != nil {
 			if exitErr, ok := err.(*exec.ExitError); ok {
-				// Include stderr in the error message
 				horus.CheckErr(fmt.Errorf("%s: %s", err, exitErr.Stderr),
 					horus.WithOp(op),
 					horus.WithMessage("failed to harvest files"),
@@ -88,9 +86,7 @@ func runHarvest(cmd *cobra.Command, args []string) {
 	}
 
 	if hFlags.copy {
-		pbcopyCmd := exec.Command("pbcopy")
-		pbcopyCmd.Stdin = bytes.NewReader(output)
-		if err := pbcopyCmd.Run(); err != nil {
+		if err := copyToClipboard(output); err != nil {
 			horus.CheckErr(err,
 				horus.WithOp(op),
 				horus.WithMessage("failed to copy to clipboard"),
