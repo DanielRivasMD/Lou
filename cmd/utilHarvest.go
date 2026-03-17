@@ -15,3 +15,34 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package cmd
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+import (
+	"bytes"
+	"fmt"
+	"os/exec"
+	"runtime"
+)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func copyToClipboard(data []byte) error {
+	switch runtime.GOOS {
+	case "darwin":
+		cmd := exec.Command("pbcopy")
+		cmd.Stdin = bytes.NewReader(data)
+		return cmd.Run()
+	case "linux":
+		if _, err := exec.LookPath("copyq"); err == nil {
+			cmd := exec.Command("copyq", "copy", "-")
+			cmd.Stdin = bytes.NewReader(data)
+			return cmd.Run()
+		}
+		return fmt.Errorf("no clipboard utility found: install copyq")
+	default:
+		return fmt.Errorf("unsupported platform for clipboard: %s", runtime.GOOS)
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
