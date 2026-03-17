@@ -35,27 +35,8 @@ func createTab(tabType, tabTarget string) {
 		tabType,
 	)
 
-	if tabTarget != "" {
-		orig, err := domovoi.RecallDir()
-		if err != nil {
-			horus.CheckErr(
-				err,
-				horus.WithOp(op),
-				horus.WithCategory("DIR_ERROR"),
-				horus.WithMessage("failed to recall working directory"),
-			)
-		}
-		if err := domovoi.ChangeDir(tabTarget); err != nil {
-			domovoi.ChangeDir(orig)
-			horus.CheckErr(
-				err,
-				horus.WithOp(op),
-				horus.WithCategory("DIR_ERROR"),
-				horus.WithMessage("failed to change to target directory"),
-			)
-		}
+	if tabTarget == "" {
 		if err := domovoi.ExecSh(cmdStr); err != nil {
-			domovoi.ChangeDir(orig)
 			horus.CheckErr(
 				err,
 				horus.WithOp(op),
@@ -64,6 +45,37 @@ func createTab(tabType, tabTarget string) {
 			)
 		}
 		return
+	}
+
+	orig, err := domovoi.RecallDir()
+	if err != nil {
+		horus.CheckErr(
+			err,
+			horus.WithOp(op),
+			horus.WithCategory("DIR_ERROR"),
+			horus.WithMessage("failed to recall working directory"),
+		)
+	}
+
+	defer func() {
+		if err := domovoi.ChangeDir(orig); err != nil {
+			horus.CheckErr(
+				err,
+				horus.WithOp(op),
+				horus.WithCategory("DIR_ERROR"),
+				horus.WithMessage("failed to restore original directory (tab was created)"),
+				horus.WithExitCode(0),
+			)
+		}
+	}()
+
+	if err := domovoi.ChangeDir(tabTarget); err != nil {
+		horus.CheckErr(
+			err,
+			horus.WithOp(op),
+			horus.WithCategory("DIR_ERROR"),
+			horus.WithMessage("failed to change to target directory"),
+		)
 	}
 
 	if err := domovoi.ExecSh(cmdStr); err != nil {
