@@ -1,0 +1,26 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+        children
+    }
+
+    tab name="Monitor" split_direction="horizontal" hide_floating_panes=true {
+        pane split_direction="vertical" {
+            pane name="clock" size="50%" borderless=true command="tock" {
+                args "-m" "-s"
+            }
+            pane name="clock" borderless=true command="tock" {
+                args "-m" "-s"
+            }
+        }
+        pane split_direction="vertical" size="75%" {
+            pane name="performance" borderless=true command="btop"
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
