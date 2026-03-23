@@ -2,6 +2,8 @@
 - deprecate useless commands
 - add command `stack` to launch a new tab with stack panes or to stack panes in current tab?
 - lou manipulation functions as potential zellij plugins?
+- spawn zero, an assisstant aimed at zellij integration. re-write on rust?
+- refactor update for compatibility with ubuntu
 
 
 
