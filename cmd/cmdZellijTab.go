@@ -57,7 +57,6 @@ func init() {
 		"Workspace type: devel, tab, tabs2, tabs3, tabs4, tabs5, explore, repl",
 	)
 
-	// Shell completion
 	tabCmd.RegisterFlagCompletionFunc("type",
 		func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			var out []string
