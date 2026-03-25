@@ -21,18 +21,18 @@ package cmd
 import (
 	"os"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	completionCmd := MakeCmd("completion", runCompletion,
-		WithArgs(cobra.ExactArgs(1)),
-		WithValidArgs([]string{"bash", "zsh", "fish", "powershell"}),
-	)
-	rootCmd.AddCommand(completionCmd)
+func CompletionCmd() *cobra.Command {
+	return horus.Must(horus.Must(domovoi.GlobalDocs()).MakeCmd("completion", runCompletion,
+		domovoi.WithArgs(cobra.ExactArgs(1)),
+		domovoi.WithValidArgs([]string{"bash", "zsh", "fish", "powershell"}),
+	))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
