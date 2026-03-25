@@ -4,6 +4,8 @@
 - lou manipulation functions as potential zellij plugins?
 - spawn zero, an assisstant aimed at zellij integration. re-write on rust?
 - refactor update for compatibility with ubuntu
+- add monitor command as a stacked tab
+- fully update architecture & help
 
 
 
