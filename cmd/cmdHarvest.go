@@ -22,20 +22,23 @@ import (
 	"fmt"
 	"os/exec"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	harvestCmd := MakeCmd("harvest", runHarvest,
-		WithArgs(cobra.MinimumNArgs(1)),
-	)
-	rootCmd.AddCommand(harvestCmd)
+func HarvestCmd() *cobra.Command {
+	d := horus.Must(domovoi.GlobalDocs())
+	cmd := horus.Must(d.MakeCmd("harvest", runHarvest,
+		domovoi.WithArgs(cobra.MinimumNArgs(1)),
+	))
 
-	harvestCmd.Flags().BoolVarP(&hFlags.copy, "copy", "c", false, "copy output to clipboard (pbcopy on macOS, xclip/xsel on Linux)")
-	harvestCmd.Flags().BoolVarP(&hFlags.list, "list", "l", false, "list only file names")
+	cmd.Flags().BoolVarP(&hFlags.copy, "copy", "c", false, "copy output to clipboard (pbcopy on macOS, xclip/xsel on Linux)")
+	cmd.Flags().BoolVarP(&hFlags.list, "list", "l", false, "list only file names")
+
+	return cmd
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
