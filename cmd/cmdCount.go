@@ -35,15 +35,17 @@ var (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	countCmd := MakeCmd("count", runCount,
-		WithArgs(cobra.ExactArgs(1)), // enforce exactly one argument
-		WithValidArgs([]string{"dir", "file"}),
-	)
-	rootCmd.AddCommand(countCmd)
+func CountCmd() *cobra.Command {
+	d := horus.Must(domovoi.GlobalDocs())
+	cmd := horus.Must(d.MakeCmd("count", runCount,
+		domovoi.WithArgs(cobra.ExactArgs(1)),
+		domovoi.WithValidArgs([]string{"dir", "file"}),
+	))
 
-	countCmd.Flags().BoolVarP(&hidden, "hidden", "", false, "include hidden files and dirs")
-	countCmd.Flags().BoolVarP(&noIgnore, "no-ignore", "", false, "do not respect ignore config")
+	cmd.Flags().BoolVarP(&hidden, "hidden", "", false, "include hidden files and dirs")
+	cmd.Flags().BoolVarP(&noIgnore, "no-ignore", "", false, "do not respect ignore config")
+
+	return cmd
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
