@@ -19,7 +19,9 @@ package cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import (
+	"embed"
 	"path/filepath"
+	"sync"
 
 	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
@@ -28,51 +30,28 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//go:embed docs.json
+var docsFS embed.FS
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const APP = "lou"
 const VERSION = "v0.1.0"
-const NAME = "Daniel Rivas"
+const AUTHOR = "Daniel Rivas"
 const EMAIL = "<danielrivasmd@gmail.com>"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var rootCmd = &cobra.Command{
-	Use:     GetUse("root"),
-	Long:    formatLongHelp(GetHelp("root")),
-	Example: GetExample("root"),
-	Version: VERSION,
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-func Execute() {
-	horus.CheckErr(rootCmd.Execute())
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-func init() {
-	rootCmd.PersistentFlags().BoolVarP(&rootFlags.verbose, "verbose", "v", false, "Enable verbose diagnostics")
-	cobra.OnInitialize(initConfigDirs)
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-func initConfigDirs() {
-	configDirs.home = func() string {
-		h, e := domovoi.FindHome(rootFlags.verbose)
-		horus.CheckErr(e, horus.WithCategory("init_error"), horus.WithMessage("getting home directory"))
-		return h
-	}()
-	configDirs.lou = filepath.Join(configDirs.home, ".lou")
-	configDirs.layout = filepath.Join(configDirs.lou, "layout")
-	configDirs.sh = filepath.Join(configDirs.lou, "sh")
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 var (
+	onceRoot  sync.Once
+	rootCmd   *cobra.Command
+	rootFlags struct {
+		verbose bool
+
+		tabLayout string
+		tabTarget string
+	}
 	configDirs configDir
-	rootFlags  rootFlag
 )
 
 type configDir struct {
@@ -82,11 +61,72 @@ type configDir struct {
 	sh     string
 }
 
-type rootFlag struct {
-	verbose bool
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	tabLayout string
-	tabTarget string
+func InitDocs() {
+	info := domovoi.AppInfo{
+		Name:    APP,
+		Version: VERSION,
+		Author:  AUTHOR,
+		Email:   EMAIL,
+	}
+	domovoi.SetGlobalDocsConfig(docsFS, info)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func GetRootCmd() *cobra.Command {
+	onceRoot.Do(func() {
+		d := horus.Must(domovoi.GlobalDocs())
+		var err error
+		rootCmd, err = d.MakeCmd("root", nil)
+		horus.CheckErr(err)
+
+		rootCmd.PersistentFlags().BoolVarP(&rootFlags.verbose, "verbose", "v", false, "Enable verbose diagnostics")
+		rootCmd.Version = VERSION
+
+		cobra.OnInitialize(initConfigDirs)
+	})
+	return rootCmd
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func Execute() {
+	horus.CheckErr(GetRootCmd().Execute())
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func initConfigDirs() {
+	var err error
+	configDirs.home, err = domovoi.FindHome(rootFlags.verbose)
+	horus.CheckErr(err, horus.WithCategory("init_error"), horus.WithMessage("getting home directory"))
+	configDirs.lou = filepath.Join(configDirs.home, ".lou")
+	configDirs.layout = filepath.Join(configDirs.lou, "layout")
+	configDirs.sh = filepath.Join(configDirs.lou, "sh")
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func BuildCommands() {
+	root := GetRootCmd()
+	root.AddCommand(
+		CompletionCmd(),
+		IdentityCmd(),
+
+		CountCmd(),
+		DiffCmd(),
+		DoctorCmd(),
+		GitCmd(),
+		HarvestCmd(),
+		HelperCmd(),
+		HiddenCmd(),
+		KnitCmd(),
+		MapCmd(),
+		PathCmd(),
+		ShowCmd(),
+	)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
