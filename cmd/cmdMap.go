@@ -24,17 +24,18 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	mapCmd := MakeCmd("map", runMap,
-		WithArgs(cobra.ExactArgs(1)),
-	)
-	rootCmd.AddCommand(mapCmd)
+func MapCmd() *cobra.Command {
+	d := horus.Must(domovoi.GlobalDocs())
+	return horus.Must(d.MakeCmd("map", runMap,
+		domovoi.WithArgs(cobra.ExactArgs(1)),
+	))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
