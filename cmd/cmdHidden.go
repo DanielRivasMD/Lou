@@ -28,12 +28,12 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	hiddenCmd := MakeCmd("hidden", runHidden,
-		WithArgs(cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs)),
-		WithValidArgs([]string{"off", "on"}),
-	)
-	rootCmd.AddCommand(hiddenCmd)
+func HiddenCmd() *cobra.Command {
+	d := horus.Must(domovoi.GlobalDocs())
+	return horus.Must(d.MakeCmd("hidden", runHidden,
+		domovoi.WithArgs(cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs)),
+		domovoi.WithValidArgs([]string{"off", "on"}),
+	))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
