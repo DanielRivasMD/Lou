@@ -21,6 +21,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/DanielRivasMD/domovoi"
 	"github.com/DanielRivasMD/horus"
 	"github.com/spf13/cobra"
 )
@@ -40,12 +41,14 @@ type Function struct {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	showCmd := MakeCmd("show", runShow)
-	rootCmd.AddCommand(showCmd)
+func ShowCmd() *cobra.Command {
+	d := horus.Must(domovoi.GlobalDocs())
+	cmd := horus.Must(d.MakeCmd("show", runShow))
 
-	showCmd.Flags().StringVarP(&listFile, "file", "f", "", "File to review")
-	horus.CheckErr(showCmd.MarkFlagRequired("file"))
+	cmd.Flags().StringVarP(&listFile, "file", "f", "", "File to review")
+	horus.CheckErr(cmd.MarkFlagRequired("file"))
+
+	return cmd
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
