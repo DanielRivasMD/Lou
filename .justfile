@@ -44,16 +44,13 @@ _default:
 
 app := 'Lou'
 exe := 'lou'
-dir := '.lou'
-sh := dir / 'sh'
-layouts := dir / 'layouts'
 
 ####################################################################################################
 # jobs
 ####################################################################################################
 
 # build exec
-[group('go')]
+[group('dev')]
 build app=app:
   @echo "\n\033[1;33mBuilding\033[0;37m...\n=================================================="
   go build -v -o excalibur/{{app}}
@@ -61,21 +58,17 @@ build app=app:
 ####################################################################################################
 
 # install locally
-[group('go')]
-install dir=dir app=app exe=exe:
+[group('dev')]
+install app=app exe=exe:
   @echo "\n\033[1;33mInstalling\033[0;37m...\n=================================================="
   go install
   @echo "\n\033[1;33mLinking\033[0;37m...\n=================================================="
   @mv -v "${HOME}/go/bin/{{app}}" "${HOME}/go/bin/{{exe}}"
-  @echo "\n\033[1;33mCopying\033[0;37m...\n=================================================="
-  @if [ ! -d "${HOME}/{{dir}}" ]; then mkdir "${HOME}/{{dir}}"; fi
-  @if test -e "${HOME}/{{sh}}"; then rm -r "${HOME}/{{sh}}"; fi && echo "\033[1;33msh\033[0;37m" && cp -v -R "sh" "${HOME}/{{sh}}"
-  @if test -e "${HOME}/{{layouts}}"; then rm -r "${HOME}/{{layouts}}"; fi && echo "\033[1;33mlayouts\033[0;37m" && cp -v -R "layouts" "${HOME}/{{layouts}}"
 
 ####################################################################################################
 
 # watch
-[group('go')]
+[group('dev')]
 watch:
   watchexec --clear --watch cmd -- 'just install'
 
