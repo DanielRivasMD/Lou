@@ -26,11 +26,11 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	helperCmd := MakeCmd("helper", runHelper,
-		WithArgs(cobra.ExactArgs(1)),
-	)
-	rootCmd.AddCommand(helperCmd)
+func HelperCmd() *cobra.Command {
+	d := horus.Must(domovoi.GlobalDocs())
+	return horus.Must(d.MakeCmd("helper", runHelper,
+		domovoi.WithArgs(cobra.ExactArgs(1)),
+	))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
