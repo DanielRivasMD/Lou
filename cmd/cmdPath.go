@@ -30,13 +30,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	pathCmd := MakeCmd("path", runPath,
-		WithArgs(cobra.MaximumNArgs(1)),
-		WithValidArgs([]string{"path", "fpath", "gopath"}),
-	)
-	pathCmd.ValidArgsFunction = completePathVars
-	rootCmd.AddCommand(pathCmd)
+func PathCmd() *cobra.Command {
+	d := horus.Must(domovoi.GlobalDocs())
+	return horus.Must(d.MakeCmd("path", runPath,
+		domovoi.WithValidArgsFunction(completePathVars),
+		domovoi.WithArgs(cobra.MaximumNArgs(1)),
+		domovoi.WithValidArgs([]string{"path", "fpath", "gopath"}),
+	))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
