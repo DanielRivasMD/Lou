@@ -28,11 +28,11 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func init() {
-	knitCmd := MakeCmd("knit", runKnit,
-		WithArgs(cobra.ExactArgs(1)),
-	)
-	rootCmd.AddCommand(knitCmd)
+func KnitCmd() *cobra.Command {
+	d := horus.Must(domovoi.GlobalDocs())
+	return horus.Must(d.MakeCmd("knit", runKnit,
+		domovoi.WithArgs(cobra.ExactArgs(1)),
+	))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
