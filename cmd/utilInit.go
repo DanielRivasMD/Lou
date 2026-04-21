@@ -27,9 +27,7 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func createSubdirs(d configDir, verbose bool) {
-	const op = "lou.init"
-
+func createSubdirs(d configDir, verbose bool, op string) {
 	toCreate := []struct {
 		label, path string
 	}{
