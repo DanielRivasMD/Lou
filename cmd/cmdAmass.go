@@ -29,22 +29,31 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func HarvestCmd() *cobra.Command {
+var (
+	amassFlags struct {
+		copy bool
+		list bool
+	}
+)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func AmassCmd() *cobra.Command {
 	d := horus.Must(domovoi.GlobalDocs())
-	cmd := horus.Must(d.MakeCmd("harvest", runHarvest,
+	cmd := horus.Must(d.MakeCmd("amass", runAmass,
 		domovoi.WithArgs(cobra.MinimumNArgs(1)),
 	))
 
-	cmd.Flags().BoolVarP(&hFlags.copy, "copy", "c", false, "copy output to clipboard (pbcopy on macOS, xclip/xsel on Linux)")
-	cmd.Flags().BoolVarP(&hFlags.list, "list", "l", false, "list only file names")
+	cmd.Flags().BoolVarP(&amassFlags.copy, "copy", "c", false, "copy output to clipboard (pbcopy on macOS, xclip/xsel on Linux)")
+	cmd.Flags().BoolVarP(&amassFlags.list, "list", "l", false, "list only file names")
 
 	return cmd
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func runHarvest(cmd *cobra.Command, args []string) {
-	const op = "lou.harvest"
+func runAmass(cmd *cobra.Command, args []string) {
+	const op = "lou.amass"
 
 	fdArgs := []string{}
 	for _, ext := range args {
@@ -54,7 +63,7 @@ func runHarvest(cmd *cobra.Command, args []string) {
 	var output []byte
 	var err error
 
-	if hFlags.list {
+	if amassFlags.list {
 		output, err = exec.Command("fd", fdArgs...).Output()
 		if err != nil {
 			horus.CheckErr(err,
@@ -75,20 +84,20 @@ func runHarvest(cmd *cobra.Command, args []string) {
 			if exitErr, ok := err.(*exec.ExitError); ok {
 				horus.CheckErr(fmt.Errorf("%s: %s", err, exitErr.Stderr),
 					horus.WithOp(op),
-					horus.WithMessage("failed to harvest files"),
+					horus.WithMessage("failed to amass files"),
 					horus.WithCategory("EXEC_ERROR"),
 				)
 			} else {
 				horus.CheckErr(err,
 					horus.WithOp(op),
-					horus.WithMessage("failed to harvest files"),
+					horus.WithMessage("failed to amass files"),
 					horus.WithCategory("EXEC_ERROR"),
 				)
 			}
 		}
 	}
 
-	if hFlags.copy {
+	if amassFlags.copy {
 		if err := copyToClipboard(output); err != nil {
 			horus.CheckErr(err,
 				horus.WithOp(op),
@@ -99,17 +108,6 @@ func runHarvest(cmd *cobra.Command, args []string) {
 	} else {
 		fmt.Print(string(output))
 	}
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var (
-	hFlags harvestFlags
-)
-
-type harvestFlags struct {
-	copy bool
-	list bool
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

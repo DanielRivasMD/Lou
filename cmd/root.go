@@ -115,12 +115,12 @@ func BuildCommands() {
 		CompletionCmd(),
 		IdentityCmd(),
 
+		AmassCmd(),
 		CountCmd(),
 		DiagnosticsCmd(),
 		DiffCmd(),
 		DocumentationCmd(),
 		GitCmd(),
-		HarvestCmd(),
 		HiddenCmd(),
 		KnitCmd(),
 		MapCmd(),
