@@ -26,19 +26,19 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func DiagnosticsCmd() *cobra.Command {
+func DiagnoseCmd() *cobra.Command {
 	d := horus.Must(domovoi.GlobalDocs())
-	return horus.Must(d.MakeCmd("diagnostics", runDiagnostics))
+	return horus.Must(d.MakeCmd("diagnose", runDiagnose))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func runDiagnostics(cmd *cobra.Command, args []string) {
-	const op = "lou.diagnostics"
+func runDiagnose(cmd *cobra.Command, args []string) {
+	const op = "lou.diagnose"
 
-	cmdDiagnostics := `
+	cmdDiagnose := `
 #────────────────────────────────────────────────────────────
-# Terminal diagnostics on demand
+# Terminal diagnose on demand
 #────────────────────────────────────────────────────────────
 echo -e "[ ZSH SESSION DIAGNOSTICS ]"
 echo "───────────────────────────────"
@@ -60,9 +60,9 @@ echo "────────────────────────�
 
 	domovoi.LineBreaks(true)
 	horus.CheckErr(
-		domovoi.ExecCmd("zsh", "-c", cmdDiagnostics),
+		domovoi.ExecCmd("zsh", "-c", cmdDiagnose),
 		horus.WithOp(op),
-		horus.WithMessage("failed to run shell diagnostics"),
+		horus.WithMessage("failed to run shell diagnose"),
 		horus.WithCategory("DIAGNOSTICS_ERROR"),
 	)
 	domovoi.LineBreaks(true)

@@ -117,7 +117,7 @@ func BuildCommands() {
 
 		AmassCmd(),
 		CountCmd(),
-		DiagnosticsCmd(),
+		DiagnoseCmd(),
 		DiffCmd(),
 		DocumentationCmd(),
 		GitCmd(),
