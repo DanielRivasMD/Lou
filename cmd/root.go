@@ -116,11 +116,11 @@ func BuildCommands() {
 		IdentityCmd(),
 
 		CountCmd(),
-		DiffCmd(),
 		DiagnosticsCmd(),
+		DiffCmd(),
+		DocumentationCmd(),
 		GitCmd(),
 		HarvestCmd(),
-		HelperCmd(),
 		HiddenCmd(),
 		KnitCmd(),
 		MapCmd(),

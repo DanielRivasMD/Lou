@@ -26,20 +26,20 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func HelperCmd() *cobra.Command {
+func DocumentationCmd() *cobra.Command {
 	d := horus.Must(domovoi.GlobalDocs())
-	return horus.Must(d.MakeCmd("helper", runHelper,
+	return horus.Must(d.MakeCmd("documentation", runDocumentation,
 		domovoi.WithArgs(cobra.ExactArgs(1)),
 	))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func runHelper(cmd *cobra.Command, args []string) {
-	const op = "lou.helper"
+func runDocumentation(cmd *cobra.Command, args []string) {
+	const op = "lou.documentation"
 	arg := args[0]
 
-	cmdHelper := `
+	cmdDocumentation := `
 # grab the list under “Available Commands:”
 cmds=( $(
   ` + arg + ` help | 
@@ -58,9 +58,9 @@ done
 
 	domovoi.LineBreaks(true)
 	horus.CheckErr(
-		domovoi.ExecCmd("zsh", "-c", cmdHelper),
+		domovoi.ExecCmd("zsh", "-c", cmdDocumentation),
 		horus.WithOp(op),
-		horus.WithMessage("Unable to execute helper command"),
+		horus.WithMessage("Unable to execute documentation command"),
 		horus.WithCategory("run_error"),
 	)
 	domovoi.LineBreaks(true)
