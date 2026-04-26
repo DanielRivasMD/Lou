@@ -279,13 +279,13 @@
     ],
     "disable_flags_in_use_line": false
   },
-  "doctor": {
-    "use": "doctor",
+  "diagnostics": {
+    "use": "diagnostics",
     "short": "Run shell diagnostics",
     "long": "Run comprehensive diagnostics on your shell environment.\n\nThis command checks:\n- ZSH version and availability\n- Presence of profile files\n- Status of common shell tools (Sheldon, Starship, Atuin, Zoxide, fzf)\n- Key environment variables related to your workflow\n\nUseful for troubleshooting shell configuration issues or verifying your setup.",
     "example_usages": [
       [
-        "doctor"
+        "diagnostics"
       ]
     ],
     "disable_flags_in_use_line": true

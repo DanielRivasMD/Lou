@@ -117,7 +117,7 @@ func BuildCommands() {
 
 		CountCmd(),
 		DiffCmd(),
-		DoctorCmd(),
+		DiagnosticsCmd(),
 		GitCmd(),
 		HarvestCmd(),
 		HelperCmd(),
