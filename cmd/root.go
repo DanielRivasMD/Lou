@@ -38,7 +38,7 @@ var docsFS embed.FS
 const APP = "lou"
 const VERSION = "v0.1.0"
 const AUTHOR = "Daniel Rivas"
-const EMAIL = "<danielrivasmd@gmail.com>"
+const EMAIL = "danielrivasmd@gmail.com"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -119,7 +119,7 @@ func BuildCommands() {
 		CountCmd(),
 		DiagnoseCmd(),
 		DiffCmd(),
-		DocumentationCmd(),
+		DocumentCmd(),
 		GitCmd(),
 		HiddenCmd(),
 		KnitCmd(),

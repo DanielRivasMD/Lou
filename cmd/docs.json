@@ -326,25 +326,25 @@
     ],
     "disable_flags_in_use_line": false
   },
-  "documentation": {
-    "use": "documentation <command>",
+  "document": {
+    "use": "document <command>",
     "short": "Display help for all subcommands of a command",
     "long": "Display detailed help information for every subcommand of a given command.\n\nThis utility parses the help output of a command, extracts all available subcommands, and then displays the full help for each one sequentially. Useful for exploring CLI tools and understanding all available functionality.",
     "example_usages": [
       [
-        "documentation",
+        "document",
         "git"
       ],
       [
-        "documentation",
+        "document",
         "kubectl"
       ],
       [
-        "documentation",
+        "document",
         "docker"
       ],
       [
-        "documentation",
+        "document",
         "lou"
       ]
     ],
