@@ -47,7 +47,6 @@ var (
 	rootCmd   *cobra.Command
 	rootFlags struct {
 		verbose bool
-
 		tabLayout string
 		tabTarget string
 	}
@@ -115,16 +114,16 @@ func BuildCommands() {
 		CompletionCmd(),
 		IdentityCmd(),
 
-		AmassCmd(),
 		CountCmd(),
-		DiagnoseCmd(),
 		DiffCmd(),
-		DocumentCmd(),
+		DocCmd(),
+		DupCmd(),
+		DxCmd(),
 		GitCmd(),
 		HiddenCmd(),
 		KnitCmd(),
-		MapCmd(),
 		PathCmd(),
+		RallyCmd(),
 		ShowCmd(),
 	)
 }
