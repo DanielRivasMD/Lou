@@ -29,8 +29,9 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// TODO: add a filtering options as ignore => ignore these files
 var (
-	amassFlags struct {
+	rallyFlags struct {
 		copy bool
 		list bool
 	}
@@ -38,22 +39,22 @@ var (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func AmassCmd() *cobra.Command {
+func RallyCmd() *cobra.Command {
 	d := horus.Must(domovoi.GlobalDocs())
-	cmd := horus.Must(d.MakeCmd("amass", runAmass,
+	cmd := horus.Must(d.MakeCmd("rally", runRally,
 		domovoi.WithArgs(cobra.MinimumNArgs(1)),
 	))
 
-	cmd.Flags().BoolVarP(&amassFlags.copy, "copy", "c", false, "copy output to clipboard (pbcopy on macOS, xclip/xsel on Linux)")
-	cmd.Flags().BoolVarP(&amassFlags.list, "list", "l", false, "list only file names")
+	cmd.Flags().BoolVarP(&rallyFlags.copy, "copy", "c", false, "copy output to clipboard (pbcopy on macOS, xclip/xsel on Linux)")
+	cmd.Flags().BoolVarP(&rallyFlags.list, "list", "l", false, "list only file names")
 
 	return cmd
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func runAmass(cmd *cobra.Command, args []string) {
-	const op = "lou.amass"
+func runRally(cmd *cobra.Command, args []string) {
+	const op = "lou.rally"
 
 	fdArgs := []string{}
 	for _, ext := range args {
@@ -63,7 +64,7 @@ func runAmass(cmd *cobra.Command, args []string) {
 	var output []byte
 	var err error
 
-	if amassFlags.list {
+	if rallyFlags.list {
 		output, err = exec.Command("fd", fdArgs...).Output()
 		if err != nil {
 			horus.CheckErr(err,
@@ -84,20 +85,20 @@ func runAmass(cmd *cobra.Command, args []string) {
 			if exitErr, ok := err.(*exec.ExitError); ok {
 				horus.CheckErr(fmt.Errorf("%s: %s", err, exitErr.Stderr),
 					horus.WithOp(op),
-					horus.WithMessage("failed to amass files"),
+					horus.WithMessage("failed to rally files"),
 					horus.WithCategory("EXEC_ERROR"),
 				)
 			} else {
 				horus.CheckErr(err,
 					horus.WithOp(op),
-					horus.WithMessage("failed to amass files"),
+					horus.WithMessage("failed to rally files"),
 					horus.WithCategory("EXEC_ERROR"),
 				)
 			}
 		}
 	}
 
-	if amassFlags.copy {
+	if rallyFlags.copy {
 		if err := copyToClipboard(output); err != nil {
 			horus.CheckErr(err,
 				horus.WithOp(op),
