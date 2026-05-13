@@ -43,7 +43,7 @@ func runDoc(cmd *cobra.Command, args []string) {
 	shellDoc := `
 # grab the list under “Available Commands:”
 cmds=( $(
-  ` + arg + ` help | 
+  ` + arg + ` --help | 
   sed -n '/Available Commands:/,/Flags:/p' |
   grep -E '^[[:space:]]+[a-z]' | 
   awk '{print $1}'
