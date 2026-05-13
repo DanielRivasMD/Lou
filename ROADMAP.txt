@@ -1,11 +1,10 @@
 - add color & update help on commands
-- deprecate useless commands
 
 
 
 ==================================================
-cmd/cmdZellijFloat.go
-  line 275    TODO   check if `just watch` exist
-cmd/utilZellijFloat.go
-  line 27     TODO   redundant defaults?
+cmd/cmdDoc.go
+  line 29     TODO   implement completion for binaries in path
+cmd/cmdRally.go
+  line 32     TODO   add a filtering options as ignore => ignore these files
 ==================================================
