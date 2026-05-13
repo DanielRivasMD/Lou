@@ -31,17 +31,17 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func MapCmd() *cobra.Command {
+func DupCmd() *cobra.Command {
 	d := horus.Must(domovoi.GlobalDocs())
-	return horus.Must(d.MakeCmd("map", runMap,
+	return horus.Must(d.MakeCmd("dup", runDup,
 		domovoi.WithArgs(cobra.ExactArgs(1)),
 	))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func runMap(cmd *cobra.Command, args []string) {
-	const op = "lou.map"
+func runDup(cmd *cobra.Command, args []string) {
+	const op = "lou.dup"
 
 	path := args[0]
 	data, err := os.ReadFile(path)
