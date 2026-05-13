@@ -34,11 +34,6 @@
     ],
     "disable_flags_in_use_line": true
   },
-  "zellij": {
-    "use": "zellij",
-    "long": "Manage Zellij operations",
-    "hidden": true
-  },
   "knit": {
     "use": "knit <file>",
     "short": "Compile a Markdown file using R",
@@ -58,38 +53,6 @@
       ]
     ],
     "disable_flags_in_use_line": true
-  },
-  "tab": {
-    "use": "tab [path]",
-    "short": "Launch a new Zellij workspace",
-    "long": "Launch a new Zellij tab with a predefined layout configuration.\n\nThis command creates a new Zellij tab using layout files stored in ~/.lou/layouts/. The tab is automatically named based on the current directory (or '~' for home). An optional path argument can be provided to launch the tab in a different directory.\n\nAvailable layout types:\n- devel: Default development layout\n- tab: Single vanilla pane\n- tabs2: Two stacked vanilla panes\n- tabs3: Three stacked vanilla panes\n- tabs4: Four stacked vanilla panes\n- tabs5: Five stacked vanilla panes\n- explore: Two stacked panes: top runs ` y`, bottom vanilla\n- repl: Editor + canvas + right-side repl pane",
-    "example_usages": [
-      [
-        "tab"
-      ],
-      [
-        "tab",
-        "~/projects"
-      ],
-      [
-        "tab",
-        "--type",
-        "repl"
-      ],
-      [
-        "tab",
-        "~/code",
-        "-t",
-        "explore"
-      ],
-      [
-        "tab",
-        "-t",
-        "tabs3",
-        "."
-      ]
-    ],
-    "disable_flags_in_use_line": false
   },
   "path": {
     "use": "path [which]",
@@ -119,28 +82,6 @@
     ],
     "disable_flags_in_use_line": true
   },
-  "name": {
-    "use": "name",
-    "short": "Rename current tab with working directory",
-    "long": "Rename the current Zellij tab effortlessly using the working directory name.",
-    "example_usages": [
-      [
-        "name"
-      ]
-    ],
-    "disable_flags_in_use_line": true
-  },
-  "update": {
-    "use": "update",
-    "short": "Lou update dependencies",
-    "long": "Execute an update script to refresh Lou's internal components and ensure the latest features and fixes are applied.",
-    "example_usages": [
-      [
-        "update"
-      ]
-    ],
-    "disable_flags_in_use_line": true
-  },
   "git": {
     "use": "git",
     "short": "Display git repository overview",
@@ -148,17 +89,6 @@
     "example_usages": [
       [
         "git"
-      ]
-    ],
-    "disable_flags_in_use_line": true
-  },
-  "clean": {
-    "use": "clean",
-    "short": "Clean Zellij sessions",
-    "long": "Delete all Zellij sessions with a single command.",
-    "example_usages": [
-      [
-        "clean"
       ]
     ],
     "disable_flags_in_use_line": true
@@ -194,28 +124,6 @@
     ],
     "disable_flags_in_use_line": true
   },
-  "kill": {
-    "use": "kill",
-    "short": "Kill the current Zellij session",
-    "long": "Terminate the current active Zellij session effortlessly by identifying and killing it directly.",
-    "example_usages": [
-      [
-        "kill"
-      ]
-    ],
-    "disable_flags_in_use_line": true
-  },
-  "list": {
-    "use": "list",
-    "short": "List Zellij sessions",
-    "long": "Display all active Zellij sessions.",
-    "example_usages": [
-      [
-        "list"
-      ]
-    ],
-    "disable_flags_in_use_line": true
-  },
   "show": {
     "use": "show --file <file>",
     "short": "List shell functions from a specified file",
@@ -239,53 +147,33 @@
     ],
     "disable_flags_in_use_line": false
   },
-  "map": {
-    "use": "map <file>",
+  "dup": {
+    "use": "dup <file>",
     "short": "Deduplicate sections separated by ===== lines",
     "long": "Read a file and remove duplicate sections separated by lines of equals signs (=).\n\nThis command splits the input file on lines containing only '=' characters, removes duplicate blocks while preserving order of first occurrence, and reassembles them with the same separator lines. Useful for cleaning up configuration files, notes, or any text file with repeated sections.",
     "example_usages": [
       [
-        "map",
+        "dup",
         "notes.txt"
       ],
       [
-        "map",
+        "dup",
         "config.ini"
       ],
       [
-        "map",
+        "dup",
         "roadmap.md"
       ]
     ],
     "disable_flags_in_use_line": true
   },
-  "launch": {
-    "use": "launch",
-    "short": "Prepare the shell command to start a new Zellij tab",
-    "long": "Craft the exact shell invocation needed to launch a styled Zellij tab. The --layout flag is required.",
-    "example_usages": [
-      [
-        "launch",
-        "--layout",
-        "rust.kdl"
-      ],
-      [
-        "launch",
-        "--layout",
-        "devel.kdl",
-        "--target",
-        "~/projects"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "diagnose": {
-    "use": "diagnose",
+  "dx": {
+    "use": "dx",
     "short": "Run shell diagnostics",
     "long": "Run comprehensive diagnostics on your shell environment.\n\nThis command checks:\n- ZSH version and availability\n- Presence of profile files\n- Status of common shell tools (Sheldon, Starship, Atuin, Zoxide, fzf)\n- Key environment variables related to your workflow\n\nUseful for troubleshooting shell configuration issues or verifying your setup.",
     "example_usages": [
       [
-        "diagnose"
+        "dx"
       ]
     ],
     "disable_flags_in_use_line": true
@@ -326,413 +214,51 @@
     ],
     "disable_flags_in_use_line": false
   },
-  "document": {
-    "use": "document <command>",
+  "doc": {
+    "use": "doc <command>",
     "short": "Display help for all subcommands of a command",
     "long": "Display detailed help information for every subcommand of a given command.\n\nThis utility parses the help output of a command, extracts all available subcommands, and then displays the full help for each one sequentially. Useful for exploring CLI tools and understanding all available functionality.",
     "example_usages": [
       [
-        "document",
+        "doc",
         "git"
       ],
       [
-        "document",
+        "doc",
         "kubectl"
       ],
       [
-        "document",
+        "doc",
         "docker"
       ],
       [
-        "document",
+        "doc",
         "lou"
       ]
     ],
     "disable_flags_in_use_line": true
   },
-  "zellij-float": {
-    "use": "float [layout]",
-    "short": "Launch floating zellij pane with ease",
-    "long": "Launch a floating Zellij shell pane with customizable geometry. Optional layout parameter can be one of: full, half-left, half-right, top-left, bottom-left, top-right, bottom-right, default.",
-    "example_usages": [
-      [
-        "zellij-float"
-      ],
-      [
-        "zellij-float",
-        "full"
-      ],
-      [
-        "zellij-float",
-        "half-right",
-        "--height",
-        "75%"
-      ]
-    ],
-    "valid_args": [
-      "full",
-      "half-left",
-      "half-right",
-      "top-left",
-      "bottom-left",
-      "top-right",
-      "bottom-right",
-      "default"
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "bat": {
-    "use": "bat [file]",
-    "short": "View data in a floating zellij pane using bat",
-    "long": "Launch bat with paging enabled in a floating Zellij pane for viewing files with syntax highlighting.",
-    "example_usages": [
-      [
-        "bat",
-        "main.go"
-      ],
-      [
-        "bat",
-        "README.md"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "eza": {
-    "use": "eza [path]",
-    "short": "View data in a floating zellij pane using eza",
-    "long": "Launch eza (modern ls replacement) in a floating Zellij pane with detailed view including git status, icons, and color highlighting.",
-    "example_usages": [
-      [
-        "eza"
-      ],
-      [
-        "eza",
-        "src/"
-      ],
-      [
-        "eza",
-        "~/.config"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "helix": {
-    "use": "helix [file]",
-    "short": "Edit files with Helix editor in a floating pane",
-    "long": "Launch Helix editor in a floating Zellij pane for editing files. The editor pane closes automatically when you exit.",
-    "example_usages": [
-      [
-        "helix",
-        "README.md"
-      ],
-      [
-        "helix",
-        "main.go"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "lazygit": {
-    "use": "lazygit [layout]",
-    "short": "Launch lazygit in a floating zellij pane",
-    "long": "Launch lazygit git interface in a floating Zellij pane. Optional layout parameter controls the pane size and position.",
-    "example_usages": [
-      [
-        "lazygit"
-      ],
-      [
-        "lazygit",
-        "full"
-      ],
-      [
-        "lazygit",
-        "half-left"
-      ]
-    ],
-    "valid_args": [
-      "full",
-      "half-left",
-      "half-right",
-      "top-left",
-      "bottom-left",
-      "top-right",
-      "bottom-right",
-      "default"
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "mdcat": {
-    "use": "mdcat <file>",
-    "short": "Render file with mdcat in a floating zellij pane",
-    "long": "Render a Markdown file with syntax highlighting and formatting in a floating Zellij pane using mdcat.",
-    "example_usages": [
-      [
-        "mdcat",
-        "README.md"
-      ],
-      [
-        "mdcat",
-        "docs/guide.md"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "micro": {
-    "use": "micro [file]",
-    "short": "Edit files with Micro editor in a floating pane",
-    "long": "Launch Micro editor in a floating Zellij pane for editing files. The editor pane closes automatically when you exit.",
-    "example_usages": [
-      [
-        "micro",
-        "config.json"
-      ],
-      [
-        "micro",
-        "notes.txt"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "resize": {
-    "use": "resize [layout]",
-    "short": "Anchor & resize a zellij floating pane",
-    "long": "Resize and reposition the current floating Zellij pane based on a named layout or custom dimensions.",
-    "example_usages": [
-      [
-        "resize"
-      ],
-      [
-        "resize",
-        "full"
-      ],
-      [
-        "resize",
-        "bottom-right"
-      ],
-      [
-        "resize",
-        "--height",
-        "80%",
-        "--width",
-        "80%",
-        "--x",
-        "10%",
-        "--y",
-        "10%"
-      ]
-    ],
-    "valid_args": [
-      "full",
-      "half-left",
-      "half-right",
-      "top-left",
-      "bottom-left",
-      "top-right",
-      "bottom-right",
-      "default"
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "watch": {
-    "use": "watch",
-    "short": "Launch watcher on a floating zellij pane with ease",
-    "long": "Launch a 'just watch' command in a pinned floating Zellij pane for monitoring file changes and running tasks.",
-    "example_usages": [
-      [
-        "watch"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "yazi": {
-    "use": "yazi",
-    "short": "Browse files in a floating zellij pane using yazi",
-    "long": "Launch yazi file browser in a floating Zellij pane with enhanced display options.",
-    "example_usages": [
-      [
-        "yazi"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "zellij-bat": {
-    "use": "bat [file]",
-    "short": "View data in a floating zellij pane using bat",
-    "long": "Launch bat with paging enabled in a floating Zellij pane for viewing files with syntax highlighting.",
-    "example_usages": [
-      [
-        "zellij-float",
-        "bat",
-        "main.go"
-      ],
-      [
-        "zellij-float",
-        "bat",
-        "README.md"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "zellij-eza": {
-    "use": "eza [path]",
-    "short": "View data in a floating zellij pane using eza",
-    "long": "Launch eza (modern ls replacement) in a floating Zellij pane with detailed view including git status, icons, and color highlighting.",
-    "example_usages": [
-      [
-        "zellij-float",
-        "eza"
-      ],
-      [
-        "zellij-float",
-        "eza",
-        "src/"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "zellij-helix": {
-    "use": "helix [file]",
-    "short": "Edit files with Helix editor in a floating pane",
-    "long": "Launch Helix editor in a floating Zellij pane for editing files. The editor pane closes automatically when you exit.",
-    "example_usages": [
-      [
-        "zellij-float",
-        "helix",
-        "README.md"
-      ],
-      [
-        "zellij-float",
-        "helix",
-        "main.go"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "zellij-lazygit": {
-    "use": "lazygit [layout]",
-    "short": "Launch lazygit in a floating zellij pane",
-    "long": "Launch lazygit git interface in a floating Zellij pane. Optional layout parameter controls the pane size and position.",
-    "example_usages": [
-      [
-        "zellij-float",
-        "lazygit"
-      ],
-      [
-        "zellij-float",
-        "lazygit",
-        "full"
-      ]
-    ],
-    "valid_args": [
-      "full",
-      "half-left",
-      "half-right",
-      "top-left",
-      "bottom-left",
-      "top-right",
-      "bottom-right",
-      "default"
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "zellij-mdcat": {
-    "use": "mdcat <file>",
-    "short": "Render file with mdcat in a floating zellij pane",
-    "long": "Render a Markdown file with syntax highlighting and formatting in a floating Zellij pane using mdcat.",
-    "example_usages": [
-      [
-        "zellij-float",
-        "mdcat",
-        "README.md"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "zellij-micro": {
-    "use": "micro [file]",
-    "short": "Edit files with Micro editor in a floating pane",
-    "long": "Launch Micro editor in a floating Zellij pane for editing files. The editor pane closes automatically when you exit.",
-    "example_usages": [
-      [
-        "zellij-float",
-        "micro",
-        "config.json"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "zellij-resize": {
-    "use": "resize [layout]",
-    "short": "Anchor & resize a zellij floating pane",
-    "long": "Resize and reposition the current floating Zellij pane based on a named layout or custom dimensions.",
-    "example_usages": [
-      [
-        "zellij-float",
-        "resize"
-      ],
-      [
-        "zellij-float",
-        "resize",
-        "full"
-      ]
-    ],
-    "valid_args": [
-      "full",
-      "half-left",
-      "half-right",
-      "top-left",
-      "bottom-left",
-      "top-right",
-      "bottom-right",
-      "default"
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "zellij-watch": {
-    "use": "watch",
-    "short": "Launch watcher on a floating zellij pane with ease",
-    "long": "Launch a 'just watch' command in a pinned floating Zellij pane for monitoring file changes and running tasks.",
-    "example_usages": [
-      [
-        "zellij-float",
-        "watch"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "zellij-yazi": {
-    "use": "yazi",
-    "short": "Browse files in a floating zellij pane using yazi",
-    "long": "Launch yazi file browser in a floating Zellij pane with enhanced display options.",
-    "example_usages": [
-      [
-        "zellij-float",
-        "yazi"
-      ]
-    ],
-    "disable_flags_in_use_line": false
-  },
-  "amass": {
-    "use": "amass <extension> [extension...]",
+  "rally": {
+    "use": "rally <extension> [extension...]",
     "short": "Display contents of files with given extensions",
     "long": "Find all files with the specified extensions in the current directory and below, and print each file with a header showing its path.\n\nFlags:\n  -c, --copy    copy the output to the clipboard (pbcopy or copyq)\n  -l, --list    list only file names, not their contents",
     "example_usages": [
       [
-        "amass",
+        "rally",
         "sh"
       ],
       [
-        "amass",
+        "rally",
         "go",
         "py"
       ],
       [
-        "amass",
+        "rally",
         "--list",
         "md"
       ],
       [
-        "amass",
+        "rally",
         "--copy",
         "json",
         "yaml"
