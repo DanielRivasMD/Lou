@@ -27,20 +27,20 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO: implement completion for binaries in path
-func DocumentCmd() *cobra.Command {
+func DocCmd() *cobra.Command {
 	d := horus.Must(domovoi.GlobalDocs())
-	return horus.Must(d.MakeCmd("document", runDocument,
+	return horus.Must(d.MakeCmd("doc", runDoc,
 		domovoi.WithArgs(cobra.ExactArgs(1)),
 	))
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func runDocument(cmd *cobra.Command, args []string) {
-	const op = "lou.document"
+func runDoc(cmd *cobra.Command, args []string) {
+	const op = "lou.doc"
 	arg := args[0]
 
-	cmdDocument := `
+	shellDoc := `
 # grab the list under “Available Commands:”
 cmds=( $(
   ` + arg + ` help | 
@@ -59,9 +59,9 @@ done
 
 	domovoi.LineBreaks(true)
 	horus.CheckErr(
-		domovoi.ExecCmd("zsh", "-c", cmdDocument),
+		domovoi.ExecCmd("zsh", "-c", shellDoc),
 		horus.WithOp(op),
-		horus.WithMessage("Unable to execute document command"),
+		horus.WithMessage("Unable to execute doc command"),
 		horus.WithCategory("run_error"),
 	)
 	domovoi.LineBreaks(true)
